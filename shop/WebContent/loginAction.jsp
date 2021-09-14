@@ -18,7 +18,7 @@
 	// 디비깅
 	if(returnMember == null) {
 		System.out.println("로그인 실패");
-		response.sendRedirect("./loginForm.jsp");
+		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
 	} else {
 		System.out.println("로그인 성공");
@@ -27,7 +27,7 @@
 		// request, session : JSP내장객체
 		// 한 사용자의 공간(session)에 변수를 생성
 		session.setAttribute("loginMember", returnMember);
-		response.sendRedirect("./index.jsp");
+		response.sendRedirect(request.getContextPath()+"/index.jsp");
 	}
 	
 	
