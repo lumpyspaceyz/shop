@@ -28,38 +28,36 @@
 	  <h1>회원가입</h1>
 	</div>
 	<form method="post" action="<%=request.getContextPath() %>/insertMemberAction.jsp">
-	<table class="table table-hover text-center">
 		<!-- memberId -->
-		<tr>
-			<th>memberId : </th>
-			<td><input type="text" name="memberId"></td>
-		</tr>
+		<div class="form-group">
+			<label>memberId : </label>
+			<div><input type="text" name="memberId"></div>
+		</div>
 		<!-- memberPw -->
-		<tr>
-		<th>memberPw : </th>
-		<td><input type="password" name="memberPw"></td>
-		</tr>
+		<div class="form-group">
+			<label>memberPw : </label>
+			<div><input type="password" name="memberPw"></div>
+		</div>
 		<!-- memberName -->
-		<tr>
-		<th>memberName : </th>
-		<td><input type="text" name="memberName"></td>
-		</tr>
+		<div class="form-group">
+			<label>memberName : </label>
+			<div><input type="text" name="memberName"></div>
+		</div>
 		<!-- memberAge -->
-		<tr>
-		<th>memberAge : </th>
-		<td><input type="text" name="memberAge"></td>
-		</tr>
+		<div class="form-group">
+			<label>memberAge : </label>
+			<div><input type="text" name="memberAge"></div>
+		</div>
 		<!-- memberGender -->
-		<tr>
-		<th>memberGender : </th>
-		<td>
-			<input type="radio" name="memberGender" value="남"> 남
-			<input type="radio" name="memberGender" value="여"> 여
-		</td>
-		</tr>
+		<div class="form-group">
+			<label>memberGender : </label>
+			<div>
+				<input type="radio" name="memberGender" value="남"> 남
+				<input type="radio" name="memberGender" value="여"> 여
+			</div>
+		</div>
 		<br>
-	</table>
-		<div class="text-center">
+		<div>
 			<input type="submit" value="회원가입" class="btn btn-outline-dark">
 			<a href="<%=request.getContextPath() %>/index.jsp" class="btn btn-outline-dark">취소</a>
 		</div>

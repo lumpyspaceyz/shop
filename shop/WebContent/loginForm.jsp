@@ -29,18 +29,16 @@
 	</div>
 	
 	<form method="post" action="<%=request.getContextPath() %>/loginAction.jsp">
-	<table class="table table-hover text-center">
-		<tr>
-			<th>memberId : </th>
-			<td><input type="text" name="memberId"></td>
-		</tr>
+  		<div class="form-group">
+			<label>memberId : </label>
+			<div><input type="text" name="memberId"></div>
+		</div>
 		
-		<tr>
-			<th>memberPw : </th>
-			<td><input type="password" name="memberPw"></td>
-		</tr>
-	</table>
-		<div class="text-center">
+		<div class="form-group">
+			<label>memberPw : </label>
+			<div><input type="password" name="memberPw"></div>
+		</div>
+		<div>
 			<input type="submit" value="로그인" class="btn btn-outline-dark">
 			<a href="<%=request.getContextPath() %>/index.jsp" class="btn btn-outline-dark">취소</a>
 		</div>
