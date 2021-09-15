@@ -31,8 +31,8 @@ public class MemberDao {
 		stmt.setString(5, member.getMemberGender());
 		int row = stmt.executeUpdate();
 		// debug
-		System.out.println(stmt + "<-- stmt");
-		System.out.println(row + "<-- insert 결과 row");
+		System.out.println(stmt + "<-- MemberDao.insertMember stmt");
+		System.out.println(row + "<-- MemberDao.insertMember insert 결과 row");
 		
 		if(row == 1) {
 		    result = true;
@@ -62,6 +62,10 @@ public class MemberDao {
 			returnMember.setMemberLevel(rs.getInt("memberLevel"));
 			returnMember.setMemberName(rs.getString("memberName"));
 		}
+		// debug
+		System.out.println(stmt + "<-- MemberDao.login stmt");
+		System.out.println(rs + "<-- MemberDao.login rs");
+		
 		return returnMember;
 	}
 	
@@ -90,7 +94,6 @@ public class MemberDao {
 			member.setUpdateDate(rs.getString("createDate"));
 			memberList.add(member);				
 		}
-	    
 	    // debug
  		System.out.println(stmt + " <-- MemberDao.selectMemberListAllByPage stmt");
  		System.out.println(rs + " <-- MemberDao.selectMemberListAllByPage rs");
@@ -99,6 +102,30 @@ public class MemberDao {
  		stmt.close();
  		conn.close();
 		return memberList;
+	}
+	
+	// [관리자] 회원목록출력 - paging totalCount
+	public int selectTotalCount() throws ClassNotFoundException, SQLException {
+		int totalCount = 0;
+
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT COUNT(*) FROM member";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    ResultSet rs = stmt.executeQuery();
+	    if(rs.next()) {
+			totalCount = rs.getInt("COUNT(*)");
+		}
+	    // debug
+  		System.out.println(stmt + " <-- MemberDao.selectTotalCount stmt");
+  		System.out.println(rs + " <-- MemberDao.selectTotalCount rs");
+
+	    rs.close();
+		stmt.close();
+		conn.close();
+		
+		return totalCount;
 	}
 
 }
