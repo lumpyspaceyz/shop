@@ -104,7 +104,7 @@ public class MemberDao {
 		return memberList;
 	}
 	
-	// [관리자] 회원목록출력 - paging totalCount
+	// [관리자] 회원목록 출력 - paging totalCount
 	public int selectTotalCount() throws ClassNotFoundException, SQLException {
 		int totalCount = 0;
 
@@ -113,6 +113,70 @@ public class MemberDao {
 	    
 	    String sql = "SELECT COUNT(*) FROM member";
 	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    ResultSet rs = stmt.executeQuery();
+	    if(rs.next()) {
+			totalCount = rs.getInt("COUNT(*)");
+		}
+	    // debug
+  		System.out.println(stmt + " <-- MemberDao.selectTotalCount stmt");
+  		System.out.println(rs + " <-- MemberDao.selectTotalCount rs");
+
+	    rs.close();
+		stmt.close();
+		conn.close();
+		
+		return totalCount;
+	}
+	
+	// [관리자] 회원 검색 - 회원목록 출력
+	public ArrayList<Member> selectMemberListAllBySearchMemberId(int beginRow, int ROW_PER_PAGE, String searchMemberId) throws ClassNotFoundException, SQLException{
+		ArrayList<Member> memberList = new ArrayList<>();
+		
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT member_no memberNo, member_id memberId, member_level memberLevel, member_name memberName, member_age memberAge, member_gender memberGender, update_date updateDate, create_date createDate FROM member WHERE member_id LIKE ? ORDER BY createDate DESC limit ?, ?";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setString(1, "%" + searchMemberId + "%");
+	    stmt.setInt(2, beginRow);
+	    stmt.setInt(3, ROW_PER_PAGE);
+	    ResultSet rs = stmt.executeQuery();
+		
+	    while(rs.next()) {
+			Member member = new Member();
+			member.setMemberNo(rs.getInt("memberNo"));
+			member.setMemberId(rs.getString("memberId"));
+			member.setMemberLevel(rs.getInt("memberLevel"));
+			member.setMemberName(rs.getString("memberName"));
+			member.setMemberAge(rs.getInt("memberAge"));
+			member.setMemberGender(rs.getString("memberGender"));
+			member.setCreateDate(rs.getString("updateDate"));
+			member.setUpdateDate(rs.getString("createDate"));
+			memberList.add(member);				
+		}
+	    // debug
+ 		System.out.println(stmt + " <-- MemberDao.selectMemberListAllBySearchMemberId stmt");
+ 		System.out.println(rs + " <-- MemberDao.selectMemberListAllBySearchMemberId rs");
+ 		
+ 		rs.close();
+ 		stmt.close();
+ 		conn.close();
+		return memberList;
+	}
+		
+	// [관리자] 회원 검색 - paging totalCount
+	public int selectTotalCountBySearchMemberId(String searchMemberId) throws ClassNotFoundException, SQLException {
+		// debug
+		System.out.println(searchMemberId +" <-- MemberDao.selectTotalCountBySearchMemberId param searchMemberId");
+		
+		int totalCount = 0;
+
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT COUNT(*) FROM member WHERE member_id=?";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setString(1, searchMemberId);
 	    ResultSet rs = stmt.executeQuery();
 	    if(rs.next()) {
 			totalCount = rs.getInt("COUNT(*)");

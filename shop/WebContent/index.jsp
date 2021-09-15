@@ -8,6 +8,15 @@
 <meta charset="UTF-8">
 <title>index.jsp</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+a, a:hover {
+	color: #000;
+}
+nav li {
+	font-size: 1.3em;
+	padding-left: 20px;
+}
+</style>
 </head>
 <body>
 <div class="container">
