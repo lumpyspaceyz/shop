@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="vo.*" %>
 <%@ page import="dao.*" %>
+<!-- 방어코드 -->
 <%
 	Member loginMember = (Member)session.getAttribute("loginMember");
 	if(loginMember == null || loginMember.getMemberLevel() < 1) { // 순서 중요. 둘 중 앞부터 연산. 디버깅 코드를 남기려면 else if문으로 따로!
@@ -28,7 +29,18 @@
 	  <h1>관리자 페이지</h1>
 	</div>
 	
-	<div><%=loginMember.getMemberId() %>님 반갑습니다.</div>
+	<table class="table table-hover text-center">
+		<tr>
+			<td>
+				<%=loginMember.getMemberName()%>님 반갑습니다.
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<a href="<%=request.getContextPath() %>/admin/selectMemberList.jsp">회원관리</a>
+			</td>
+		</tr>
 	
 </div>
 </body>

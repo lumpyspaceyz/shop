@@ -1,9 +1,7 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.*;
 
 //import java.lang.reflect.Member;
 
@@ -11,6 +9,8 @@ import commons.DBUtil;
 import vo.Member;
 
 public class MemberDao {
+	
+	// [비회원]
 	public boolean insertMember(Member member) throws ClassNotFoundException, SQLException {
 		boolean result = false;
 		System.out.println(member.getMemberId() +" <-- MemberDao.insertMebmer param memberId");
@@ -40,6 +40,7 @@ public class MemberDao {
         return result;
 	}	
 	
+	// [회원]
 	public Member login(Member member) throws ClassNotFoundException, SQLException {
 		Member returnMember = null;
 
@@ -62,6 +63,42 @@ public class MemberDao {
 			returnMember.setMemberName(rs.getString("memberName"));
 		}
 		return returnMember;
+	}
+	
+	// [관리자] 회원목록출력
+	public ArrayList<Member> selectMemberListAllByPage(int beginRow, int ROW_PER_PAGE) throws ClassNotFoundException, SQLException{
+		ArrayList<Member> memberList = new ArrayList<>();
+		
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT member_no memberNo, member_id memberId, member_level memberLevel, member_name memberName, member_age memberAge, member_gender memberGender, update_date updateDate, create_date createDate FROM member ORDER BY createDate DESC limit ?, ?";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setInt(1, beginRow);
+	    stmt.setInt(2, ROW_PER_PAGE);
+	    ResultSet rs = stmt.executeQuery();
+		
+	    while(rs.next()) {
+			Member member = new Member();
+			member.setMemberNo(rs.getInt("memberNo"));
+			member.setMemberId(rs.getString("memberId"));
+			member.setMemberLevel(rs.getInt("memberLevel"));
+			member.setMemberName(rs.getString("memberName"));
+			member.setMemberAge(rs.getInt("memberAge"));
+			member.setMemberGender(rs.getString("memberGender"));
+			member.setCreateDate(rs.getString("updateDate"));
+			member.setUpdateDate(rs.getString("createDate"));
+			memberList.add(member);				
+		}
+	    
+	    // debug
+ 		System.out.println(stmt + " <-- MemberDao.selectMemberListAllByPage stmt");
+ 		System.out.println(rs + " <-- MemberDao.selectMemberListAllByPage rs");
+ 		
+ 		rs.close();
+ 		stmt.close();
+ 		conn.close();
+		return memberList;
 	}
 
 }
