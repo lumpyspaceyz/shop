@@ -13,7 +13,7 @@
 <div class="container">
 	<!-- start : submenu include -->
 	<div>
-		<jsp:include page="/partial/submenu.jsp"></jsp:include>
+		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
 	</div>
 	<!-- end : submenu include -->
 	
@@ -41,6 +41,7 @@
 	<%		
 		} else {
 			Member loginMember = (Member)session.getAttribute("loginMember");
+			System.out.println(loginMember.getMemberLevel());
 	%>
 			<!-- 로그인 후 -->
 			<table class="table table-hover text-center">
@@ -67,6 +68,19 @@
 						<a href="<%=request.getContextPath() %>/deleteMemberForm.jsp">회원탈퇴</a>
 					</td>
 				</tr>
+				
+				<!-- 관리자 페이지로 가는 링크 -->
+				<%
+					if(loginMember.getMemberLevel() > 0) {
+				%>
+				<tr>
+					<td>
+						<a href="<%=request.getContextPath() %>/admin/adminIndex.jsp">관리자 페이지</a>
+					</td>
+				</tr>
+				<%
+						}
+				%>
 	<%	
 		}
 	%>

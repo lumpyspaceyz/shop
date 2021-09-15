@@ -5,7 +5,7 @@
 	
 	if(session.getAttribute("loginMember") != null) {
 		System.out.println("이미 로그인 되어 있습니다.");
-		response.sendRedirect("./index.jsp");
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
 		return;
 	}
 %>
@@ -20,7 +20,7 @@
 <div class="container">
 	<!-- start : submenu include -->
 	<div>
-		<jsp:include page="/partial/submenu.jsp"></jsp:include>
+		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
 	</div>
 	<!-- end : submenu include -->
 	

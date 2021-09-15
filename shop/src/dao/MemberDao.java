@@ -49,7 +49,7 @@ public class MemberDao {
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
 	    
-		String sql = "SELECT member_no memberNo, member_id memberId, member_name memberName FROM member WHERE member_id=? AND member_pw=PASSWORD(?)";
+		String sql = "SELECT member_no memberNo, member_id memberId, member_level memberLevel, member_name memberName FROM member WHERE member_id=? AND member_pw=PASSWORD(?)";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, member.getMemberId());
 		stmt.setString(2, member.getMemberPw());
@@ -58,10 +58,10 @@ public class MemberDao {
 			returnMember = new Member();
 			returnMember.setMemberNo(rs.getInt("memberNo"));
 			returnMember.setMemberId(rs.getString("memberId"));
+			returnMember.setMemberLevel(rs.getInt("memberLevel"));
 			returnMember.setMemberName(rs.getString("memberName"));
-			return returnMember;
 		}
-		return null;
+		return returnMember;
 	}
 
 }
