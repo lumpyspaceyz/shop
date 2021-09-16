@@ -3,7 +3,6 @@
 <%@ page import="vo.*" %>
 <%@ page import="dao.*" %>
 <%@ page import="java.util.*" %>
-<!-- 방어코드 -->
 <%
 	// 방어코드
 	Member loginMember = (Member)session.getAttribute("loginMember");
@@ -61,6 +60,15 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+a, a:hover {
+	color: #000;
+}
+nav li {
+	font-size: 1.3em;
+	padding-left: 20px;
+}
+</style>
 </head>
 <body>
 <div class="container">
@@ -70,58 +78,71 @@
 	</div>
 	<!-- end : submenu include -->
 	
-	<div class="jumbotron">
-	  <h1>관리자 페이지 - 회원목록</h1>
+	<div class="container p-3 my-3 border">
+		<div class="jumbotron">
+		  <h1>관리자 페이지 - 회원목록</h1>
+		</div>
+		
+		<table class="table table-striped table-hover text-center">
+				<thead>
+					<tr class="font-weight-bold">
+						<th>memberNo</th>
+						<th>memberId</th>
+						<th>memberLevel</th>
+						<th>memberName</th>
+						<th>memberAge</th>
+						<th>memberGender</th>
+						<th>updateDate</th>
+						<th>createDate</th>
+						<th>회원등급수정</th>
+						<th>비밀번호수정</th>
+						<th>강제탈퇴</th>
+					</tr>
+				</thead>
+				<tbody>
+				<%
+				for(Member member : memberList) {
+				%>
+					<tr>
+						<td><%=member.getMemberNo() %></td>
+						<td><a href="<%=request.getContextPath() %>/admin/selectMemberOne.jsp?memberNo=<%=member.getMemberNo() %>"><%=member.getMemberId() %></a></td>
+						<td><%=member.getMemberLevel() %>
+							<%
+								if(member.getMemberLevel() == 0) {
+							%>	
+									<br><span>일반회원</span>	
+							<%
+								} else if(member.getMemberLevel() == 1) {
+							%>	
+									<br><span>관리자</span>	
+							<%
+								}
+							%>
+						</td>
+						<td><%=member.getMemberName() %></td>
+						<td><%=member.getMemberAge() %></td>
+						<td><%=member.getMemberGender() %></td>
+						<td><%=member.getUpdateDate() %></td>
+						<td><%=member.getCreateDate() %></td>
+						<td>
+							<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원의 비밀번호를 수정 -->
+							<a href="<%=request.getContextPath() %>/admin/updateMemberLevelForm.jsp?memberNo=<%=member.getMemberNo() %>">등급수정</a>
+						</td>
+						<td>
+							<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원의 비밀번호를 수정 -->
+							<a href="<%=request.getContextPath() %>/admin/updateMemberPwForm.jsp?memberNo=<%=member.getMemberNo() %>">비밀번호수정</a>
+						</td>
+						<td>
+							<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원을 강제 탈퇴 -->
+							<a href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp?memberNo=<%=member.getMemberNo() %>">강제탈퇴</a>
+						</td>
+					</tr>
+				<%
+				}
+				%>
+				</tbody>
+		</table>
 	</div>
-	
-	<table class="table table-striped table-hover text-center">
-			<thead>
-				<tr class="font-weight-bold">
-					<th>memberNo</th>
-					<th>memberId</th>
-					<th>memberLevel</th>
-					<th>memberName</th>
-					<th>memberAge</th>
-					<th>memberGender</th>
-					<th>updateDate</th>
-					<th>createDate</th>
-					<th>수정</th>
-					<th>삭제</th>
-				</tr>
-			</thead>
-			<tbody>
-			<%
-			for(Member member : memberList) {
-			%>
-				<tr>
-					<td><%=member.getMemberNo() %></td>
-					<td><%=member.getMemberId() %></td>
-					<td><%=member.getMemberLevel() %>
-						<%
-							if(member.getMemberLevel() == 0) {
-						%>	
-								<span>일반회원</span>	
-						<%
-							} else if(member.getMemberLevel() == 1) {
-						%>	
-								<span>관리자</span>	
-						<%
-							}
-						%>
-					</td>
-					<td><%=member.getMemberName() %></td>
-					<td><%=member.getMemberAge() %></td>
-					<td><%=member.getMemberGender() %></td>
-					<td><%=member.getUpdateDate() %></td>
-					<td><%=member.getCreateDate() %></td>
-					<td><a href="<%=request.getContextPath() %>/admin/updateMemberForm.jsp"></a></td>
-					<td><a href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp"></a></td>	
-				</tr>
-			<%
-			}
-			%>
-			</tbody>
-	</table>
 	
 	<!-- start : 페이징 -->
 	<div class="text-center">

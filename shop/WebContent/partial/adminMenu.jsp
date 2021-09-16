@@ -11,7 +11,7 @@
 	}
 %>
 <div>
-	<nav class="navbar navbar-expand-sm bg-light navbar-light">
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
 		<ul class="navbar-nav">
 		<li class="nav-item">
 			<a class="nav-link" href="<%=request.getContextPath() %>/admin/adminIndex.jsp">admin menu1</a>

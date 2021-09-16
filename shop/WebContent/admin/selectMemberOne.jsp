@@ -48,7 +48,7 @@ nav li {
 	
 	<div class="container p-3 my-3 border">
 		<div class="jumbotron">
-		  <h1>관리자 페이지 - 강제탈퇴</h1>
+		  <h1>관리자 페이지 - 회원목록</h1>
 		</div>
 	
 		<table class="table table-borderless table-hover text-center">
@@ -67,7 +67,7 @@ nav li {
 			<tbody>
 				<tr>
 					<td><%=member.getMemberNo() %></td>
-					<td><%=member.getMemberId() %></a></td>
+					<td><a href="<%=request.getContextPath() %>/admin/selectMemberOne.jsp?memberNo=<%=member.getMemberNo() %>"><%=member.getMemberId() %></a></td>
 					<td><%=member.getMemberLevel() %>
 						<%
 							if(member.getMemberLevel() == 0) {
@@ -92,7 +92,8 @@ nav li {
 	</div>
 	
 	<div class="text-center">
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/deleteMemberAction.jsp?memberNo=<%=member.getMemberNo() %>">삭제</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/updateMemberForm.jsp?memberNo=<%=member.getMemberNo() %>">수정</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp??memberNo=<%=member.getMemberNo() %>">삭제</a>
 		<a class="btn btn-outline-dark" href="./selectMemberList.jsp?currentPage=1">목록</a>
 	</div>
 	

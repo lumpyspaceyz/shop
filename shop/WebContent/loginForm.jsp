@@ -28,7 +28,10 @@
 	  <h1>로그인</h1>
 	</div>
 	
-	<form method="post" action="<%=request.getContextPath() %>/loginAction.jsp">
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
+	
+	<form class="text-center" method="post" action="<%=request.getContextPath() %>/loginAction.jsp">
   		<div class="form-group">
 			<label>memberId : </label>
 			<div><input type="text" name="memberId"></div>
