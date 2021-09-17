@@ -48,69 +48,69 @@
 	</div>
 	<!-- end : 관리자 adminMenu include -->
 	
-	<form method="post" action="./updateMemberLevelAction.jsp">
+	<form method="post" action="<%=request.getContextPath() %>/admin/updateMemberLevelAction.jsp">
 		<div class="container p-3 my-3 border">
 			<div class="jumbotron">
 			  <h1>관리자 페이지 - 회원등급 수정</h1>
 			</div>
 		
-				<table class="table table-borderless table-hover">
-						<tr class="border-bottom font-weight-bold">
-							<th class="text-right">memberNo</th>
-							<td><input type="text" class="text-center" name="memberNo" value="<%=member.getMemberNo() %>" readonly="readonly"></td>					
-						</tr>
-						<tr class="border-bottom font-weight-bold">					
-							<th class="text-right">memberId</th>
-							<td><input type="text" class="text-center" name="memberId" value="<%=member.getMemberId() %>" readonly="readonly"></td>					
-						</tr>
-						<tr class="border-bottom font-weight-bold">					
-							<th class="text-right">memberPw</th>
-							<td><input type="password" class="text-center" name="memberPw" value="<%=member.getMemberPw() %>" readonly="readonly"></td>					
-						</tr>
-						<tr class="border-bottom font-weight-bold">					
-							<th class="text-right">memberLevel</th>
-							<td>
-								<%
-									if(member.getMemberLevel() == 0) {
-								%>
-									<select name="memberLevel">
-										<option value="0" selected>0 (일반회원)</option>
-										<option value="1">1 (관리자)</option>
-									</select>
-								<%
-									} else if(member.getMemberLevel() == 1) {
-								%>
-									<select name="memberLevel">
-										<option value="0">0 (일반회원)</option>
-										<option value="1" selected>1 (관리자)</option>
-									</select>
-								<%
-									}
-								%>
-								
-							</td>					
-						</tr>
-						<tr class="border-bottom font-weight-bold">					
-							<th class="text-right">memberName</th>
-							<td><input type="text" class="text-center" name="memberName" value="<%=member.getMemberName() %>" readonly="readonly"></td>					
-						</tr>
-						<tr class="border-bottom font-weight-bold">					
-							<th class="text-right">memberAge</th>
-							<td><input type="text" class="text-center" name="memberAge" value="<%=member.getMemberAge() %>" readonly="readonly"></td>					
-						</tr>
-						<tr class="border-bottom font-weight-bold">					
-							<th class="text-right">memberGender</th>
-							<td><input type="text" class="text-center" name="memberGender" value="<%=member.getMemberGender() %>" readonly="readonly"></td>					
-						</tr>
-						<tr class="border-bottom font-weight-bold">					
-							<th class="text-right">updateDate</th>
-							<td><input type="text" class="text-center" name="updateDate" value="<%=member.getUpdateDate() %>" readonly="readonly"></td>				
-						</tr>
-						<tr class="border-bottom font-weight-bold">				
-							<th class="text-right">createDate</th>
-							<td><input type="text" class="text-center" name="createDate" value="<%=member.getCreateDate() %>" readonly="readonly"></td>
-						</tr>
-				</table>
+			<table class="table table-borderless table-hover">
+					<tr class="border-bottom font-weight-bold">
+						<th class="text-right">memberNo</th>
+						<td><input type="text" class="text-center" name="memberNo" value="<%=member.getMemberNo() %>" readonly="readonly"></td>					
+					</tr>
+					<tr class="border-bottom font-weight-bold">					
+						<th class="text-right">memberId</th>
+						<td><input type="text" class="text-center" name="memberId" value="<%=member.getMemberId() %>" readonly="readonly"></td>					
+					</tr>
+					<tr class="border-bottom font-weight-bold">					
+						<th class="text-right">memberPw</th>
+						<td><input type="password" class="text-center" name="memberPw" value="<%=member.getMemberPw() %>" readonly="readonly"></td>					
+					</tr>
+					<tr class="border-bottom font-weight-bold">					
+						<th class="text-right">memberLevel</th>
+						<td>
+							<%
+								if(member.getMemberLevel() == 0) {
+							%>
+								<select name="memberLevel">
+									<option value="0" selected>0 (일반회원)</option>
+									<option value="1">1 (관리자)</option>
+								</select>
+							<%
+								} else if(member.getMemberLevel() == 1) {
+							%>
+								<select name="memberLevel">
+									<option value="0">0 (일반회원)</option>
+									<option value="1" selected>1 (관리자)</option>
+								</select>
+							<%
+								}
+							%>
+							
+						</td>					
+					</tr>
+					<tr class="border-bottom font-weight-bold">					
+						<th class="text-right">memberName</th>
+						<td><input type="text" class="text-center" name="memberName" value="<%=member.getMemberName() %>" readonly="readonly"></td>					
+					</tr>
+					<tr class="border-bottom font-weight-bold">					
+						<th class="text-right">memberAge</th>
+						<td><input type="text" class="text-center" name="memberAge" value="<%=member.getMemberAge() %>" readonly="readonly"></td>					
+					</tr>
+					<tr class="border-bottom font-weight-bold">					
+						<th class="text-right">memberGender</th>
+						<td><input type="text" class="text-center" name="memberGender" value="<%=member.getMemberGender() %>" readonly="readonly"></td>					
+					</tr>
+					<tr class="border-bottom font-weight-bold">					
+						<th class="text-right">updateDate</th>
+						<td><input type="text" class="text-center" name="updateDate" value="<%=member.getUpdateDate() %>" readonly="readonly"></td>				
+					</tr>
+					<tr class="border-bottom font-weight-bold">				
+						<th class="text-right">createDate</th>
+						<td><input type="text" class="text-center" name="createDate" value="<%=member.getCreateDate() %>" readonly="readonly"></td>
+					</tr>
+			</table>
 		</div>
 				
 		<div class="text-center">

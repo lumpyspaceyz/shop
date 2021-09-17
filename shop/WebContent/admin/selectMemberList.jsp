@@ -4,7 +4,7 @@
 <%@ page import="dao.*" %>
 <%@ page import="java.util.*" %>
 <%
-	// 방어코드
+	// 방어코드 : 관리자 세션 관리
 	Member loginMember = (Member)session.getAttribute("loginMember");
 	if(loginMember == null || loginMember.getMemberLevel() < 1) { // 순서 중요. 둘 중 앞부터 연산. 디버깅 코드를 남기려면 else if문으로 따로!
 		response.sendRedirect(request.getContextPath() + "/index.jsp");

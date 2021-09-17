@@ -269,44 +269,44 @@ public class MemberDao {
 	    return member;
 	}
 	
-	// [관리자] 관리자 권한 확인
-	public boolean checkAdmin(Member checkAdmin) throws ClassNotFoundException, SQLException {
-		// debug
-		System.out.println(checkAdmin.getMemberId() +" <-- MemberDao.checkAdmin param memberId");
-		System.out.println(checkAdmin.getMemberPw() +" <-- MemberDao.checkAdmin param memberPw");
-		
-		boolean result = false;
-
-		DBUtil dbUtil = new DBUtil();
-	    Connection conn = dbUtil.getConnection();
-	    
-		String sql = "SELECT member_level FROM member WHERE member_id=? AND member_pw=?";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-	    stmt.setString(1, checkAdmin.getMemberId());
-	    stmt.setString(2, checkAdmin.getMemberPw());
-	    ResultSet rs = stmt.executeQuery();
-	    
-	    int adminLevel = 0;
-	    if(rs.next()) {
-	    	adminLevel = rs.getInt("member_level");
-	    }
-	    
-	    if(adminLevel == 1) {
-	    	result = true;
-	    } else {
-	    	result = false;
-	    }
-	    // debug
-  		System.out.println(stmt + " <-- MemberDao.checkAdmin stmt");
-  		System.out.println(rs + " <-- MemberDao.checkAdmin rs");
-  		System.out.println(adminLevel + " <-- MemberDao.checkAdmin adminLevel");
-  		
- 		rs.close();
- 		stmt.close();
- 		conn.close();
-	    
-		return result;
-	}
+//	// [관리자] 관리자 권한 확인
+//	public boolean checkAdmin(Member checkAdmin) throws ClassNotFoundException, SQLException {
+//		// debug
+//		System.out.println(checkAdmin.getMemberId() +" <-- MemberDao.checkAdmin param memberId");
+//		System.out.println(checkAdmin.getMemberPw() +" <-- MemberDao.checkAdmin param memberPw");
+//		
+//		boolean result = false;
+//
+//		DBUtil dbUtil = new DBUtil();
+//	    Connection conn = dbUtil.getConnection();
+//	    
+//		String sql = "SELECT member_level FROM member WHERE member_id=? AND member_pw=?";
+//		PreparedStatement stmt = conn.prepareStatement(sql);
+//	    stmt.setString(1, checkAdmin.getMemberId());
+//	    stmt.setString(2, checkAdmin.getMemberPw());
+//	    ResultSet rs = stmt.executeQuery();
+//	    
+//	    int adminLevel = 0;
+//	    if(rs.next()) {
+//	    	adminLevel = rs.getInt("member_level");
+//	    }
+//	    
+//	    if(adminLevel == 1) {
+//	    	result = true;
+//	    } else {
+//	    	result = false;
+//	    }
+//	    // debug
+//  		System.out.println(stmt + " <-- MemberDao.checkAdmin stmt");
+//  		System.out.println(rs + " <-- MemberDao.checkAdmin rs");
+//  		System.out.println(adminLevel + " <-- MemberDao.checkAdmin adminLevel");
+//  		
+// 		rs.close();
+// 		stmt.close();
+// 		conn.close();
+//	    
+//		return result;
+//	}
 
 	// [관리자] 회원 등급 수정
 	public void updateMemberLevelByAdmin(Member member) throws ClassNotFoundException, SQLException {
