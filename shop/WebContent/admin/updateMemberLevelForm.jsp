@@ -9,6 +9,12 @@
 		response.sendRedirect(request.getContextPath() + "/index.jsp");
 		return;
 	}
+	/*
+	else if(loginMember != null || loginMember.getMemberLevel() == 1) {
+		response.sendRedirect(request.getContextPath() + "/admin/checkAdminForm.jsp?prevPage=updateMemberLevel");
+	}
+	*/
+	
 	if(request.getParameter("memberNo") == null) {
 		response.sendRedirect("./selectMemberList.jsp?currentPage=1");
 		return;
@@ -24,7 +30,6 @@
 	
 	// dao
 	MemberDao memberDao = new MemberDao();
-	
 	Member member = memberDao.selectMemberOne(memberNo);
 %>
 <!DOCTYPE html>

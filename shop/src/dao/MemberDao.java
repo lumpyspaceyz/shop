@@ -13,6 +13,7 @@ public class MemberDao {
 	// [비회원]
 	public boolean insertMember(Member member) throws ClassNotFoundException, SQLException {
 		boolean result = false;
+		// debug
 		System.out.println(member.getMemberId() +" <-- MemberDao.insertMebmer param memberId");
 		System.out.println(member.getMemberPw() +" <-- MemberDao.insertMebmer param memberPw");
 		System.out.println(member.getMemberName() +" <-- MemberDao.insertMebmer param memberName");
@@ -44,17 +45,45 @@ public class MemberDao {
         return result;
 	}	
 	
+	// [비회원] 아이디 중복 검사
+	public String selectMemberId(String memberIdCheck) throws ClassNotFoundException, SQLException {
+		String memberId = null;
+		
+		// debug
+		System.out.println(memberIdCheck +" <-- MemberDao.selectMemberId param memberIdCheck");
+		
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT member_id memberId FROM member WHERE member_id=?";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setString(1, memberIdCheck);
+	    ResultSet rs = stmt.executeQuery();
+	    if(rs.next()) {
+	    	memberId = rs.getString("member_id");
+	    }
+	    // debug
+		System.out.println(stmt + "<-- MemberDao.selectMemberId stmt");
+		System.out.println(rs + "<-- MemberDao.selectMemberId rs");
+	    
+ 		rs.close();
+ 		stmt.close();
+ 		conn.close();
+ 		
+ 		return memberId; // null:사용가능, null!:사용불가(사용중)
+	}
+	
 	// [회원]
 	public Member login(Member member) throws ClassNotFoundException, SQLException {
 		Member returnMember = null;
-
+		// debug
 		System.out.println(member.getMemberId() +" <-- MemberDao.login param memberId");
 		System.out.println(member.getMemberPw() +" <-- MemberDao.login param memberPw");
 		
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
 	    
-		String sql = "SELECT member_no memberNo, member_id memberId, member_level memberLevel, member_name memberName FROM member WHERE member_id=? AND member_pw=PASSWORD(?)";
+		String sql = "SELECT member_no memberNo, member_id memberId, member_level memberLevel, member_pw memberPw, member_name memberName FROM member WHERE member_id=? AND member_pw=PASSWORD(?)";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, member.getMemberId());
 		stmt.setString(2, member.getMemberPw());
@@ -64,6 +93,7 @@ public class MemberDao {
 			returnMember.setMemberNo(rs.getInt("memberNo"));
 			returnMember.setMemberId(rs.getString("memberId"));
 			returnMember.setMemberLevel(rs.getInt("memberLevel"));
+			returnMember.setMemberPw(rs.getString("memberPw"));
 			returnMember.setMemberName(rs.getString("memberName"));
 		}
 		// debug
@@ -228,11 +258,54 @@ public class MemberDao {
 			member.setCreateDate(rs.getString("updateDate"));
 			member.setUpdateDate(rs.getString("createDate"));
 	    }
+	    // debug
+  		System.out.println(stmt + " <-- MemberDao.selectMemberOne stmt");
+  		System.out.println(rs + " <-- MemberDao.selectMemberOne rs");
+  		
  		rs.close();
  		stmt.close();
  		conn.close();
  		
 	    return member;
+	}
+	
+	// [관리자] 관리자 권한 확인
+	public boolean checkAdmin(Member checkAdmin) throws ClassNotFoundException, SQLException {
+		// debug
+		System.out.println(checkAdmin.getMemberId() +" <-- MemberDao.checkAdmin param memberId");
+		System.out.println(checkAdmin.getMemberPw() +" <-- MemberDao.checkAdmin param memberPw");
+		
+		boolean result = false;
+
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+		String sql = "SELECT member_level FROM member WHERE member_id=? AND member_pw=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setString(1, checkAdmin.getMemberId());
+	    stmt.setString(2, checkAdmin.getMemberPw());
+	    ResultSet rs = stmt.executeQuery();
+	    
+	    int adminLevel = 0;
+	    if(rs.next()) {
+	    	adminLevel = rs.getInt("member_level");
+	    }
+	    
+	    if(adminLevel == 1) {
+	    	result = true;
+	    } else {
+	    	result = false;
+	    }
+	    // debug
+  		System.out.println(stmt + " <-- MemberDao.checkAdmin stmt");
+  		System.out.println(rs + " <-- MemberDao.checkAdmin rs");
+  		System.out.println(adminLevel + " <-- MemberDao.checkAdmin adminLevel");
+  		
+ 		rs.close();
+ 		stmt.close();
+ 		conn.close();
+	    
+		return result;
 	}
 
 	// [관리자] 회원 등급 수정

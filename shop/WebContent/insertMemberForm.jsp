@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+	//encoding
+	request.setCharacterEncoding("utf-8");
+
 	// 로그인 상태에서는 페이지 접근불가
 	if(session.getAttribute("loginMember") != null) {
 		// 다시 브라우저에게 다른곳을 요청하도록 하는 메서드
@@ -27,11 +30,33 @@
 	<div class="jumbotron">
 	  <h1>회원가입</h1>
 	</div>
-	<form method="post" action="<%=request.getContextPath() %>/insertMemberAction.jsp">
+	
+	<%
+		String memberIdCheck = "";
+		if(request.getParameter("memberIdCheck") != null) {
+			memberIdCheck = request.getParameter("memberIdCheck");
+		}
+	%>
+	
+	<!-- 초기화 값은 null, selectMemberIdCheckAction의 else를 타고 와야 값 출력 -->
+	<div><%=request.getParameter("idCheckResult") %></div>
+	
+	<!-- 멤버아이디가 사용 가능한지 확인 폼 : 아이디 중복 체크 -->
+	<form class="text-center" action="<%=request.getContextPath() %>/selectMemberIdCheckAction.jsp" method="post">
+ 		<div class="form-group">
+			<label>memberId : </label>
+			<div><input type="text" name="memberIdCheck"></div>
+			<br>
+			<div><button type="submit" class="btn btn-outline-dark btn-sm">아이디 중복체크</button></div>
+		</div>
+	</form>
+	
+	<!-- 회원가입 폼 -->
+	<form class="text-center" method="post" action="<%=request.getContextPath() %>/insertMemberAction.jsp">
 		<!-- memberId -->
 		<div class="form-group">
 			<label>memberId : </label>
-			<div><input type="text" name="memberId"></div>
+			<div><input type="text" name="memberId" readonly="readonly" value="<%=memberIdCheck %>"></div>
 		</div>
 		<!-- memberPw -->
 		<div class="form-group">

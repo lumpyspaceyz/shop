@@ -3,6 +3,7 @@
 <%@ page import="vo.*" %>
 <%@ page import="dao.*" %>
 <%
+	// encoding
 	request.setCharacterEncoding("utf-8");
 
 	// 로그인 상태에서는 페이지 접근불가
@@ -13,7 +14,7 @@
 		return;
 	}
 
-	// 회원가입 입력값 유효성 검사
+	// 회원가입 입력값 유효성 검사 - null
 	if(request.getParameter("memberId") == null || request.getParameter("memberPw") == null || request.getParameter("memberName") == null || request.getParameter("memberAge") == null || request.getParameter("memberGender") == null) {
 		// 다시 브라우저에게 다른곳을 요청하도록 하는 메서드
 		// 보내는 게 아님. 다른곳을 호출하도록 하는 것.
@@ -21,7 +22,7 @@
 		return;
 	}
 	
-	// 회원가입 입력값 유효성 검사
+	// 회원가입 입력값 유효성 검사 - ""
 	if(request.getParameter("memberId").equals("") || request.getParameter("memberPw").equals("") || request.getParameter("memberName").equals("") || request.getParameter("memberAge").equals("") || request.getParameter("memberGender").equals("")) {
 		// 다시 브라우저에게 다른곳을 요청하도록 하는 메서드
 		// 보내는 게 아님. 다른곳을 호출하도록 하는 것.

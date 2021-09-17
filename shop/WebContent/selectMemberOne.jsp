@@ -94,7 +94,7 @@ nav li {
 	<div class="text-center">
 		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/updateMemberForm.jsp?memberNo=<%=member.getMemberNo() %>">수정</a>
 		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp?memberNo=<%=member.getMemberNo() %>">삭제</a>
-		<a class="btn btn-outline-dark" href="./selectMemberList.jsp?currentPage=1">목록</a>
+		<a class="btn btn-outline-dark" href="./index.jsp">index</a>
 	</div>
 	
 	<div class="container pt-3"></div>

@@ -50,7 +50,7 @@ nav li {
 	<%		
 		} else {
 			Member loginMember = (Member)session.getAttribute("loginMember");
-			System.out.println(loginMember.getMemberLevel());
+			System.out.println(loginMember.getMemberLevel() + " <-- memberLevel");
 	%>
 			<!-- 로그인 후 -->
 			<table class="table table-hover text-center">
@@ -68,7 +68,7 @@ nav li {
 				
 				<tr>
 					<td>
-						<a href="<%=request.getContextPath() %>/selectMemberOne.jsp">회원정보</a>
+						<a href="<%=request.getContextPath() %>/selectMemberOne.jsp?memberNo=<%=loginMember.getMemberNo() %>">회원정보</a>
 					</td>
 				</tr>
 				
