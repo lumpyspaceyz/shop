@@ -85,7 +85,7 @@
 				
 		<div class="text-center">
 			<button type="submit" class="btn btn-outline-dark">수정</button>
-			<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/selctMemberOne.jsp??memberNo=<%=member.getMemberNo() %>">취소</a>
+			<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/selectMemberOne.jsp?memberNo=<%=member.getMemberNo() %>">취소</a>
 		</div>
 	</form>
 </div>

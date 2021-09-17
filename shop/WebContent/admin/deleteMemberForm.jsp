@@ -28,15 +28,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<style>
-a, a:hover {
-	color: #000;
-}
-nav li {
-	font-size: 1.3em;
-	padding-left: 20px;
-}
-</style>
 </head>
 <body>
 <div class="container">
@@ -93,7 +84,7 @@ nav li {
 	
 	<div class="text-center">
 		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/deleteMemberAction.jsp?memberNo=<%=member.getMemberNo() %>">삭제</a>
-		<a class="btn btn-outline-dark" href="./selectMemberList.jsp?currentPage=1">목록</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/selectMemberOne.jsp?memberNo=<%=member.getMemberNo() %>">취소</a>
 	</div>
 	
 	<div class="container pt-3"></div>

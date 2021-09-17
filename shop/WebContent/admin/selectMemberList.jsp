@@ -60,15 +60,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<style>
-a, a:hover {
-	color: #000;
-}
-nav li {
-	font-size: 1.3em;
-	padding-left: 20px;
-}
-</style>
 </head>
 <body>
 <div class="container">
@@ -80,7 +71,7 @@ nav li {
 	
 	<div class="container p-3 my-3 border">
 		<div class="jumbotron">
-		  <h1>관리자 페이지 - 회원목록</h1>
+		  <h1>관리자 페이지 - 회원관리</h1>
 		</div>
 		
 		<table class="table table-striped table-hover text-center">
