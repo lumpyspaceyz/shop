@@ -22,7 +22,7 @@
 		</li>
 		<li class="nav-item">
 			<!-- 전자책 관리 : 목록, 추가(이미지 추가), 수정, 삭제 -->
-			<a class="nav-link" href="">전자책 관리</a>
+			<a class="nav-link" href="<%=request.getContextPath() %>/admin/selectEbookList.jsp">전자책 관리</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="">주문 관리</a>
