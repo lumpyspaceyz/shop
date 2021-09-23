@@ -149,7 +149,7 @@ public class EbookDao {
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
 	    
-	    String sql = "SELECT ebook_no ebookNo, category_name categoryName, ebook_title ebookTitle, ebook_state ebookState FROM ebook WHERE ebook_title LIKE ? ORDER BY createDate DESC limit ?, ?";
+	    String sql = "SELECT ebook_no ebookNo, category_name categoryName, ebook_title ebookTitle, ebook_state ebookState FROM ebook WHERE ebook_title LIKE ? ORDER BY create_date DESC limit ?, ?";
 	    PreparedStatement stmt = conn.prepareStatement(sql);
 	    stmt.setString(1, "%" + searchEbookTitle + "%");
 	    stmt.setInt(2, beginRow);
@@ -176,7 +176,7 @@ public class EbookDao {
 		return ebookList;
 	}
 		
-	// [관리자] 회원 검색 - paging totalCount
+	// [전자책 관리] ebook 검색 - paging totalCount
 	public int selectTotalCountBySearchMemberId(String searchEbookTitle) throws ClassNotFoundException, SQLException {
 		// debug
 		System.out.println(searchEbookTitle +" <-- MemberDao.selectTotalCountBySearchMemberId param searchEbookTitle");
@@ -202,6 +202,63 @@ public class EbookDao {
 		conn.close();
 		
 		return totalCount;
+	}
+	
+	// [전자책 관리] ebook 상세 조회
+	public Ebook selectEbookOne(int ebookNo) throws ClassNotFoundException, SQLException {
+		// debug
+		System.out.println(ebookNo +" <-- EbookDao.selectEbookOne param ebookNo");
+		
+		Ebook ebook = null;
+		
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT ebook_no ebookNo, category_name categoryName, ebook_title ebookTitle, ebook_state ebookState, ebook_img ebookImg, update_date updateDate, create_date createDate FROM ebook WHERE ebook_no=?";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setInt(1, ebookNo);
+	    ResultSet rs = stmt.executeQuery();
+	    if(rs.next()) {
+	    	ebook = new Ebook();
+	    	ebook.setEbookNo(rs.getInt("ebookNo"));
+	    	ebook.setCategoryName(rs.getString("categoryName"));
+	    	ebook.setEbookTitle(rs.getString("ebookTitle"));
+	    	ebook.setEbookState(rs.getString("ebookState"));
+	    	ebook.setEbookImg(rs.getString("ebookImg"));
+	    	ebook.setUpdateDate(rs.getString("updateDate"));
+	    	ebook.setCreateDate(rs.getString("createDate"));
+	    }
+	    // debug
+  		System.out.println(stmt + " <-- EbookDao.selectEbookOne stmt");
+  		System.out.println(rs + " <-- EbookDao.selectEbookOne rs");
+  		
+ 		rs.close();
+ 		stmt.close();
+ 		conn.close();
+ 		
+	    return ebook;
+	}
+	
+	public void updateEbookImg(Ebook ebook) throws ClassNotFoundException, SQLException {
+		// debug
+		//System.out.println(ebookNo +" <-- EbookDao.selectEbookOne param ebookNo");
+		
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "UPDATE ebook SET ebook_img=? WHERE ebook_no=?";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setString(1, ebook.getEbookImg());
+	    stmt.setInt(2, ebook.getEbookNo());
+	    ResultSet rs = stmt.executeQuery();
+	    
+	    // debug
+  		System.out.println(stmt + " <-- EbookDao.updateEbookImg stmt");
+  		System.out.println(rs + " <-- EbookDao.updateEbookImg rs");
+  		
+ 		rs.close();
+ 		stmt.close();
+ 		conn.close();
 	}
 
 }

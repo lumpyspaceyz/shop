@@ -64,8 +64,8 @@
 		ebookList = ebookDao.selectEbookListAllByCategory(beginRow, ROW_PER_PAGE, categoryName);
 		totalCount = ebookDao.selectTotalCountByCategoryName(categoryName);
 	} else if(categoryName.equals("") == true && searchEbookTitle.equals("") != true) {
-		ebookList = ebookDao.selectEbookListAllByCategory(beginRow, ROW_PER_PAGE, categoryName);
-		totalCount = ebookDao.selectTotalCountByCategoryName(categoryName);
+		ebookList = ebookDao.selectEbookListAllBySearchEbookTitle(beginRow, ROW_PER_PAGE, categoryName);
+		totalCount = ebookDao.selectTotalCountBySearchMemberId(categoryName);
 	} else if(categoryName.equals("") != true && searchEbookTitle.equals("") != true) {
 		ebookList = ebookDao.selectEbookListAllByCategory(beginRow, ROW_PER_PAGE, categoryName);
 		totalCount = ebookDao.selectTotalCountByCategoryName(categoryName);
