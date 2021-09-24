@@ -91,18 +91,25 @@
 		  <h1>관리자 페이지 - 전자책 관리</h1>
 		</div>
 		
-		<form class="text-center" action="<%=request.getContextPath() %>/admin/selectEbookList.jsp" method="post">
-			<select name="categoryName">
-					<option value="">전체목록</option>
-				<%
-					for(Category category : categoryList) {
-				%>
-					<option value="<%=category.getCategoryName() %>"><%=category.getCategoryName() %></option>
-				<%
-					}
-				%>
-			</select>
-			<button class="btn btn-outline-dark" type="submit">카테고리별 조회</button>
+		<form  action="<%=request.getContextPath() %>/admin/selectEbookList.jsp" method="post" class="form-group">
+			<table style="margin: 0 auto;">
+				<tr>
+					<td width="300px" style="padding-right: 5px;">
+						<select class="form-control" name="categoryName">
+							<%
+								for(Category category : categoryList) {
+							%>
+								<option value="<%=category.getCategoryName() %>"><%=category.getCategoryName() %></option>
+							<%
+								}
+							%>
+						</select>
+					</td>
+					<td>
+						<button class="btn btn-outline-dark" type="submit">카테고리별 조회</button>
+					</td>
+				</tr>
+			</table>
 		</form>
 		
 		<!--  전자책 목록 출력 : 카테고리별 출력 -->
@@ -119,50 +126,50 @@
 					</tr>
 				</thead>
 				<tbody>
-				<%
-				for(Ebook ebook : ebookList) {
-				%>
-					<tr>
-						<td><%=ebook.getEbookNo() %></td>
-						<td><%=ebook.getCategoryName() %></td>
-						<td><a href="<%=request.getContextPath() %>/admin/selectEbookOne.jsp?ebookNo=<%=ebook.getEbookNo() %>"><%=ebook.getEbookTitle() %></a></td>
-						<td>
-							<%
-								if(ebook.getEbookState().equals("판매중")) {
-							%>	
-									<span>판매중</span>	
-							<%
-								} else if(ebook.getEbookState().equals("품절")) {
-							%>	
-									<span>품절</span>		
-							<%
-								} else if(ebook.getEbookState().equals("절판")) {
-							%>	
-									<span>절판</span>	
-							<%
-								} else if(ebook.getEbookState().equals("구편절판")) {
-							%>
-									<span>구편절판</span>	
-							<%
-								}
-							%>		
-						</td>
-						<td>
-							<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원의 비밀번호를 수정 -->
-							<a href="<%=request.getContextPath() %>/admin/updateMemberLevelForm.jsp?memberNo=">등급수정</a>
-						</td>
-						<td>
-							<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원의 비밀번호를 수정 -->
-							<a href="<%=request.getContextPath() %>/admin/updateMemberPwForm.jsp?memberNo=">비밀번호수정</a>
-						</td>
-						<td>
-							<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원을 강제 탈퇴 -->
-							<a href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp?memberNo=">강제탈퇴</a>
-						</td>
-					</tr>
-				<%
-				}
-				%>
+					<%
+						for(Ebook ebook : ebookList) {
+					%>
+							<tr>
+								<td><%=ebook.getEbookNo() %></td>
+								<td><%=ebook.getCategoryName() %></td>
+								<td><a href="<%=request.getContextPath() %>/admin/selectEbookOne.jsp?ebookNo=<%=ebook.getEbookNo() %>"><%=ebook.getEbookTitle() %></a></td>
+								<td>
+									<%
+										if(ebook.getEbookState().equals("판매중")) {
+									%>	
+											<span>판매중</span>	
+									<%
+										} else if(ebook.getEbookState().equals("품절")) {
+									%>	
+											<span>품절</span>		
+									<%
+										} else if(ebook.getEbookState().equals("절판")) {
+									%>	
+											<span>절판</span>	
+									<%
+										} else if(ebook.getEbookState().equals("구편절판")) {
+									%>
+											<span>구편절판</span>	
+									<%
+										}
+									%>		
+								</td>
+								<td>
+									<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원의 비밀번호를 수정 -->
+									<a href="<%=request.getContextPath() %>/admin/updateMemberLevelForm.jsp?memberNo=">등급수정</a>
+								</td>
+								<td>
+									<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원의 비밀번호를 수정 -->
+									<a href="<%=request.getContextPath() %>/admin/updateMemberPwForm.jsp?memberNo=">비밀번호수정</a>
+								</td>
+								<td>
+									<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원을 강제 탈퇴 -->
+									<a href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp?memberNo=">강제탈퇴</a>
+								</td>
+							</tr>
+					<%
+						}
+					%>
 				</tbody>
 		</table>
 	</div>

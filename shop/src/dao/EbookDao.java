@@ -8,7 +8,7 @@ import vo.Ebook;
 import vo.Member;
 
 public class EbookDao {
-	// [전자책 관리] - ebook 전체목록 출력
+	// [관리자 + 고객] [전자책 관리] ebook 전체목록 출력 
 	public ArrayList<Ebook> selectEbookListAllByPage(int beginRow, int ROW_PER_PAGE) throws ClassNotFoundException, SQLException {
 		ArrayList<Ebook> ebookList = new ArrayList<>();
 		
@@ -19,7 +19,7 @@ public class EbookDao {
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
 	    
-	    String sql = "SELECT ebook_no ebookNo, category_name categoryName, ebook_title ebookTitle, ebook_state ebookState FROM ebook ORDER BY create_date DESC LIMIT ?, ?";
+	    String sql = "SELECT ebook_no ebookNo, category_name categoryName, ebook_title ebookTitle, ebook_state ebookState, ebook_img ebookImg, ebook_price ebookPrice FROM ebook ORDER BY create_date DESC LIMIT ?, ?";
 	    PreparedStatement stmt = conn.prepareStatement(sql);
 	    stmt.setInt(1, beginRow);
 	    stmt.setInt(2, ROW_PER_PAGE);
@@ -31,6 +31,8 @@ public class EbookDao {
 	    	ebook.setCategoryName(rs.getString("categoryName"));
 	    	ebook.setEbookTitle(rs.getString("ebookTitle"));
 	    	ebook.setEbookState(rs.getString("ebookState"));
+	    	ebook.setEbookImg(rs.getString("ebookImg"));
+	    	ebook.setEbookPrice(rs.getInt("ebookPrice"));
 	    	ebookList.add(ebook);				
 	    }
 	    
@@ -47,28 +49,28 @@ public class EbookDao {
 	}
 
 	// [전자책 관리] ebook 전체목록 출력 - paging totalCount
-		public int selectTotalCount() throws ClassNotFoundException, SQLException {
-			int totalCount = 0;
+	public int selectTotalCount() throws ClassNotFoundException, SQLException {
+		int totalCount = 0;
 
-			DBUtil dbUtil = new DBUtil();
-		    Connection conn = dbUtil.getConnection();
-		    
-		    String sql = "SELECT COUNT(*) FROM ebook";
-		    PreparedStatement stmt = conn.prepareStatement(sql);
-		    ResultSet rs = stmt.executeQuery();
-		    if(rs.next()) {
-				totalCount = rs.getInt("COUNT(*)");
-			}
-		    // debug
-	  		System.out.println(stmt + " <-- EbookDao.selectTotalCount stmt");
-	  		System.out.println(rs + " <-- EbookDao.selectTotalCount rs");
-
-		    rs.close();
-			stmt.close();
-			conn.close();
-			
-			return totalCount;
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT COUNT(*) FROM ebook";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    ResultSet rs = stmt.executeQuery();
+	    if(rs.next()) {
+			totalCount = rs.getInt("COUNT(*)");
 		}
+	    // debug
+  		System.out.println(stmt + " <-- EbookDao.selectTotalCount stmt");
+  		System.out.println(rs + " <-- EbookDao.selectTotalCount rs");
+
+	    rs.close();
+		stmt.close();
+		conn.close();
+		
+		return totalCount;
+	}
 		
 	// [전자책 관리] - ebook 카테고리별 출력
 	public ArrayList<Ebook> selectEbookListAllByCategory(int beginRow, int ROW_PER_PAGE, String categoryName) throws ClassNotFoundException, SQLException {

@@ -64,7 +64,7 @@
 				<tr>
 					<td><%=ebook.ebookNo %></td>
 					<td><%=ebook.getCategoryName() %></td>
-					<td><a href="<%=request.getContextPath() %>/admin/selectEbookOne.jsp?ebookNo=<%=ebook.getEbookNo()%>"><%=ebook.getEbookTitle() %></a></td>
+					<td><%=ebook.getEbookTitle() %></td>
 					<td>
 						<%
 							if(ebook.getEbookState().equals("판매중")) {

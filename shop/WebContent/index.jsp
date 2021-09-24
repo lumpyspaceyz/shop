@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="dao.*" %>
 <%@ page import="vo.*" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,12 +79,61 @@
 						<a href="<%=request.getContextPath() %>/admin/adminIndex.jsp">관리자 페이지</a>
 					</td>
 				</tr>
+			</table>
 				<%
 						}
 				%>
 	<%	
 		}
 	%>
+	
+	<!-- 상품 목록 -->
+	<%
+	// paging
+	int currentPage = 1;
+	if(request.getParameter("currentPage") != null) {
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
+	final int ROW_PER_PAGE = 20; // 한 번 설정하면 변하지 않는다 -> 상수
+	int beginRow = (currentPage-1) * ROW_PER_PAGE;
+	int nowPage = (currentPage / ROW_PER_PAGE) + 1; // 현재 시작 페이징(=first)을 계산하기 위한 변수
+	int first = (nowPage * ROW_PER_PAGE) - (ROW_PER_PAGE-1); // 현재 시작 페이징 번호
+	if(request.getParameter("first") != null) {
+		first = Integer.parseInt(request.getParameter("first"));
+	}
+	// paging debug
+	System.out.println("paging debug " + currentPage + " <-- currentPage");
+	System.out.println("paging debug " + nowPage + " <-- nowPage");
+	System.out.println("paging debug " + beginRow + " <-- beginRow");
+	System.out.println("paging debug " + first + " <-- first");
+	
+	// dao
+	EbookDao ebookDao = new EbookDao();
+	ArrayList<Ebook> ebookList = ebookDao.selectEbookListAllByPage(beginRow, ROW_PER_PAGE);
+	%>
+	<table class="table table-borderless text-center">
+		<tr>
+			<%
+				int i = 0;
+				for(Ebook e : ebookList) {
+			%>
+						<td>
+							<div><img src="<%=request.getContextPath() %>/image/<%=e.getEbookImg() %>" width="200" height="200"></div>
+							<div><%=e.getEbookTitle() %></div>
+							<div>₩ <%=e.getEbookPrice() %></div>
+						</td>
+			<%
+					i+=1; // for문이 한 바퀴 돌 때마다 i는 1씩 증가
+					if(i%5 == 0) {
+			%>
+						<!-- 줄바꿈 : table이니까 tr닫고 다시 열어주기 -->
+						</tr><tr>
+			<%			
+					}
+				}
+			%>
+		</tr>
+	</table>
 </div>
 </body>
 </html>

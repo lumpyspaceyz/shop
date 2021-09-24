@@ -54,6 +54,12 @@
 				<a href="<%=request.getContextPath() %>/admin/selectEbookList.jsp">전자책 관리</a>
 			</td>
 		</tr>
+		
+		<tr>
+			<td>
+				<a href="<%=request.getContextPath() %>/admin/selectOrderList.jsp">주문 관리</a>
+			</td>
+		</tr>
 	
 </div>
 </body>
