@@ -169,7 +169,7 @@ a:hover {
 				%>
 							<td>
 				<%
-								// 회원or관리자일 selectEbookOne.jsp 분기
+								// 회원or관리자 selectEbookOne.jsp 분기
 								if(loginMember.getMemberLevel() > 0) {
 									%>
 										<a href="<%=request.getContextPath() %>/admin/selectEbookOne.jsp?ebookNo=<%=e.getEbookNo() %>">
@@ -180,10 +180,10 @@ a:hover {
 									<%
 								}
 				%>
-									<div><img src="<%=request.getContextPath() %>/image/<%=e.getEbookImg() %>" width="180" height="180"></div>
-									<div><%=e.getEbookTitle() %></div>
-									<div>₩ <%=e.getEbookPrice() %></div>
-								</a>
+											<div><img src="<%=request.getContextPath() %>/image/<%=e.getEbookImg() %>" width="180" height="180"></div>
+											<div><%=e.getEbookTitle() %></div>
+											<div>₩ <%=e.getEbookPrice() %></div>
+										</a>
 							</td>
 				<%
 						tr+=1; // for문이 한 바퀴 돌 때마다 tr은 1씩 증가
