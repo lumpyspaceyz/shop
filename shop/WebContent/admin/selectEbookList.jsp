@@ -31,6 +31,10 @@
 	System.out.println("paging debug " + nowPage + " <-- nowPage");
 	System.out.println("paging debug " + beginRow + " <-- beginRow");
 	System.out.println("paging debug " + first + " <-- first");
+
+	// dao
+	CategoryDao categoryDao = new CategoryDao();
+	EbookDao ebookDao = new EbookDao();
 	
 	// category별 조회
 	String categoryName = "";
@@ -47,10 +51,6 @@
 	}
 	// search debug
 	System.out.println("search debug " + searchEbookTitle + " <-- searchEbookTitle");
-	
-	// dao
-	CategoryDao categoryDao = new CategoryDao();
-	EbookDao ebookDao = new EbookDao();
 	
 	// 카테고리 불러오기
 	ArrayList<Category> categoryList = categoryDao.selectCategoryList();
@@ -174,7 +174,7 @@
 		</table>
 	</div>
 		
-		<!-- start : 페이징 -->
+	<!-- start : 페이징 -->
 	<div class="text-center">
 <%
 			// 마지막 페이지 정보

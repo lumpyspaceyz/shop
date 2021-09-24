@@ -14,6 +14,10 @@
 		<ul class="navbar-nav">
 		<li class="nav-item">
 			<!-- 회원 관리 : 목록, 수정(등급, 비밀번호), 강제탈퇴 -->
+			<a class="nav-link" href="<%=request.getContextPath() %>/index.jsp">main</a>
+		</li>
+		<li class="nav-item">
+			<!-- 회원 관리 : 목록, 수정(등급, 비밀번호), 강제탈퇴 -->
 			<a class="nav-link" href="<%=request.getContextPath() %>/admin/selectMemberList.jsp">회원관리</a>
 		</li>
 			<!-- 전자책 카테고리 관리 : 목록, 추가 -->

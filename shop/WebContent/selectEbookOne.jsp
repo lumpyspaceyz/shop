@@ -7,16 +7,16 @@
 	//encoding
 	request.setCharacterEncoding("utf-8");
 
-	//방어코드 : 관리자 세션 관리
+	//방어코드 : 접속회원 세션 관리
 	Member loginMember = (Member)session.getAttribute("loginMember");
-	if(loginMember == null || loginMember.getMemberLevel() < 1) { // 순서 중요. 둘 중 앞부터 연산. 디버깅 코드를 남기려면 else if문으로 따로!
+	if(loginMember == null || loginMember.getMemberLevel() < 0) { // 순서 중요. 둘 중 앞부터 연산. 디버깅 코드를 남기려면 else if문으로 따로!
 		response.sendRedirect(request.getContextPath() + "/index.jsp");
 		return;
 	}
 	
 	// 방어코드
 	if(request.getParameter("ebookNo") == null) {
-		response.sendRedirect(request.getContextPath() + "admin/selectEbookList.jsp?currentPage=1");
+		response.sendRedirect(request.getContextPath() + "/index.jsp?currentPage=1");
 		return;
 	}
 
@@ -38,15 +38,15 @@
 </head>
 <body>
 <div class="container">
-	<!-- start : 관리자 adminMenu include -->
+	<!-- start : 회원 mainMenu include -->
 	<div>
-		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
+		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
 	</div>
-	<!-- end : 관리자 adminMenu include -->
+	<!-- end : 회원 mainMenu include -->
 	
 	<div class="container p-3 my-3 border">
 		<div class="jumbotron">
-		  <h1>관리자 페이지 - ebook 상세 보기</h1>
+		  <h1>회원 페이지 - ebook 상세 보기</h1>
 		</div>
 	
 		<table class="table table-borderless table-hover text-center">
@@ -93,7 +93,7 @@
 		</table>
 		
 		<table class="table table-borderless table-hover text-center">
-			<tr class="font-weight-bold">
+			<tr class="border-bottom font-weight-bold">
 				<th style="vertical-align: middle;">ebookImg</th>
 				<td><img src="<%=request.getContextPath() %>/image/<%=ebook.getEbookImg() %>" width="300px"></td>
 			</tr>
@@ -101,10 +101,7 @@
 	</div>
 	
 	<div class="text-center">
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/updateEbookImgForm.jsp?ebookNo=<%=ebook.getEbookNo() %>">이미지 수정</a>
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/updateMemberForm.jsp?ebookNo=<%=ebook.getEbookNo() %>">수정</a>
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp?ebookNo=<%=ebook.getEbookNo() %>">삭제</a>
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/selectEbookList.jsp?currentPage=1">목록</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/index.jsp?currentPage=1">목록</a>
 	</div>
 	
 	<div class="container pt-3"></div>
