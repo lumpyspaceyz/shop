@@ -16,7 +16,7 @@
 	
 	// 방어코드
 	if(request.getParameter("ebookNo") == null) {
-		response.sendRedirect(request.getContextPath() + "admin/selectEbookList.jsp?currentPage=1");
+		response.sendRedirect(request.getContextPath() + "/admin/selectEbookList.jsp?currentPage=1");
 		return;
 	}
 
@@ -94,15 +94,19 @@
 		
 		<table class="table table-borderless table-hover text-center">
 			<tr class="font-weight-bold">
-				<th style="vertical-align: middle;">ebookImg</th>
-				<td><img src="<%=request.getContextPath() %>/image/<%=ebook.getEbookImg() %>" width="300px"></td>
+				<th style="vertical-align: middle;" width="40%">ebookImg</th>
+				<td>
+					<img src="<%=request.getContextPath() %>/image/<%=ebook.getEbookImg() %>" width="300px">
+					<br>
+					<div class="container pt-3"></div>
+					<a class="btn btn-outline-dark btn-sm" href="<%=request.getContextPath() %>/admin/updateEbookImgForm.jsp?ebookNo=<%=ebook.getEbookNo() %>">이미지 수정</a>
+				</td>
 			</tr>
 		</table>
 	</div>
 	
 	<div class="text-center">
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/updateEbookImgForm.jsp?ebookNo=<%=ebook.getEbookNo() %>">이미지 수정</a>
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/updateMemberForm.jsp?ebookNo=<%=ebook.getEbookNo() %>">수정</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/updateEbookAllForm.jsp?ebookNo=<%=ebook.getEbookNo() %>">수정</a>
 		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp?ebookNo=<%=ebook.getEbookNo() %>">삭제</a>
 		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/selectEbookList.jsp?currentPage=1">목록</a>
 	</div>

@@ -58,7 +58,7 @@
 			<tbody>
 				<tr>
 					<td><%=member.getMemberNo() %></td>
-					<td><a href="<%=request.getContextPath() %>/admin/selectMemberOne.jsp?memberNo=<%=member.getMemberNo() %>"><%=member.getMemberId() %></a></td>
+					<td><%=member.getMemberId() %></td>
 					<td><%=member.getMemberLevel() %>
 						<%
 							if(member.getMemberLevel() == 0) {
@@ -83,7 +83,7 @@
 	</div>
 	
 	<div class="text-center">
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/updateMemberForm.jsp?memberNo=<%=member.getMemberNo() %>">수정</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/updateMemberAllForm.jsp?memberNo=<%=member.getMemberNo() %>">수정</a>
 		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp?memberNo=<%=member.getMemberNo() %>">삭제</a>
 		<a class="btn btn-outline-dark" href="./selectMemberList.jsp?currentPage=1">목록</a>
 	</div>

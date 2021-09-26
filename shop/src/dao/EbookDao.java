@@ -216,17 +216,23 @@ public class EbookDao {
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
 	    
-	    String sql = "SELECT ebook_no ebookNo, category_name categoryName, ebook_title ebookTitle, ebook_state ebookState, ebook_img ebookImg, update_date updateDate, create_date createDate FROM ebook WHERE ebook_no=?";
+	    String sql = "SELECT ebook_no ebookNo, ebook_isbn ebookISBN, category_name categoryName, ebook_title ebookTitle, ebook_author ebookAuthor, ebook_company ebookCompany, ebook_page_count ebookPageCount, ebook_price ebookPrice, ebook_img ebookImg, ebook_summary ebookSummary, ebook_state ebookState, update_date updateDate, create_date createDate FROM ebook WHERE ebook_no=?";
 	    PreparedStatement stmt = conn.prepareStatement(sql);
 	    stmt.setInt(1, ebookNo);
 	    ResultSet rs = stmt.executeQuery();
 	    if(rs.next()) {
 	    	ebook = new Ebook();
 	    	ebook.setEbookNo(rs.getInt("ebookNo"));
+	    	ebook.setEbookISBN(rs.getString("ebookISBN"));
 	    	ebook.setCategoryName(rs.getString("categoryName"));
 	    	ebook.setEbookTitle(rs.getString("ebookTitle"));
-	    	ebook.setEbookState(rs.getString("ebookState"));
+	    	ebook.setEbookAuthor(rs.getString("ebookAuthor"));
+	    	ebook.setEbookCompany(rs.getString("ebookCompany"));
+	    	ebook.setEbookPageCount(rs.getInt("ebookPageCount"));
+	    	ebook.setEbookPrice(rs.getInt("ebookPrice"));
 	    	ebook.setEbookImg(rs.getString("ebookImg"));
+	    	ebook.setEbookSummary(rs.getString("ebookSummary"));
+	    	ebook.setEbookState(rs.getString("ebookState"));
 	    	ebook.setUpdateDate(rs.getString("updateDate"));
 	    	ebook.setCreateDate(rs.getString("createDate"));
 	    }
@@ -241,9 +247,11 @@ public class EbookDao {
 	    return ebook;
 	}
 	
+	// [전자책 관리] ebook 이미지 수정
 	public void updateEbookImg(Ebook ebook) throws ClassNotFoundException, SQLException {
 		// debug
-		//System.out.println(ebookNo +" <-- EbookDao.selectEbookOne param ebookNo");
+		System.out.println(ebook.getEbookNo() +" <-- EbookDao.updateEbookImg param ebookNo");
+		System.out.println(ebook.getEbookImg() +" <-- EbookDao.updateEbookImg param ebookImg");
 		
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
@@ -257,6 +265,44 @@ public class EbookDao {
 	    // debug
   		System.out.println(stmt + " <-- EbookDao.updateEbookImg stmt");
   		System.out.println(rs + " <-- EbookDao.updateEbookImg rs");
+  		
+ 		rs.close();
+ 		stmt.close();
+ 		conn.close();
+	}
+	
+	// [전자책 관리] ebook 전체 수정
+	public void updateEbookAll(Ebook ebook) throws ClassNotFoundException, SQLException {
+		// debug
+		System.out.println(ebook.getEbookNo() +" <-- EbookDao.updateEbookAll param ebookNo");
+		System.out.println(ebook.getCategoryName() +" <-- EbookDao.updateEbookAll param CategoryName");
+		System.out.println(ebook.getEbookTitle() +" <-- EbookDao.updateEbookAll param ebookTitle");
+		System.out.println(ebook.getEbookAuthor() +" <-- EbookDao.updateEbookAll param ebookAuthor");
+		System.out.println(ebook.getEbookCompany() +" <-- EbookDao.updateEbookAll param ebookCompany");
+		System.out.println(ebook.getEbookPrice() +" <-- EbookDao.updateEbookAll param ebookPrice");
+		System.out.println(ebook.getEbookSummary() +" <-- EbookDao.updateEbookAll param ebookSummary");
+		System.out.println(ebook.getEbookState() +" <-- EbookDao.updateEbookAll param ebookState");
+		System.out.println(ebook.getUpdateDate() +" <-- EbookDao.updateEbookAll param updateDate");
+		
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = " UPDATE ebook SET category_name=?, ebook_title=?, ebook_author=?, ebook_company=?, ebook_price=?, ebook_summary=?, ebook_state=?, update_date=? WHERE ebook_no=?";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setString(1, ebook.getCategoryName());
+	    stmt.setString(2, ebook.getEbookTitle());
+	    stmt.setString(3, ebook.getEbookAuthor());
+	    stmt.setString(4, ebook.getEbookCompany());
+	    stmt.setInt(5, ebook.getEbookPrice());
+	    stmt.setString(6, ebook.getEbookSummary());
+	    stmt.setString(7, ebook.getEbookState());
+	    stmt.setString(8, ebook.getUpdateDate());
+	    stmt.setInt(9, ebook.getEbookNo());
+	    ResultSet rs = stmt.executeQuery();
+	    
+	    // debug
+  		System.out.println(stmt + " <-- EbookDao.updateEbookAll stmt");
+  		System.out.println(rs + " <-- EbookDao.updateEbookAll rs");
   		
  		rs.close();
  		stmt.close();

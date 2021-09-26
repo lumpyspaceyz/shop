@@ -73,7 +73,7 @@ public class MemberDao {
  		return memberId; // null:사용가능, null!:사용불가(사용중)
 	}
 	
-	// [회원]
+	// [회원] 로그인
 	public Member login(Member member) throws ClassNotFoundException, SQLException {
 		Member returnMember = null;
 		// debug
@@ -107,7 +107,7 @@ public class MemberDao {
 		return returnMember;
 	}
 	
-	// [관리자] 회원목록출력
+	// [관리자] 회원목록 출력
 	public ArrayList<Member> selectMemberListAllByPage(int beginRow, int ROW_PER_PAGE) throws ClassNotFoundException, SQLException{
 		ArrayList<Member> memberList = new ArrayList<>();
 		
@@ -308,6 +308,37 @@ public class MemberDao {
 //		return result;
 //	}
 
+	// [관리자] 회원정보 전체 수정
+	public void updateMemberAllByAdmin(Member member) throws ClassNotFoundException, SQLException {
+		// debug
+		System.out.println(member.getMemberNo() +" <-- MemberDao.updateMemberAllByAdmin param memberNo");
+		System.out.println(member.getMemberId() +" <-- MemberDao.updateMemberAllByAdmin param memberId");
+		System.out.println(member.getMemberLevel() +" <-- MemberDao.updateMemberAllByAdmin param memberLevel");
+		System.out.println(member.getMemberName() +" <-- MemberDao.updateMemberAllByAdmin param memberName");
+		System.out.println(member.getMemberAge() +" <-- MemberDao.updateMemberAllByAdmin param memberAge");
+		System.out.println(member.getMemberGender() +" <-- MemberDao.updateMemberAllByAdmin param memberGender");
+			
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "UPDATE member SET member_id=?, member_level=?, member_name=?, member_age=?, member_gender=? WHERE member_no=?";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setString(1, member.getMemberId());
+	    stmt.setInt(2, member.getMemberLevel());
+	    stmt.setString(3, member.getMemberName());
+	    stmt.setInt(4, member.getMemberAge());
+	    stmt.setString(5, member.getMemberGender());
+	    stmt.setInt(6, member.getMemberNo());
+	    ResultSet rs = stmt.executeQuery();
+	    // debug
+  		System.out.println(stmt + " <-- MemberDao.updateMemberAllByAdmin stmt");
+  		System.out.println(rs + " <-- MemberDao.updateMemberAllByAdmin rs");
+	    
+ 		rs.close();
+ 		stmt.close();
+ 		conn.close();
+	}
+	
 	// [관리자] 회원 등급 수정
 	public void updateMemberLevelByAdmin(Member member) throws ClassNotFoundException, SQLException {
 		// debug
