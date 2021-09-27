@@ -10,7 +10,7 @@
 	//방어코드 : 관리자 세션 관리
 	Member loginMember = (Member)session.getAttribute("loginMember");
 	if(loginMember == null || loginMember.getMemberLevel() < 1) {
-		response.sendRedirect(request.getContextPath() + "index.jsp");
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
 		return;
 	}
 	
@@ -56,86 +56,86 @@
 			</div>
 		
 			<table class="table table-borderless table-hover">
-					<tr class="border-bottom font-weight-bold">
-						<th class="text-right" width="45%">ebookNo</th>
-						<td><input type="text" class="text-center" name="ebookNo" value="<%=ebook.getEbookNo() %>" readonly="readonly"></td>					
-					</tr>
-					<tr class="border-bottom font-weight-bold">					
-						<th class="text-right">ebookISBN</th>
-						<td><input type="text" class="text-center" name="ebookISBN" value="<%=ebook.getEbookISBN() %>" readonly="readonly"></td>					
-					</tr>
-					<tr class="border-bottom font-weight-bold">					
-						<th class="text-right">categoryName</th>
-						<td style="padding-right: 36%;">
-							<select class="form-control text-center" name="categoryName">
-								<%
-									for(Category category : categoryList) {
-								%>
-									<option value="<%=category.getCategoryName() %>"><%=category.getCategoryName() %></option>
-								<%
-									}
-								%>
-							</select>
-						</td>				
-					</tr>
-					<tr class="border-bottom font-weight-bold">					
-						<th class="text-right">ebookTitle</th>
-						<td><input type="text" class="text-center" name="ebookTitle" value="<%=ebook.getEbookTitle() %>"></td>					
-					</tr>
-					<tr class="border-bottom font-weight-bold">					
-						<th class="text-right">ebookAuthor</th>
-						<td><input type="text" class="text-center" name="ebookAuthor" value="<%=ebook.getEbookAuthor() %>"></td>					
-					</tr>
-					<tr class="border-bottom font-weight-bold">					
-						<th class="text-right">ebookCompany</th>
-						<td><input type="text" class="text-center" name="ebookCompany" value="<%=ebook.getEbookCompany() %>"></td>					
-					</tr>
-					<tr class="border-bottom font-weight-bold">					
-						<th class="text-right">ebookPageCount</th>
-						<td><input type="text" class="text-center" name="ebookPageCount" value="<%=ebook.getEbookPageCount() %>" readonly="readonly"></td>					
-					</tr>
-					<tr class="border-bottom font-weight-bold">					
-						<th class="text-right">ebookPrice</th>
-						<td><input type="text" class="text-center" name="ebookPrice" value="<%=ebook.getEbookPrice() %>"></td>					
-					</tr>
-					<tr class="border-bottom font-weight-bold">					
-						<th class="text-right">ebookImg</th>
-						<td><img src="<%=request.getContextPath() %>/image/<%=ebook.getEbookImg() %>" width="300px"></td>				
-					</tr>
-					<tr class="border-bottom font-weight-bold">					
-						<th class="text-right">ebookSummary</th>
-						<td><textarea rows="5" cols="50" name="ebookSummary"><%=ebook.getEbookSummary() %></textarea></td>					
-					</tr>
-					<%
-							String[] ebookState = new String[4];
-							if(ebook.getEbookState().equals("판매중")) {
-								ebookState[0] = "checked";
-							} else if(ebook.getEbookState().equals("품절")) {
-								ebookState[1] = "checked";
-							} else if(ebook.getEbookState().equals("절판")) {
-								ebookState[2] = "checked";
-							} else if(ebook.getEbookState().equals("구편절판")){
-								ebookState[3] = "checked";
-							}
-					%>
-					<tr class="border-bottom font-weight-bold">					
-						<th class="text-right">ebookState</th>
-						<td>
-							<input type="radio" name="ebookState" value="판매중" <%=ebookState[0] %>> 판매중
-							<input type="radio" name="ebookState" value="품절" <%=ebookState[1] %>> 품절
-							<div class="container pt-3"></div>
-							<input type="radio" name="ebookState" value="절판" <%=ebookState[2] %>> 절판
-							<input type="radio" name="ebookState" value="구편절판" <%=ebookState[3] %>> 구편절판
-						</td>					
-					</tr>
-					<tr class="border-bottom font-weight-bold">					
-						<th class="text-right">updateDate</th>
-						<td><input type="text" class="text-center" name="updateDate" value="<%=ebook.getUpdateDate() %>" readonly="readonly"></td>				
-					</tr>
-					<tr class="border-bottom font-weight-bold">				
-						<th class="text-right">createDate</th>
-						<td><input type="text" class="text-center" name="createDate" value="<%=ebook.getCreateDate() %>" readonly="readonly"></td>
-					</tr>
+				<tr class="border-bottom font-weight-bold">
+					<th class="text-right" width="45%">ebookNo</th>
+					<td><input type="text" class="text-center" name="ebookNo" value="<%=ebook.getEbookNo() %>" readonly="readonly"></td>					
+				</tr>
+				<tr class="border-bottom font-weight-bold">					
+					<th class="text-right">ebookISBN</th>
+					<td><input type="text" class="text-center" name="ebookISBN" value="<%=ebook.getEbookISBN() %>" readonly="readonly"></td>					
+				</tr>
+				<tr class="border-bottom font-weight-bold">					
+					<th class="text-right">categoryName</th>
+					<td style="padding-right: 36%;">
+						<select class="form-control text-center" name="categoryName">
+							<%
+								for(Category category : categoryList) {
+							%>
+								<option value="<%=category.getCategoryName() %>"><%=category.getCategoryName() %></option>
+							<%
+								}
+							%>
+						</select>
+					</td>				
+				</tr>
+				<tr class="border-bottom font-weight-bold">					
+					<th class="text-right">ebookTitle</th>
+					<td><input type="text" class="text-center" name="ebookTitle" value="<%=ebook.getEbookTitle() %>"></td>					
+				</tr>
+				<tr class="border-bottom font-weight-bold">					
+					<th class="text-right">ebookAuthor</th>
+					<td><input type="text" class="text-center" name="ebookAuthor" value="<%=ebook.getEbookAuthor() %>"></td>					
+				</tr>
+				<tr class="border-bottom font-weight-bold">					
+					<th class="text-right">ebookCompany</th>
+					<td><input type="text" class="text-center" name="ebookCompany" value="<%=ebook.getEbookCompany() %>"></td>					
+				</tr>
+				<tr class="border-bottom font-weight-bold">					
+					<th class="text-right">ebookPageCount</th>
+					<td><input type="text" class="text-center" name="ebookPageCount" value="<%=ebook.getEbookPageCount() %>" readonly="readonly"></td>					
+				</tr>
+				<tr class="border-bottom font-weight-bold">					
+					<th class="text-right">ebookPrice</th>
+					<td><input type="text" class="text-center" name="ebookPrice" value="<%=ebook.getEbookPrice() %>"></td>					
+				</tr>
+				<tr class="border-bottom font-weight-bold">					
+					<th class="text-right">ebookImg</th>
+					<td><img src="<%=request.getContextPath() %>/image/<%=ebook.getEbookImg() %>" width="300px"></td>				
+				</tr>
+				<tr class="border-bottom font-weight-bold">					
+					<th class="text-right">ebookSummary</th>
+					<td><textarea rows="5" cols="50" name="ebookSummary"><%=ebook.getEbookSummary() %></textarea></td>					
+				</tr>
+				<%
+						String[] ebookState = new String[4];
+						if(ebook.getEbookState().equals("판매중")) {
+							ebookState[0] = "checked";
+						} else if(ebook.getEbookState().equals("품절")) {
+							ebookState[1] = "checked";
+						} else if(ebook.getEbookState().equals("절판")) {
+							ebookState[2] = "checked";
+						} else if(ebook.getEbookState().equals("구편절판")){
+							ebookState[3] = "checked";
+						}
+				%>
+				<tr class="border-bottom font-weight-bold">					
+					<th class="text-right">ebookState</th>
+					<td>
+						<input type="radio" name="ebookState" value="판매중" <%=ebookState[0] %>> 판매중
+						<input type="radio" name="ebookState" value="품절" <%=ebookState[1] %>> 품절
+						<div class="container pt-3"></div>
+						<input type="radio" name="ebookState" value="절판" <%=ebookState[2] %>> 절판
+						<input type="radio" name="ebookState" value="구편절판" <%=ebookState[3] %>> 구편절판
+					</td>					
+				</tr>
+				<tr class="border-bottom font-weight-bold">					
+					<th class="text-right">updateDate</th>
+					<td><input type="text" class="text-center" name="updateDate" value="<%=ebook.getUpdateDate() %>" readonly="readonly"></td>				
+				</tr>
+				<tr class="border-bottom font-weight-bold">				
+					<th class="text-right">createDate</th>
+					<td><input type="text" class="text-center" name="createDate" value="<%=ebook.getCreateDate() %>" readonly="readonly"></td>
+				</tr>
 			</table>
 		</div>
 		<div class="text-center">

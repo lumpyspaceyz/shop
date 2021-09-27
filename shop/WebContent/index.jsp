@@ -82,6 +82,12 @@ a:hover {
 					
 					<tr>
 						<td>
+							<a href="<%=request.getContextPath() %>/selectOrderListByMember.jsp">나의주문</a>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
 							<a href="<%=request.getContextPath() %>/deleteMemberForm.jsp">회원탈퇴</a>
 						</td>
 					</tr>
@@ -101,17 +107,13 @@ a:hover {
 					%>
 		<%	
 			}
-		%>
 		
-		
-		<!-- 상품 목록 -->
-		<%
 		// paging
 		int currentPage = 1;
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
-		final int ROW_PER_PAGE = 20; // 한 번 설정하면 변하지 않는다 -> 상수
+		final int ROW_PER_PAGE = 10; // 한 번 설정하면 변하지 않는다 -> 상수
 		int beginRow = (currentPage-1) * ROW_PER_PAGE;
 		int nowPage = (currentPage / ROW_PER_PAGE) + 1; // 현재 시작 페이징(=first)을 계산하기 위한 변수
 		int first = (nowPage * ROW_PER_PAGE) - (ROW_PER_PAGE-1); // 현재 시작 페이징 번호
@@ -144,6 +146,7 @@ a:hover {
 		// search debug
 		System.out.println("search debug " + searchEbookTitle + " <-- searchEbookTitle");
 		
+		// 전체 목록
 		ArrayList<Ebook> ebookList = null;
 		int totalCount = 0;
 		if(categoryName.equals("") == true && searchEbookTitle.equals("") == true) {
@@ -159,8 +162,74 @@ a:hover {
 			ebookList = ebookDao.selectEbookListAllByCategory(beginRow, ROW_PER_PAGE, categoryName);
 			totalCount = ebookDao.selectTotalCountByCategoryName(categoryName);
 		}
-		%>
 		
+		// 인기 목록 5개 (많이 주문된 5개의 Ebook) 
+		ArrayList<Ebook> popularEbookList = ebookDao.selectPopualarEbookList();
+		%>
+		<!-- 인기상품 목록 -->
+		<table class="table table-borderless text-center">
+				<tr><td colspan="5">BEST5</td></tr>
+				<%
+				for(Ebook e : popularEbookList) {
+				%>
+					<td>
+						<%
+						// 회원or관리자 selectEbookOne.jsp 분기
+						if(loginMember.getMemberLevel() > 0) {
+							%>
+								<a href="<%=request.getContextPath() %>/admin/selectEbookOne.jsp?ebookNo=<%=e.getEbookNo() %>">
+							<%
+						} else if(loginMember.getMemberLevel() == 0) {
+							%>
+								<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?ebookNo=<%=e.getEbookNo() %>">
+							<%
+						}
+							%>
+									<div><img src="<%=request.getContextPath() %>/image/<%=e.getEbookImg() %>" width="180" height="180"></div>
+									<div><%=e.getEbookTitle() %></div>
+									<div>₩ <%=e.getEbookPrice() %></div>
+								</a>
+					</td>
+				<%
+				}
+				%>
+			</tr>
+		</table>
+		<%
+		// 인기 목록 5개 (많이 주문된 5개의 Ebook) 
+		ArrayList<Ebook> newerEbookList = ebookDao.selectNewerEbookList();
+		%>
+		<!-- 최신상품 목록 -->
+		<table class="table table-borderless text-center">
+				<tr><td colspan="5">NEW5</td></tr>
+				<%
+				for(Ebook e : popularEbookList) {
+				%>
+					<td>
+						<%
+						// 회원or관리자 selectEbookOne.jsp 분기
+						if(loginMember.getMemberLevel() > 0) {
+							%>
+								<a href="<%=request.getContextPath() %>/admin/selectEbookOne.jsp?ebookNo=<%=e.getEbookNo() %>">
+							<%
+						} else if(loginMember.getMemberLevel() == 0) {
+							%>
+								<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?ebookNo=<%=e.getEbookNo() %>">
+							<%
+						}
+							%>
+									<div><img src="<%=request.getContextPath() %>/image/<%=e.getEbookImg() %>" width="180" height="180"></div>
+									<div><%=e.getEbookTitle() %></div>
+									<div>₩ <%=e.getEbookPrice() %></div>
+								</a>
+					</td>
+				<%
+				}
+				%>
+			</tr>
+		</table>
+		<hr>
+		<!-- 상품 목록 -->
 		<table class="table table-borderless text-center">
 			<tr>
 				<%
@@ -176,7 +245,7 @@ a:hover {
 									<%
 								} else if(loginMember.getMemberLevel() == 0) {
 									%>
-										<a href="<%=request.getContextPath() %>/selectEbookOne.jsp?ebookNo=<%=e.getEbookNo() %>">
+										<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?ebookNo=<%=e.getEbookNo() %>">
 									<%
 								}
 				%>

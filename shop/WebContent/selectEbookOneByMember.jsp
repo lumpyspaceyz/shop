@@ -93,7 +93,7 @@
 		</table>
 		
 		<table class="table table-borderless table-hover text-center">
-			<tr class="border-bottom font-weight-bold">
+			<tr class="font-weight-bold">
 				<th style="vertical-align: middle;">ebookImg</th>
 				<td><img src="<%=request.getContextPath() %>/image/<%=ebook.getEbookImg() %>" width="300px"></td>
 			</tr>

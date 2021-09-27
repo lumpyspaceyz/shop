@@ -23,7 +23,6 @@ public class EbookDao {
 	    PreparedStatement stmt = conn.prepareStatement(sql);
 	    stmt.setInt(1, beginRow);
 	    stmt.setInt(2, ROW_PER_PAGE);
-	    
 	    ResultSet rs = stmt.executeQuery();
 	    while(rs.next()) {
 	    	Ebook ebook = new Ebook();
@@ -46,6 +45,66 @@ public class EbookDao {
 	  		
 		return ebookList;
 		
+	}
+	
+	// [관리자 + 고객] [index] - 인기 상품 5개 출력
+	public ArrayList<Ebook> selectPopualarEbookList() throws ClassNotFoundException, SQLException {
+		ArrayList<Ebook> ebookList = new ArrayList<>();
+		
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT t.ebook_no ebookNo, e.ebook_title ebookTitle, e.ebook_img ebookImg, e.ebook_price ebookPrice FROM ebook e INNER JOIN (SELECT ebook_no,COUNT(ebook_no) cnt FROM orders GROUP BY ebook_no ORDER BY COUNT(ebook_no) DESC LIMIT 0,5) t ON e.ebook_no = t.ebook_no ORDER BY cnt DESC";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    ResultSet rs = stmt.executeQuery();
+	    while(rs.next()) {
+	    	Ebook ebook = new Ebook();
+	    	ebook.setEbookNo(rs.getInt("ebookNo"));
+	    	ebook.setEbookTitle(rs.getString("ebookTitle"));
+	    	ebook.setEbookImg(rs.getString("ebookImg"));
+	    	ebook.setEbookPrice(rs.getInt("ebookPrice"));
+	    	ebookList.add(ebook);				
+	    }
+	    
+	    // debug
+  		System.out.println(stmt + " <-- EbookDao.selectPopualarEbookList stmt");
+  		System.out.println(rs + " <-- EbookDao.selectPopualarEbookList rs");
+  		
+  		rs.close();
+  		stmt.close();
+  		conn.close();
+	  		
+		return ebookList;
+	}
+	
+	// [관리자 + 고객] [index] - 최신 상품 5개 출력
+	public ArrayList<Ebook> selectNewerEbookList() throws ClassNotFoundException, SQLException {
+		ArrayList<Ebook> ebookList = new ArrayList<>();
+		
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT t.ebook_no ebookNo, e.ebook_title ebookTitle, e.ebook_img ebookImg, e.ebook_price ebookPrice FROM ebook e INNER JOIN (SELECT ebook_no,COUNT(ebook_no) cnt FROM orders GROUP BY ebook_no ORDER BY COUNT(ebook_no) DESC LIMIT 0,5) t ON e.ebook_no = t.ebook_no ORDER BY cnt DESC";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    ResultSet rs = stmt.executeQuery();
+	    while(rs.next()) {
+	    	Ebook ebook = new Ebook();
+	    	ebook.setEbookNo(rs.getInt("ebookNo"));
+	    	ebook.setEbookTitle(rs.getString("ebookTitle"));
+	    	ebook.setEbookImg(rs.getString("ebookImg"));
+	    	ebook.setEbookPrice(rs.getInt("ebookPrice"));
+	    	ebookList.add(ebook);				
+	    }
+	    
+	    // debug
+  		System.out.println(stmt + " <-- EbookDao.selectPopualarEbookList stmt");
+  		System.out.println(rs + " <-- EbookDao.selectPopualarEbookList rs");
+  		
+  		rs.close();
+  		stmt.close();
+  		conn.close();
+	  		
+		return ebookList;
 	}
 
 	// [전자책 관리] ebook 전체목록 출력 - paging totalCount
@@ -308,5 +367,7 @@ public class EbookDao {
  		stmt.close();
  		conn.close();
 	}
+	
+	//
 
 }
