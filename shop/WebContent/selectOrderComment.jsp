@@ -73,7 +73,7 @@
 						<tr>
 							<td><%=ebook.ebookNo %></td>
 							<td><%=ebook.getCategoryName() %></td>
-							<td><%=ebook.getEbookTitle() %></td>
+							<td><a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?ebookNo=<%=ebookNo %>"><%=ebook.getEbookTitle() %></a></td>
 							<td>
 								<%
 									if(ebook.getEbookState().equals("판매중")) {
@@ -123,7 +123,13 @@
 					<tr>
 						<td><%=orderNo %></td>
 						<td><%=ebookNo %></td>
-						<td style="padding: 12px 50px;"><%=orderComment.getOrderScore() %></td>
+						<td style="padding-left: 100px;">
+							<div class="progress" style="width: 80%; height: 30px; font-size: 18px;">
+								<div class="progress-bar" style="width:<%=orderComment.getOrderScore()*10 %>%"><%=orderComment.getOrderScore() %></div>
+								
+							</div>
+						</td>
+						
 					</tr>
 				</tbody>
 			</table>

@@ -7,7 +7,7 @@
 	//encoding
 	request.setCharacterEncoding("utf-8");
 
-	//방어코드 : 관리자 세션 관리
+	//방어코드 : 접속회원 세션 관리
 	Member loginMember = (Member)session.getAttribute("loginMember");
 	if(loginMember == null) {
 		response.sendRedirect(request.getContextPath() + "/index.jsp");

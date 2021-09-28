@@ -90,4 +90,27 @@ public class OrderDao {
 		
 		return list;
 	}
+	
+	// [회원] 주문하기
+	public void insertOrder(int ebookNo, int memberNo, int orderPrice) throws ClassNotFoundException, SQLException {
+		// debug
+		System.out.println(ebookNo +" <-- OrderDao.updateOrder param ebookNo");
+		System.out.println(memberNo +" <-- OrderDao.updateOrder param memberNo");
+		System.out.println(orderPrice +" <-- OrderDao.updateOrder param orderPrice");
+		
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+		String sql = "INSERT INTO orders (ebook_no, member_no, order_price, update_date, create_date) VALUES (?, ?, ?, NOW(), NOW())";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, ebookNo);
+		stmt.setInt(2, memberNo);
+		stmt.setInt(3, orderPrice);
+		stmt.executeUpdate();
+		// debug
+		System.out.println(stmt + "<-- OrderDao.updateOrder stmt");
+		
+		stmt.close();
+ 		conn.close();
+	}
 }

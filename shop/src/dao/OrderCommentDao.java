@@ -97,4 +97,98 @@ public class OrderCommentDao {
 		
  		return result;
 	}
+	
+	// [회원+비회원] 별점 평균 구하기
+	public double selectOrderScoreAvg(int ebookNo) throws ClassNotFoundException, SQLException {
+		double avgScore = 0;
+		
+		// debug
+		System.out.println(ebookNo +" <-- OrderCommentDao.selectOrderScoreAvg param ebookNo");
+		
+		DBUtil dbutil = new DBUtil();
+		Connection conn = dbutil.getConnection();
+		
+		String sql ="SELECT AVG(order_score) av FROM order_comment WHERE ebook_no=? ORDER BY ebook_no";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, ebookNo);
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			avgScore = rs.getDouble("av");
+		}
+		// debug
+		System.out.println(stmt + "<-- OrderCommentDao.selectOrderComment stmt");
+		System.out.println(rs + "<-- OrderCommentDao.selectOrderComment rs");
+
+		rs.close();
+ 		stmt.close();
+ 		conn.close();
+		
+		return avgScore;
+	}
+	
+	// [회원+비회원] 상품별 후기목록
+	public ArrayList<OrderComment> selectOrderCommentListByEbookNo(int beginRow, int ROW_PER_PAGE, int ebookNo) throws ClassNotFoundException, SQLException {
+		ArrayList<OrderComment> orderCommentList = new ArrayList<>();
+		
+		// debug
+		System.out.println(ebookNo +" <-- OrderCommentDao.selectOrderCommentListByEbookNo param ebookNo");
+		
+		DBUtil dbutil = new DBUtil();
+		Connection conn = dbutil.getConnection();
+		
+		String sql ="SELECT order_no orderNo, ebook_no ebookNo, order_score orderScore, order_comment_content orderCommentContent, update_date updateDate FROM order_comment WHERE ebook_no=? ORDER BY update_date DESC LIMIT ?,?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, ebookNo);
+		stmt.setInt(2, beginRow);
+	    stmt.setInt(3, ROW_PER_PAGE);
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			OrderComment orderComment = null;
+			orderComment = new OrderComment();
+			orderComment.setOrderNo(rs.getInt("orderNo"));
+			orderComment.setEbookNo(rs.getInt("ebookNo"));
+			orderComment.setOrderScore(rs.getInt("orderScore"));
+			orderComment.setOrderCommentContent(rs.getString("orderCommentContent"));	
+			orderComment.setUpdateDate(rs.getString("updateDate"));	
+			orderCommentList.add(orderComment);
+		}
+		// debug
+		System.out.println(stmt + "<-- OrderCommentDao.selectOrderCommentListByEbookNo stmt");
+		System.out.println(rs + "<-- OrderCommentDao.selectOrderCommentListByEbookNo rs");
+
+		rs.close();
+ 		stmt.close();
+ 		conn.close();
+		
+		return orderCommentList;
+		
+	}
+	
+	// [회원+비회원] 상품별 후기목록 - paging totalCount
+	public int selectOrderCommentTotalCount(int ebookNo) throws ClassNotFoundException, SQLException {
+		int totalCount = 0;
+
+		// debug
+		System.out.println(ebookNo +" <-- OrderCommentDao.selectOrderCommentTotalCount param ebookNo");
+		
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT COUNT(*) FROM order_comment WHERE ebook_no=?";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setInt(1, ebookNo);
+	    ResultSet rs = stmt.executeQuery();
+	    if(rs.next()) {
+			totalCount = rs.getInt("COUNT(*)");
+		}
+	    // debug
+  		System.out.println(stmt + " <-- OrderCommentDao.selectOrderCommentTotalCount stmt");
+  		System.out.println(rs + " <-- OrderCommentDao.selectOrderCommentTotalCount rs");
+
+	    rs.close();
+		stmt.close();
+		conn.close();
+		
+		return totalCount;
+	}
 }
