@@ -196,7 +196,7 @@ a:hover {
 			</tr>
 		</table>
 		<%
-		// 인기 목록 5개 (많이 주문된 5개의 Ebook) 
+		// 최신 목록 5개 (최근에 올라온 5개의 Ebook) 
 		ArrayList<Ebook> newerEbookList = ebookDao.selectNewerEbookList();
 		%>
 		<!-- 최신상품 목록 -->

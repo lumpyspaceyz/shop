@@ -32,21 +32,37 @@
 	<div class="container pt-3"></div>
 	<div class="container pt-3"></div>
 	
-	<form class="text-center" method="post" action="<%=request.getContextPath() %>/loginAction.jsp">
+	<form id="loginForm" class="text-center" method="post" action="<%=request.getContextPath() %>/loginAction.jsp">
   		<div class="form-group">
 			<label>memberId : </label>
-			<div><input type="text" name="memberId"></div>
+			<div><input type="text" name="memberId" placeholder="id" id="memberId" value=""></div>
 		</div>
 		
 		<div class="form-group">
 			<label>memberPw : </label>
-			<div><input type="password" name="memberPw"></div>
+			<div><input type="password" name="memberPw" placeholder="pw" id="memberPw" value=""></div>
 		</div>
 		<div>
-			<input type="submit" value="로그인" class="btn btn-outline-dark">
+			<button type="button" id="loginBtn" class="btn btn-outline-dark">로그인</button>
 			<a href="<%=request.getContextPath() %>/index.jsp" class="btn btn-outline-dark">취소</a>
 		</div>
 	</form>
+	
+	<!-- 유효성 검사 : id/pw -->
+	<script>
+		<!-- <button type="button"> -> <button type="submit"> -->
+		$('#loginBtn').click(function(){ // 버튼을 click 했을 때
+			if($('#memberId').val() == '') { // id가 공백이면
+				alert('ID를 입력하세요.');
+				return;
+			} else if($('#memberPw').val() == '') { // pw가 공백이면
+				alert('PW를 입력하세요.');
+				return;
+			} else {
+				$('#loginForm').submit();
+			}
+		});
+	</script>
 </div>
 </body>
 </html>
