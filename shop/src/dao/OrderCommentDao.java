@@ -164,6 +164,61 @@ public class OrderCommentDao {
 		
 	}
 	
+	/*
+	// [회원+비회원] 상품별 후기목록
+		public ArrayList<OrderCommentMember> selectOrderCommentListByEbookNo(int beginRow, int ROW_PER_PAGE, int ebookNo) throws ClassNotFoundException, SQLException {
+			ArrayList<OrderCommentMember> ocmList  = new ArrayList<OrderCommentMember>();
+			
+			// debug
+			System.out.println(ebookNo +" <-- OrderCommentDao.selectOrderCommentListByEbookNo param ebookNo");
+			
+			DBUtil dbutil = new DBUtil();
+			Connection conn = dbutil.getConnection();
+			
+			String sql ="SELECT oc.order_no orderNo, oc.ebook_no ebookNo, oc.order_score orderScore, oc.order_comment_content orderCommentContent, oc.update_date updateDate, m.member_id memberId, m.member_no memberNo FROM order_comment oc INNER JOIN member m ON oc.member_no = m.member_no  WHERE oc.ebook_no=? ORDER BY oc.update_date DESC LIMIT ?,?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, ebookNo);
+			stmt.setInt(2, beginRow);
+		    stmt.setInt(3, ROW_PER_PAGE);
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				// 조인 쿼리문의 결과를 받을 OrderComment, Member 클래스의 집합체를 생성
+				OrderCommentMember ocm = new OrderCommentMember();
+				
+				// 조회결과의 OrderComment와 관련된 결과를 OrderComment 클래스에 저장
+				OrderComment oc = new OrderComment();
+				oc.setOrderNo(rs.getInt("orderNo"));
+				oc.setEbookNo(rs.getInt("ebookNo"));
+				oc.setOrderScore(rs.getInt("orderScore"));
+				oc.setOrderCommentContent(rs.getString("orderCommentContent"));	
+				oc.setUpdateDate(rs.getString("updateDate"));
+				// oc에 저장된 결과 ocm에 저장
+				ocm.setOrderComment(oc);
+				
+				// 조회결과의 Member와 관련된 결과를 Member 클래스에 저장
+				Member m = new Member();
+				m.setMemberId(rs.getString("memberId"));
+				m.setMemberNo(rs.getInt("memberNo"));
+				// m에 저장된 결과 ocm에 저장
+				ocm.setMember(m);
+				
+				// ocmList에 ocm(oc+m) 저장
+				ocmList.add(ocm);
+			}
+			// debug
+			System.out.println(stmt + "<-- OrderCommentDao.selectOrderCommentListByEbookNo stmt");
+			System.out.println(rs + "<-- OrderCommentDao.selectOrderCommentListByEbookNo rs");
+
+			rs.close();
+	 		stmt.close();
+	 		conn.close();
+			
+			return ocmList;
+			
+		}
+	*/
+	
 	// [회원+비회원] 상품별 후기목록 - paging totalCount
 	public int selectOrderCommentTotalCount(int ebookNo) throws ClassNotFoundException, SQLException {
 		int totalCount = 0;

@@ -1,11 +1,17 @@
 package dao;
 
 import java.util.*;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
 import java.sql.*;
 
 import commons.DBUtil;
 import vo.Ebook;
 import vo.Member;
+
+import java.io.File;
 
 public class EbookDao {
 	// [관리자 + 고객] [전자책 관리] ebook 전체목록 출력 
@@ -306,6 +312,7 @@ public class EbookDao {
 	    return ebook;
 	}
 	
+	// [전자책 관리] ebook 이미지 수정시 이전 이미지 삭제
 	// [전자책 관리] ebook 이미지 수정
 	public void updateEbookImg(Ebook ebook) throws ClassNotFoundException, SQLException {
 		// debug
@@ -328,6 +335,37 @@ public class EbookDao {
  		rs.close();
  		stmt.close();
  		conn.close();
+	}
+	
+	// [전자책 관리] ebook 이미지 수정시 이전 이미지가 기본 이미지인지 검사 : 기본 이미지는 삭제하지 않기 위함
+	public String selectEbookImg(int ebookNo) throws ClassNotFoundException, SQLException {
+		String result = "other";
+		
+		// debug
+		System.out.println(ebookNo +" <-- EbookDao.selectEbookImg param ebookNo");
+		
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT ebook_img FROM ebook WHERE ebook_no=?";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setInt(1, ebookNo);
+	    ResultSet rs = stmt.executeQuery();
+	    while(rs.next() == true) {
+		    if(rs.getString("ebook_img").equals("noimage.png")) {
+		    	result = "noimage";
+		    }
+	    }
+	    // debug
+		System.out.println(stmt + "<-- EbookDao.selectEbookImg SELECT stmt");
+		System.out.println(rs + "<-- EbookDao.selectEbookImg SELECT rs");
+		System.out.println(result + " <-- EbookDao.selectEbookImg SELECT result");
+	    
+ 		rs.close();
+ 		stmt.close();
+ 		conn.close();
+ 		
+ 		return result; // noimage:기본이미지, other:다른이미지
 	}
 	
 	// [전자책 관리] ebook 전체 수정

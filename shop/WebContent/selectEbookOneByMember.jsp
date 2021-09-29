@@ -208,8 +208,8 @@
 				
 				if(currentPage > ROW_PER_PAGE) {	// 현재 페이지 번호(currentPage)가 페이징 수(rowPerPage)보다 크면 rowPerPage씩 넘어갈 수 있는 이전 버튼 활성화
 			%>
-				<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?currentPage=1" class="btn btn-outline-dark">≪</a>
-				<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?currentPage=<%=currentPage - ROW_PER_PAGE %>&first=<%=first - ROW_PER_PAGE %>&ebookNo=<%=ebookNo %>" class="btn btn-outline-dark">＜</a>
+				<a class="btn btn-outline-dark btn-sm" href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?currentPage=1">≪</a>
+				<a class="btn btn-outline-dark btn-sm" href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?currentPage=<%=currentPage - ROW_PER_PAGE %>&first=<%=first - ROW_PER_PAGE %>&ebookNo=<%=ebookNo %>">＜</a>
 				<!-- 현재 페이지, 시작 페이징: 페이징 수 만큼 빼서 전달 -->
 			<%		
 				}
@@ -219,21 +219,21 @@
 						break;
 					} else if(currentPage == i) {	// 현재 선택한 페이지 -> btn-dark
 			%>	
-						<a class="btn btn-dark" href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?currentPage=<%=i %>&first=<%=first%>&ebookNo=<%=ebookNo %>"><%=i %></a>
+						<a class="btn btn-dark btn-sm" href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?currentPage=<%=i %>&first=<%=first%>&ebookNo=<%=ebookNo %>"><%=i %></a>
 			<%
 					} else {	// 현재 선택하지 않은 페이지 -> btn-outline-dark
 			%>
-						<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?currentPage=<%=i %>&first=<%=first%>&ebookNo=<%=ebookNo %>" class="btn btn-outline-dark"><%=i %></a>
+						<a class="btn btn-outline-dark btn-sm" href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?currentPage=<%=i %>&first=<%=first%>&ebookNo=<%=ebookNo %>"><%=i %></a>
 			<%
 					}
 				}
 				
 				if(currentPage < lastPage && ROW_PER_PAGE < lastPage) {
 		%>
-				<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?currentPage=<%=currentPage + ROW_PER_PAGE %>&first=<%=first + ROW_PER_PAGE %>&ebookNo=<%=ebookNo %>" class="btn btn-outline-dark">＞</a>
+				<a class="btn btn-outline-dark btn-sm" href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?currentPage=<%=currentPage + ROW_PER_PAGE %>&first=<%=first + ROW_PER_PAGE %>&ebookNo=<%=ebookNo %>">＞</a>
 				<!-- 현재 페이지, 시작 페이징: 페이징 수 만큼 더해서 전달 -->
 				
-				<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?currentPage=<%=lastPage %>&ebookNo=<%=ebookNo %>" class="btn btn-outline-dark">≫</a>
+				<a class="btn btn-outline-dark btn-sm" href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?currentPage=<%=lastPage %>&ebookNo=<%=ebookNo %>">≫</a>
 		<%
 				}
 		%>

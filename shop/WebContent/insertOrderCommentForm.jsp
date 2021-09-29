@@ -135,7 +135,7 @@
 				</thead>
 				<tbody>
 					<tr class="font-weight-bold">
-						<td><textarea rows="10" cols="135" name="orderCommentContent" placeholder="후기를 입력하세요."></textarea></td>
+						<td><textarea rows="10" cols="135" name="orderCommentContent" placeholder="후기를 입력하세요.">추천합니다.</textarea></td>
 					</tr>
 				</tbody>
 			</table>

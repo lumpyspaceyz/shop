@@ -3,6 +3,7 @@
 <%@ page import="vo.*" %>
 <%@ page import="dao.*" %>
 <%@ page import="java.util.*"%>
+<%@ page import="java.io.File" %>
 <%
 	//encoding
 	request.setCharacterEncoding("utf-8");
@@ -26,8 +27,15 @@
 	
 	// dao
 	EbookDao ebookDao = new EbookDao();
+	Ebook ebook = ebookDao.selectEbookOne(ebookNo); // noimage:기본이미지, other:다른이미지
 	
-	Ebook ebook = ebookDao.selectEbookOne(ebookNo);
+	File beforeImg = new File("C:\\git-shop\\shop\\WebContent\\image\\" + ebook.getEbookImg());
+	System.out.println("beforeImg --> " + beforeImg);
+	
+	// 수정 전 이미지(beforeImg)가 기본 이미지(noimage)가 아닌 다른 이미지(other)이면 삭제
+	if(ebookDao.selectEbookImg(ebookNo).equals("other")) {
+		beforeImg.delete();
+	}
 %>
 <!DOCTYPE html>
 <html>

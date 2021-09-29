@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="vo.*" %>
 <%@ page import="dao.*" %>
+<%@ page import="java.io.File" %>
 <%@ page import="com.oreilly.servlet.MultipartRequest"%> <!-- request 대신 -->
 <%@ page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%> <!-- 파일이름 중복 피할 수 있도록 -->
 <%
@@ -28,6 +29,11 @@
 	
 	// dao
 	EbookDao ebookDao = new EbookDao();
-	ebookDao.updateEbookImg(ebook);
+	ebookDao.updateEbookImg(ebook); // [전자책 관리] ebook 이미지 수정
+	
+	File afterImg = mr.getFile("ebookImg"); // 바꾼 이미지
+	// debug
+	System.out.println("afterImg --> " + afterImg);
+	
 	response.sendRedirect(request.getContextPath() + "/admin/selectEbookOne.jsp?ebookNo=" + ebookNo);
 %>

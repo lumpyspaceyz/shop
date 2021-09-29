@@ -58,7 +58,7 @@
 						for(OrderEbookMember oem : list) {
 					%>
 							<tr>
-								<td><a href="<%=request.getContextPath() %>/admin/selectOrderOne.jsp?orderNo=<%=oem.getOrder().getOrderNo() %>"><%=oem.getOrder().getOrderNo() %></a></td>
+								<td><a href="<%=request.getContextPath() %>/selectOrderOne.jsp?orderNo=<%=oem.getOrder().getOrderNo() %>"><%=oem.getOrder().getOrderNo() %></a></td>
 								<td><%=oem.getEbook().getEbookTitle() %></td>
 								<td><%=oem.getOrder().getOrderPrice() %></td>
 								<td><%=oem.getOrder().getCreateDate() %></td>
