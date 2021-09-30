@@ -90,7 +90,7 @@ public class EbookDao {
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
 	    
-	    String sql = "SELECT t.ebook_no ebookNo, e.ebook_title ebookTitle, e.ebook_img ebookImg, e.ebook_price ebookPrice FROM ebook e INNER JOIN (SELECT ebook_no,COUNT(ebook_no) cnt FROM orders GROUP BY ebook_no ORDER BY COUNT(ebook_no) DESC LIMIT 0,5) t ON e.ebook_no = t.ebook_no ORDER BY cnt DESC";
+	    String sql = "SELECT ebook_no ebookNo, ebook_title ebookTitle, ebook_img ebookImg, ebook_price ebookPrice, create_date createDate FROM ebook ORDER BY create_date DESC LIMIT 0, 5";
 	    PreparedStatement stmt = conn.prepareStatement(sql);
 	    ResultSet rs = stmt.executeQuery();
 	    while(rs.next()) {
@@ -99,12 +99,13 @@ public class EbookDao {
 	    	ebook.setEbookTitle(rs.getString("ebookTitle"));
 	    	ebook.setEbookImg(rs.getString("ebookImg"));
 	    	ebook.setEbookPrice(rs.getInt("ebookPrice"));
+	    	ebook.setCreateDate(rs.getString("createDate"));
 	    	ebookList.add(ebook);				
 	    }
 	    
 	    // debug
-  		System.out.println(stmt + " <-- EbookDao.selectPopualarEbookList stmt");
-  		System.out.println(rs + " <-- EbookDao.selectPopualarEbookList rs");
+  		System.out.println(stmt + " <-- EbookDao.selectNewerEbookList stmt");
+  		System.out.println(rs + " <-- EbookDao.selectNewerEbookList rs");
   		
   		rs.close();
   		stmt.close();

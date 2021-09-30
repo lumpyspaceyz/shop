@@ -120,9 +120,6 @@
 						<th>categoryName</th>
 						<th>ebookTitle</th>
 						<th>ebookState</th>
-						<th>회원등급수정</th>
-						<th>비밀번호수정</th>
-						<th>강제탈퇴</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -153,18 +150,6 @@
 									<%
 										}
 									%>		
-								</td>
-								<td>
-									<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원의 비밀번호를 수정 -->
-									<a href="<%=request.getContextPath() %>/admin/updateMemberLevelForm.jsp?memberNo=">등급수정</a>
-								</td>
-								<td>
-									<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원의 비밀번호를 수정 -->
-									<a href="<%=request.getContextPath() %>/admin/updateMemberPwForm.jsp?memberNo=">비밀번호수정</a>
-								</td>
-								<td>
-									<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원을 강제 탈퇴 -->
-									<a href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp?memberNo=">강제탈퇴</a>
 								</td>
 							</tr>
 					<%

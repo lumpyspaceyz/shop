@@ -13,21 +13,18 @@
 		return;
 	}
 
-	int memberNo = Integer.parseInt(request.getParameter("memberNo"));
+	int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
 	
-	// debug
-	System.out.println("강제탈퇴" + memberNo);
-
 	// 방어코드
-	if(request.getParameter("memberNo") == null) {
-		response.sendRedirect(request.getContextPath() + "/admin/selectMemberOne.jsp?currentPage=1");
+	if(request.getParameter("noticeNo") == null) {
+		response.sendRedirect(request.getContextPath() + "/admin/selectNoticeOne.jsp?currentPage=1");
 		return;
 	}
 	
 	// dao
-	MemberDao memberDao = new MemberDao();
+	NoticeDao noticeDao = new NoticeDao();
 	
-	memberDao.deleteMemberByAdmin(memberNo);
-	System.out.println("회원 강제탈퇴 성공");
-	response.sendRedirect(request.getContextPath() + "/admin/selectMemberList.jsp");
+	noticeDao.deleteNotice(noticeNo);
+	System.out.println("공지 삭제 성공");
+	response.sendRedirect(request.getContextPath() + "/admin/selectNoticeList.jsp");
 %>

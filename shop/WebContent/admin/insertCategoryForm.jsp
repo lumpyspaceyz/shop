@@ -70,7 +70,7 @@
 		<br>
 		<div>
 			<input type="submit" value="추가" class="btn btn-outline-dark">
-			<a href="<%=request.getContextPath() %>/admin/adminIndex.jsp" class="btn btn-outline-dark">취소</a>
+			<a href="<%=request.getContextPath() %>/admin/selectCategoryList.jsp" class="btn btn-outline-dark">취소</a>
 		</div>
 	</form>
 </div>

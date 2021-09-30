@@ -92,11 +92,17 @@ a:hover {
 						</td>
 					</tr>
 					
+					<tr>
+						<td>
+							<a href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=1">공지게시판</a>
+						</td>
+					</tr>
+					
 					<!-- 관리자 페이지로 가는 링크 -->
 					<%
 						if(loginMember.getMemberLevel() > 0) {
 					%>
-					<tr>
+					<tr class="border-bottom">
 						<td>
 							<a href="<%=request.getContextPath() %>/admin/adminIndex.jsp">관리자 페이지</a>
 						</td>
@@ -129,6 +135,7 @@ a:hover {
 		// dao
 		CategoryDao categoryDao = new CategoryDao();
 		EbookDao ebookDao = new EbookDao();
+		NoticeDao noticeDao = new NoticeDao();
 		
 		// category별 조회
 		String categoryName = "";
@@ -195,6 +202,7 @@ a:hover {
 				%>
 			</tr>
 		</table>
+		<hr>
 		<%
 		// 최신 목록 5개 (최근에 올라온 5개의 Ebook) 
 		ArrayList<Ebook> newerEbookList = ebookDao.selectNewerEbookList();
@@ -315,10 +323,51 @@ a:hover {
 	</div>
 	<!-- end : 페이징 -->
 	
+	<!-- start : notice -->
 	<div class="container pt-3"></div>
 	<div class="container pt-3"></div>
-	<div class="container pt-3"></div>
+	<%
+		ArrayList<Notice> newerNoticeList = noticeDao.selectNewerNoticeList();
+	%>
+	<div class="container p-3 my-3 border" style="width: 45%; margin-left: 0px;">
+	<!-- 최근 공지 5개 -->
+	<label>NOTICE</label>
+		<%
+		for(Notice n : newerNoticeList) {
+		%>
+			<ul class="list-group list-group-flush">
+				<%
+				// 회원or관리자 selectNoteiceOne.jsp 분기
+				if(loginMember.getMemberLevel() > 0) {
+					%>
+						<li class="list-group-item"><a href="<%=request.getContextPath() %>/admin/selectNoticeOne.jsp?noticeNo=<%=n.getNoticeNo() %>">
+					<%
+				} else if(loginMember.getMemberLevel() == 0) {
+					%>
+						<li class="list-group-item"><a href="<%=request.getContextPath() %>/selectNoticeOne.jsp?noticeNo=<%=n.getNoticeNo() %>">
+					<%
+				}
+					%>
+								<%=n.getCreateDate() %>
+								<%=n.getNoticeTitle() %>
+							<%
+								if(n.getMemberNo() > 0) {
+							%>	
+								관리자	
+							<%		
+								}
+							%>
+						</a></li>
+			</ul>
+		<%
+		}
+		%>
+	</div>
+	<!-- end : notice -->
 	
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
 </div>
 </body>
 </html>

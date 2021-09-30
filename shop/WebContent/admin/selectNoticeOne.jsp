@@ -4,7 +4,6 @@
 <%@ page import="dao.*" %>
 <%@ page import="java.util.*"%>
 <%
-
 	// encoding
 	request.setCharacterEncoding("utf-8");
 	
@@ -14,20 +13,21 @@
 		response.sendRedirect(request.getContextPath() + "/index.jsp");
 		return;
 	}
+
 	// 방어코드
-	if(request.getParameter("memberNo") == null) {
-		response.sendRedirect(request.getContextPath() + "/selectMemberList.jsp?currentPage=1");
+	if(request.getParameter("noticeNo") == null) {
+		response.sendRedirect(request.getContextPath() + "/admin/selectNoticeList.jsp?currentPage=1");
 		return;
 	}
-	
-	int memberNo = Integer.parseInt(request.getParameter("memberNo"));
+
+	int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
 	// debug
-	System.out.println("debug " + memberNo + " <-- memberNo");
+	System.out.println("debug " + noticeNo + " <-- noticeNo");
 	
 	// dao
-	MemberDao memberDao = new MemberDao();
+	NoticeDao noticeDao = new NoticeDao();
 	
-	Member member = memberDao.selectMemberOne(memberNo);
+	Notice notice = noticeDao.selectNoticeOne(noticeNo);
 %>
 <!DOCTYPE html>
 <html>
@@ -46,53 +46,45 @@
 	
 	<div class="container p-3 my-3 border">
 		<div class="jumbotron">
-		  <h1>관리자 페이지 - 회원목록</h1>
+		  <h1>관리자 페이지 - 공지 상세보기</h1>
 		</div>
 	
 		<table class="table table-borderless table-hover text-center">
 			<thead>
 				<tr class="border-bottom font-weight-bold">
+					<th>noticeNo</th>
+					<th>noticeTitle</th>
+					<th>noticeContent</th>
 					<th>memberNo</th>
-					<th>memberId</th>
-					<th>memberLevel</th>
-					<th>memberName</th>
-					<th>memberAge</th>
-					<th>memberGender</th>
-					<th>updateDate</th>
 					<th>createDate</th>
+					<th>updateDate</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td><%=member.getMemberNo() %></td>
-					<td><%=member.getMemberId() %></td>
-					<td><%=member.getMemberLevel() %>
+					<td><%=notice.getNoticeNo() %></td>
+					<td><%=notice.getNoticeTitle() %></td>
+					<td><%=notice.getNoticeContent() %></td>
+					<td><%=notice.getMemberNo() %>
 						<%
-							if(member.getMemberLevel() == 0) {
-						%>	
-								<br><span>일반회원</span>	
-						<%
-							} else if(member.getMemberLevel() == 1) {
+							if(notice.getMemberNo() == 1) {
 						%>	
 								<br><span>관리자</span>	
 						<%
 							}
 						%>
 					</td>
-					<td><%=member.getMemberName() %></td>
-					<td><%=member.getMemberAge() %></td>
-					<td><%=member.getMemberGender() %></td>
-					<td><%=member.getUpdateDate() %></td>
-					<td><%=member.getCreateDate() %></td>
+					<td><%=notice.getCreateDate() %></td>
+					<td><%=notice.getUpdateDate() %></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 	
 	<div class="text-center">
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/updateMemberAllForm.jsp?memberNo=<%=member.getMemberNo() %>">수정</a>
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp?memberNo=<%=member.getMemberNo() %>">삭제</a>
-		<a class="btn btn-outline-dark" href="./selectMemberList.jsp?currentPage=1">목록</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/updateNoticeForm.jsp?noticeNo=<%=notice.getNoticeNo() %>">수정</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/deleteNoticeForm.jsp?noticeNo=<%=notice.getNoticeNo() %>">삭제</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/selectNoticeList.jsp?currentPage=1">목록</a>
 	</div>
 	
 	<div class="container pt-3"></div>

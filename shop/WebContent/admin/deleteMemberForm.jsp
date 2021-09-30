@@ -6,7 +6,7 @@
 <%
 	// 방어코드
 	if(request.getParameter("memberNo") == null) {
-		response.sendRedirect("./selectMemberList.jsp?currentPage=1");
+		response.sendRedirect(request.getContextPath() + "/selectMemberList.jsp?currentPage=1");
 		return;
 	}
 

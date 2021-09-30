@@ -29,14 +29,15 @@
 		return;
 	}
 	
-	CategoryDao categoryDao = new CategoryDao();
-	
 	String categoryName = request.getParameter("categoryName");
 	String categoryState = request.getParameter("categoryState");
 	// debug request 매개값
 	System.out.println("debug categoryName " + categoryName);
 	System.out.println("debug categoryState " + categoryState);
 
+	// dao
+	CategoryDao categoryDao = new CategoryDao();
+	
 	Category category = null;
 	category = new Category();
 	category.setCategoryName(categoryName);

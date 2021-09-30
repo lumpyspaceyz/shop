@@ -234,10 +234,10 @@ public class MemberDao {
 	
 	// [관리자+회원] 회원정보 상세 조회
 	public Member selectMemberOne(int memberNo) throws ClassNotFoundException, SQLException {
+		Member member = null;
+		
 		// debug
 		System.out.println(memberNo +" <-- MemberDao.selectMemberOne param memberNo");
-		
-		Member member = null;
 		
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
@@ -321,7 +321,7 @@ public class MemberDao {
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
 	    
-	    String sql = "UPDATE member SET member_id=?, member_level=?, member_name=?, member_age=?, member_gender=? WHERE member_no=?";
+	    String sql = "UPDATE member SET member_id=?, member_level=?, member_name=?, member_age=?, member_gender=?, update_date=NOW() WHERE member_no=?";
 	    PreparedStatement stmt = conn.prepareStatement(sql);
 	    stmt.setString(1, member.getMemberId());
 	    stmt.setInt(2, member.getMemberLevel());
