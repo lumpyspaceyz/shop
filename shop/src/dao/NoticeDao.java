@@ -12,7 +12,7 @@ import vo.Member;
 import vo.Notice;
 
 public class NoticeDao {
-	// [공지 관리] - 공지 추가
+	// [공지 관리] - 공지 입력
 	public void insertNotice(Notice notice) throws ClassNotFoundException, SQLException {
 		// debug
 		System.out.println(notice.getNoticeTitle() +" <-- NoticeDao.insertNotice param noticeTitle");
@@ -37,14 +37,16 @@ public class NoticeDao {
 	}	
 		
 	// [공지 관리] - 공지 목록 출력
-	public ArrayList<Notice> selectNoticeList() throws ClassNotFoundException, SQLException{
+	public ArrayList<Notice> selectNoticeList(int beginRow, int ROW_PER_PAGE) throws ClassNotFoundException, SQLException{
 		ArrayList<Notice> noticeList = new ArrayList<>();
 		
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
 	    
-	    String sql = "SELECT notice_no noticeNo, notice_title noticeTitle, notice_content noticeContent, member_no memberNo, create_date createDate, update_date updateDate FROM notice ORDER BY createDate DESC";
+	    String sql = "SELECT notice_no noticeNo, notice_title noticeTitle, notice_content noticeContent, member_no memberNo, create_date createDate, update_date updateDate FROM notice ORDER BY createDate DESC LIMIT ?, ?";
 	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setInt(1, beginRow);
+	    stmt.setInt(2, ROW_PER_PAGE);
 	    ResultSet rs = stmt.executeQuery();
 		
 	    while(rs.next()) {

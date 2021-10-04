@@ -16,6 +16,7 @@
 	
 	// dao
 	NoticeDao noticeDao = new NoticeDao();
+	QnaDao qnaDao = new QnaDao();
 %>
 <!DOCTYPE html>
 <html>
@@ -88,12 +89,15 @@ a:hover {
 		</table>
 	</div>
 
-<!-- start : notice -->
 	<div class="container pt-3"></div>
+	
+	<!-- newer notice / newer qna -->
+	<div style="">
+	<!-- start : notice -->
 	<%
 		ArrayList<Notice> newerNoticeList = noticeDao.selectNewerNoticeList();
 	%>
-	<div class="container p-3 my-3 border" style="width: 45%; margin-left: 0px;">
+	<div class="container p-3 my-3 border" style="width: 48%; margin-left: 0px; float: left;">
 	<!-- 최근 공지 5개 -->
 	<label>NOTICE</label>
 		<%
@@ -128,6 +132,45 @@ a:hover {
 		%>
 	</div>
 	<!-- end : notice -->
+	
+	<!-- start : qna -->
+	<%
+		ArrayList<QnaQnaComment> newerQnaList = qnaDao.selectNewerQnaList();
+	%>
+	<div class="container p-3 my-3 border" style="width: 48%; margin-right: 0px; float: right;">
+	<!-- 최근 공지 5개 -->
+	<label>QNA</label>
+		<%
+		for(QnaQnaComment q : newerQnaList) {
+		%>
+			<ul class="list-group list-group-flush">
+				<%
+				// 회원or관리자 selectNoteiceOne.jsp 분기
+				if(loginMember.getMemberLevel() > 0) {
+					%>
+						<li class="list-group-item"><a href="<%=request.getContextPath() %>/selectQnaOne.jsp?qnaNo=<%=q.getQna().getQnaNo() %>">
+					<%
+				} else if(loginMember.getMemberLevel() == 0) {
+					%>
+						<li class="list-group-item"><a href="<%=request.getContextPath() %>/selectQnaOne.jsp?qnaNo=<%=q.getQna().getQnaNo() %>">
+					<%
+				}
+					%>
+								<%=q.getQna().getUpdateDate() %>
+								<%=q.getQna().getQnaTitle() %>
+						</a></li>
+			</ul>
+		<%
+		}
+		%>
+	</div>
+	<!-- end : qna -->
+	</div>
+	
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
+	
 </div>
 </body>
 </html>

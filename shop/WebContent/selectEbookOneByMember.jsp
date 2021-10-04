@@ -55,11 +55,26 @@
 </head>
 <body>
 <div class="container">
-	<!-- start : 회원 mainMenu include -->
-	<div>
-		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
-	</div>
-	<!-- end : 회원 mainMenu include -->
+	<!-- 비회원/회원 메뉴 -->
+	<%
+		if(session.getAttribute("loginMember") == null) {
+	%>
+			<!-- start : beforeLoginMenu include -->
+			<div>
+				<jsp:include page="/partial/beforeLoginMenu.jsp"></jsp:include>
+			</div>
+			<!-- end : beforeLoginMenu include -->
+	<%
+		} else if(session.getAttribute("loginMember") != null) {
+	%>
+			<!-- start : mainMenu include -->
+			<div>
+				<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
+			</div>
+			<!-- end : mainMenu include -->
+	<%	
+		}
+	%>
 	
 	<div class="container p-3 my-3 border">
 		<div class="jumbotron">

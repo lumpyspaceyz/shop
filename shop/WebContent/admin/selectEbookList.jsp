@@ -207,6 +207,7 @@
 	<!-- end : 페이징 -->
 	
 	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
 	
 	<!-- ebookTitle로 검색 -->
 	<!-- ISSUE : 검색했을 때 searchEbookTitle도 함께 넘겨야한다. -->
@@ -217,6 +218,9 @@
 		</form>
 	</div>
 	
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
 </div>
 </body>
 </html>

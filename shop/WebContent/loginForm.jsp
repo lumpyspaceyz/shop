@@ -19,11 +19,26 @@
 </head>
 <body>
 <div class="container">
-	<!-- start : submenu include -->
-	<div>
-		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
-	</div>
-	<!-- end : submenu include -->
+	<!-- 비회원/회원 메뉴 -->
+	<%
+		if(session.getAttribute("loginMember") == null) {
+	%>
+			<!-- start : beforeLoginMenu include -->
+			<div>
+				<jsp:include page="/partial/beforeLoginMenu.jsp"></jsp:include>
+			</div>
+			<!-- end : beforeLoginMenu include -->
+	<%
+		} else if(session.getAttribute("loginMember") != null) {
+	%>
+			<!-- start : mainMenu include -->
+			<div>
+				<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
+			</div>
+			<!-- end : mainMenu include -->
+	<%	
+		}
+	%>
 	
 	<div class="jumbotron">
 	  <h1>로그인</h1>

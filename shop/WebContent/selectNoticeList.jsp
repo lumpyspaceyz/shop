@@ -15,7 +15,7 @@
 	if(request.getParameter("currentPage") != null) {
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
-	final int ROW_PER_PAGE = 10; // 한 번 설정하면 변하지 않는다 -> 상수
+	final int ROW_PER_PAGE = 2; // 한 번 설정하면 변하지 않는다 -> 상수
 	int beginRow = (currentPage-1) * ROW_PER_PAGE;
 	int nowPage = (currentPage / ROW_PER_PAGE) + 1; // 현재 시작 페이징(=first)을 계산하기 위한 변수
 	int first = (nowPage * ROW_PER_PAGE) - (ROW_PER_PAGE-1); // 현재 시작 페이징 번호
@@ -31,7 +31,7 @@
 	// dao
 	NoticeDao noticeDao = new NoticeDao();
 	ArrayList<Notice> noticeList = null;
-	noticeList = noticeDao.selectNoticeList();
+	noticeList = noticeDao.selectNoticeList(beginRow, ROW_PER_PAGE);
 	int totalCount = 0;
 	totalCount = noticeDao.selectTotalCount();
 %>
@@ -108,8 +108,8 @@
 		
 		if(currentPage > ROW_PER_PAGE) {	// 현재 페이지 번호(currentPage)가 페이징 수(rowPerPage)보다 크면 rowPerPage씩 넘어갈 수 있는 이전 버튼 활성화
 %>
-		<a href="<%=request.getContextPath() %>/admin/selectNoticeList.jsp?currentPage=1" class="btn btn-outline-dark">≪</a>
-		<a href="<%=request.getContextPath() %>/admin/selectNoticeList.jsp?currentPage=<%=currentPage - ROW_PER_PAGE %>&first=<%=first - ROW_PER_PAGE %>" class="btn btn-outline-dark">＜</a>
+		<a href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=1" class="btn btn-outline-dark">≪</a>
+		<a href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=<%=currentPage - ROW_PER_PAGE %>&first=<%=first - ROW_PER_PAGE %>" class="btn btn-outline-dark">＜</a>
 		<!-- 현재 페이지, 시작 페이징: 페이징 수 만큼 빼서 전달 -->
 <%		
 		}
@@ -119,21 +119,21 @@
 				break;
 			} else if(currentPage == i) {	// 현재 선택한 페이지 -> btn-dark
 %>	
-				<a class="btn btn-dark" href="<%=request.getContextPath() %>/admin/selectNoticeList.jsp?currentPage=<%=i %>&first=<%=first%>"><%=i %></a>
+				<a class="btn btn-dark" href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=<%=i %>&first=<%=first%>"><%=i %></a>
 <%
 			} else {	// 현재 선택하지 않은 페이지 -> btn-outline-dark
 %>
-				<a href="<%=request.getContextPath() %>/admin/selectNoticeList.jsp?currentPage=<%=i %>&first=<%=first%>" class="btn btn-outline-dark"><%=i %></a>
+				<a href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=<%=i %>&first=<%=first%>" class="btn btn-outline-dark"><%=i %></a>
 <%
 			}
 		}
 		
 		if(currentPage < lastPage && ROW_PER_PAGE < lastPage) {
 %>
-		<a href="<%=request.getContextPath() %>/admin/selectNoticeList.jsp?currentPage=<%=currentPage + ROW_PER_PAGE %>&first=<%=first + ROW_PER_PAGE %>" class="btn btn-outline-dark">＞</a>
+		<a href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=<%=currentPage + ROW_PER_PAGE %>&first=<%=first + ROW_PER_PAGE %>" class="btn btn-outline-dark">＞</a>
 		<!-- 현재 페이지, 시작 페이징: 페이징 수 만큼 더해서 전달 -->
 		
-		<a href="<%=request.getContextPath() %>/admin/selectNoticeList.jsp?currentPage=<%=lastPage %>" class="btn btn-outline-dark">≫</a>
+		<a href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=<%=lastPage %>" class="btn btn-outline-dark">≫</a>
 <%
 		}
 %>
@@ -141,8 +141,7 @@
 	<!-- end : 페이징 -->
 	
 	<div class="container pt-3"></div>
-
-	
+	<div class="container pt-3"></div>
 	<div class="container pt-3"></div>
 </div>
 </body>

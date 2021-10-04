@@ -38,11 +38,11 @@
 </head>
 <body>
 <div class="container">
-	<!-- start : 관리자 adminMenu include -->
+	<!-- start : 회원 mainMenu include -->
 	<div>
-		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
+		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
 	</div>
-	<!-- end : 관리자 adminMenu include -->
+	<!-- end : 회원 mainMenu include -->
 	
 	<div class="container p-3 my-3 border">
 		<div class="jumbotron">

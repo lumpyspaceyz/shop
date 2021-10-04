@@ -35,7 +35,7 @@
 	// dao
 	NoticeDao noticeDao = new NoticeDao();
 	ArrayList<Notice> noticeList = null;
-	noticeList = noticeDao.selectNoticeList();
+	noticeList = noticeDao.selectNoticeList(beginRow, ROW_PER_PAGE);
 	int totalCount = 0;
 	totalCount = noticeDao.selectTotalCount();
 %>
@@ -150,12 +150,15 @@
 	<!-- end : 페이징 -->
 	
 	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
 	
 	<div class="text-center">
 		<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 공지 추가 -->
 		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/insertNoticeForm.jsp">공지추가</a>
 	</div>
 	
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
 	<div class="container pt-3"></div>
 </div>
 </body>

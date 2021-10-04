@@ -38,7 +38,7 @@
 			<a class="nav-link" href="<%=request.getContextPath() %>/admin/selectNoticeList.jsp">공지게시판 관리</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link" href="">QnA게시판 관리</a>
+			<a class="nav-link" href="<%=request.getContextPath() %>/admin/selectQnaList.jsp">QnA게시판 관리</a>
 		</li>
 		</ul>
 	</nav>

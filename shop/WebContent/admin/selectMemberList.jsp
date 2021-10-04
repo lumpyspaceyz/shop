@@ -184,6 +184,7 @@
 	<!-- end : 페이징 -->
 	
 	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
 	
 	<!-- memberId로 검색 -->
 	<!-- ISSUE : 검색했을 때 searchMemberId도 함께 넘겨야한다. -->
@@ -193,6 +194,10 @@
 			<button type="submit"class="btn btn-outline-dark">search</button>
 		</form>
 	</div>
+	
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
 </div>
 </body>
 </html>

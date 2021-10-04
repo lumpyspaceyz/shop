@@ -27,11 +27,26 @@ a:hover {
 </head>
 <body>
 <div class="container">
-	<!-- start : submenu include -->
-	<div>
-		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
-	</div>
-	<!-- end : submenu include -->
+	<!-- 비회원/회원 메뉴 -->
+	<%
+		if(session.getAttribute("loginMember") == null) {
+	%>
+			<!-- start : beforeLoginMenu include -->
+			<div>
+				<jsp:include page="/partial/beforeLoginMenu.jsp"></jsp:include>
+			</div>
+			<!-- end : beforeLoginMenu include -->
+	<%
+		} else if(session.getAttribute("loginMember") != null) {
+	%>
+			<!-- start : mainMenu include -->
+			<div>
+				<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
+			</div>
+			<!-- end : mainMenu include -->
+	<%	
+		}
+	%>
 	
 	<div class="container p-3 my-3 border">
 		<div class="jumbotron">
@@ -52,7 +67,13 @@ a:hover {
 					<tr>
 						<td>
 							<a href="<%=request.getContextPath() %>/insertMemberForm.jsp">회원가입</a>
-						</td><!-- insertMemberAction.jsp -->
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="<%=request.getContextPath() %>/selectQnaList.jsp?currentPage=1">Qna게시판</a>
+						</td>
 					</tr>
 				</table>
 		<%		
@@ -95,6 +116,12 @@ a:hover {
 					<tr>
 						<td>
 							<a href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=1">공지게시판</a>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="<%=request.getContextPath() %>/selectQnaList.jsp?currentPage=1">Qna게시판</a>
 						</td>
 					</tr>
 					

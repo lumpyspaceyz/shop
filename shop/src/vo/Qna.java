@@ -4,7 +4,7 @@ public class Qna {
 	private int qnaNo;
 	private String qnaCategory;
 	private String qnaTitle;
-	private String qnsContent;
+	private String qnaContent;
 	private String qnaSecret;
 	private int memberNo;
 	private String createDate;
@@ -28,11 +28,11 @@ public class Qna {
 	public void setQnaTitle(String qnaTitle) {
 		this.qnaTitle = qnaTitle;
 	}
-	public String getQnsContent() {
-		return qnsContent;
+	public String getQnaContent() {
+		return qnaContent;
 	}
-	public void setQnsContent(String qnsContent) {
-		this.qnsContent = qnsContent;
+	public void setQnaContent(String qnsContent) {
+		this.qnaContent = qnsContent;
 	}
 	public String getQnaSecret() {
 		return qnaSecret;

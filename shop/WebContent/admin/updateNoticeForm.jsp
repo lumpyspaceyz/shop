@@ -14,12 +14,11 @@
 	}
 	
 	// 방어코드
+	int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
 	if(request.getParameter("noticeNo") == null) {
 		response.sendRedirect(request.getContextPath() + "/admin/selectNoticeList.jsp?currentPage=1");
 		return;
 	}
-
-	int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
 	// debug
 	System.out.println("debug " + noticeNo + " <-- noticeNo");
 	
