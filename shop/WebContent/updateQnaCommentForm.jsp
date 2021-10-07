@@ -17,15 +17,15 @@
 	//debug
 	System.out.println("loginMemberNo --> " + loginMember.getMemberNo());
 
-	int qnaNo = Integer.parseInt(request.getParameter("qnaNo"));
-	// debug
-	System.out.println("debug " + qnaNo + " <-- qnaNo");
-	
 	// 방어코드
 	if(request.getParameter("qnaNo") == null) {
 		response.sendRedirect(request.getContextPath() + "/selectQnaList.jsp?currentPage=1");
 		return;
 	}
+
+	int qnaNo = Integer.parseInt(request.getParameter("qnaNo"));
+	// debug
+	System.out.println("debug " + qnaNo + " <-- qnaNo");
 	
 	// dao
 	QnaDao qnaDao = new QnaDao();
@@ -34,6 +34,15 @@
 	Qna qna = qnaDao.selectQnaOne(qnaNo);
 	System.out.println("qnaMemberNo --> " + qna.getMemberNo());
 	System.out.println("qnaSecret --> " + qna.getQnaSecret());
+	
+	/* updateQnaComment */
+	int qnaCommentNo = Integer.parseInt(request.getParameter("qnaCommentNo"));
+	
+	// 방어코드
+	if(request.getParameter("qnaCommentNo") == null) {
+		response.sendRedirect(request.getContextPath() + "/selectQnaList.jsp?currentPage=1");
+		return;
+	}	
 	
 %>
 <!DOCTYPE html>
@@ -113,26 +122,6 @@
 		
 	
 	<div class="container p-3 my-3 border">
-	<%
-		if(loginMember.getMemberLevel() > 0 || loginMember.getMemberNo() == qna.getMemberNo()) {
-	%>
-		<!-- 답글 입력 partial -->
-		<form action="<%=request.getContextPath() %>/insertQnaCommentAction.jsp" method="post">
-			<input type="hidden" name="qnaNo" value="<%=qnaNo%>">
-			<div class="form-group">
-				<br>
-				<label for="comment">Comment : </label>
-				<textarea name="qnaCommentContent" class="form-control" rows="5"></textarea>
-			</div>
-			<div class="text-right">
-				<button class="btn btn-sm btn-outline-dark" type="submit">답글입력</button>
-			</div>
-		</form>
-	<%
-		}
-	%>
-
-	<div class="container pt-3"></div>
 	
 	<!--  답글 목록 -->
 	<label>QnaComment list : </label>
@@ -164,59 +153,72 @@
 	ArrayList<QnaComment> qnaCommentList = qnaCommentDao.selectQnaCommentListByPage(qnaNo, commentBeginRow, COMMENT_ROW_PER_PAGE); // 댓글 목록 불러오기
 	
 %>
+	<!-- Update qnaComment -->
+	<form method="post" action="<%=request.getContextPath() %>/updateQnaCommentAction.jsp">
 		<table class="table">
 			<thead>
-				<tr class="font-weight-bold">
-					<td>번호</td>
-					<td>memberNo</td>
-					<td>commentContent</td>
-					<td>commentDate</td>
-					<td>update</td>
-					<td>delete</td>
-				</tr>
-			</thead>
-			<tbody>
-<%
+					<tr class="font-weight-bold">
+						<td>번호</td>
+						<td>memberNo</td>
+						<td>commentContent</td>
+						<td>commentDate</td>
+						<td>update</td>
+					</tr>
+				</thead>
+				<tbody>
+			<%
 				int no = 1 + commentBeginRow;
 				for(QnaComment qnaComment : qnaCommentList) {
-%>
-					<tr>
-						<td><%=no%></td>
-						<td>
-							<%
-								if(qnaComment.getMemberNo() == 1) {
-							%>	
-									<span>관리자</span>	
-							<%
-								} else if(qnaComment.getMemberNo() == qna.getMemberNo()) {
-							%>
-									<span>작성자</span>
-							<%
-								}
-							%>
-						</td>
-						<td><%=qnaComment.getQnaCommentContent() %></td>
-						<td><%=qnaComment.getUpdateDate()%></td>
-					<%
-						if(loginMember.getMemberNo() == qnaComment.getMemberNo()) {
-					%>
-						<td><a href="<%=request.getContextPath() %>/updateQnaCommentForm.jsp?qnaNo=<%=qna.getQnaNo() %>&qnaCommentNo=<%=qnaComment.getQnaCommentNo() %>" class="btn btn-outline-light text-dark">수정</a></td>
-						<td><a href="<%=request.getContextPath() %>/deleteQnaCommentAction.jsp?qnaNo=<%=qna.getQnaNo() %>&qnaCommentNo=<%=qnaComment.getQnaCommentNo() %>" class="btn btn-outline-light text-dark">삭제</a></td>
-					<%
-						} else {
-					%>
-						<td></td>
-						<td></td>
-					<%
-						}
-					%>
-					</tr>
-<%		
+					if(qnaComment.getQnaCommentNo() == qnaCommentNo && qnaComment.getMemberNo() == loginMember.getMemberNo()) {
+			%>
+						<tr>
+							<td><%=no%>
+								<input type="hidden" name="qnaNo" value="<%=qnaComment.getQnaNo() %>">
+								<input type="hidden" name="qnaCommentNo" value="<%=qnaComment.getQnaCommentNo() %>">
+							</td>
+							<td>
+								<%
+									if(qnaComment.getMemberNo() == 1) {
+								%>	
+										<span>관리자</span>	
+								<%
+									} else if(qnaComment.getMemberNo() == qna.getMemberNo()) {
+								%>
+										<span>작성자</span>
+								<%
+									}
+								%>
+							</td>
+							<td><textarea name="qnaCommentContent" class="form-control" rows="2"><%=qnaComment.getQnaCommentContent() %></textarea></td>
+							<td><%=qnaComment.getUpdateDate()%></td>
+							<td><button type="submit" class="btn btn-outline-light text-dark">수정</button></td>
+						</tr>
+		<%		
+					} else {
+		%>
+						<tr>
+							<td><%=no%></td>
+							<td>
+								<%
+									if(qnaComment.getMemberNo() == 1) {
+								%>	
+										<span>관리자</span>	
+								<%
+									}
+								%>
+							</td>
+							<td><%=qnaComment.getQnaCommentContent() %></td>
+							<td><%=qnaComment.getUpdateDate()%></td>
+							<td></td>
+						</tr>
+		<%
+					}
 					no++;
 				}
-%>
+		%>
 			</tbody>
 		</table>
+	</form>
 		
 			<!-- 답글 페이징 -->
 			<div class="text-center">

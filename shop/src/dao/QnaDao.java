@@ -168,7 +168,7 @@ public class QnaDao {
  		conn.close();
 	}
 	
-	// [공지 관리] 공지 삭제
+	// [회원] qna 삭제
 	public void deleteQna(int qnaNo) throws ClassNotFoundException, SQLException {
 		// debug
 		System.out.println(qnaNo +" <-- QnaDao.deleteQna param qnaNo");

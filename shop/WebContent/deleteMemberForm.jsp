@@ -13,14 +13,8 @@
 		response.sendRedirect(request.getContextPath() + "/index.jsp");
 		return;
 	}
-	
-	// 방어코드
-	if(request.getParameter("memberNo") == null) {
-		response.sendRedirect(request.getContextPath() + "/selectMemberList.jsp?currentPage=1");
-		return;
-	}
 
-	int memberNo = Integer.parseInt(request.getParameter("memberNo"));
+	int memberNo = loginMember.getMemberNo();
 	// debug
 	System.out.println("debug " + memberNo + " <-- memberNo");
 	
@@ -46,7 +40,7 @@
 	
 	<div class="container p-3 my-3 border">
 		<div class="jumbotron">
-		  <h1>관리자 페이지 - 회원목록</h1>
+		  <h1>회원 페이지 - 회원탈퇴</h1>
 		</div>
 	
 		<table class="table table-borderless table-hover text-center">
@@ -65,7 +59,7 @@
 			<tbody>
 				<tr>
 					<td><%=member.getMemberNo() %></td>
-					<td><%=member.getMemberId() %></td>
+					<td><%=member.getMemberId() %></a></td>
 					<td><%=member.getMemberLevel() %>
 						<%
 							if(member.getMemberLevel() == 0) {
@@ -90,9 +84,8 @@
 	</div>
 	
 	<div class="text-center">
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/updateMemberAllForm.jsp">수정</a>
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/deleteMemberForm.jsp">삭제</a>
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/index.jsp">main</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/deleteMemberAction.jsp?memberNo=<%=member.getMemberNo() %>">삭제</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/selectMemberOne.jsp?memberNo=<%=member.getMemberNo() %>">취소</a>
 	</div>
 	
 	<div class="container pt-3"></div>

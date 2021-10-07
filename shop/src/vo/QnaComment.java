@@ -2,6 +2,7 @@ package vo;
 
 public class QnaComment {
 	private int qnaNo;
+	private int qnaCommentNo;
 	private String qnaCommentContent;
 	private int memberNo;
 	private String createDate;
@@ -12,6 +13,12 @@ public class QnaComment {
 	}
 	public void setQnaNo(int qnaNo) {
 		this.qnaNo = qnaNo;
+	}
+	public int getQnaCommentNo() {
+		return qnaCommentNo;
+	}
+	public void setQnaCommentNo(int qnaCommentNo) {
+		this.qnaCommentNo = qnaCommentNo;
 	}
 	public String getQnaCommentContent() {
 		return qnaCommentContent;

@@ -16,17 +16,31 @@
 div {
 	overflow: hidden;
 }
+a {
+  transition: 0.3s;
+}
 a, a:hover {
 	text-decoration: none;
 	color: #000;
 }
-a:hover {
-	font-weight: bold;
+#ebookTable td{
+	padding: 0px;
+}
+.ebookImg {
+	padding: 15px;
+}
+img.hover-shadow {
+  transition: 0.3s;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 10px 0 rgba(0, 0, 0, 0.5);
 }
 </style>
 </head>
 <body>
 <div class="container">
+
 	<!-- 비회원/회원 메뉴 -->
 	<%
 		if(session.getAttribute("loginMember") == null) {
@@ -104,12 +118,6 @@ a:hover {
 					<tr>
 						<td>
 							<a href="<%=request.getContextPath() %>/selectOrderListByMember.jsp">나의주문</a>
-						</td>
-					</tr>
-					
-					<tr>
-						<td>
-							<a href="<%=request.getContextPath() %>/deleteMemberForm.jsp">회원탈퇴</a>
 						</td>
 					</tr>
 					
@@ -201,28 +209,28 @@ a:hover {
 		ArrayList<Ebook> popularEbookList = ebookDao.selectPopualarEbookList();
 		%>
 		<!-- 인기상품 목록 -->
-		<table class="table table-borderless text-center">
+		<table id="ebookTable" class="table table-borderless text-center">
 				<tr><td colspan="5">BEST5</td></tr>
 				<%
 				for(Ebook e : popularEbookList) {
 				%>
 					<td>
-						<%
+					<%
 						// 회원or관리자 selectEbookOne.jsp 분기
 						if(loginMember.getMemberLevel() > 0) {
-							%>
-								<a href="<%=request.getContextPath() %>/admin/selectEbookOne.jsp?ebookNo=<%=e.getEbookNo() %>">
-							<%
+					%>
+							<a href="<%=request.getContextPath() %>/admin/selectEbookOne.jsp?ebookNo=<%=e.getEbookNo() %>">
+					<%
 						} else if(loginMember.getMemberLevel() == 0) {
-							%>
-								<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?ebookNo=<%=e.getEbookNo() %>">
-							<%
+					%>
+							<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?ebookNo=<%=e.getEbookNo() %>">
+					<%
 						}
-							%>
-									<div><img src="<%=request.getContextPath() %>/image/<%=e.getEbookImg() %>" width="180" height="180"></div>
-									<div><%=e.getEbookTitle() %></div>
-									<div>₩ <%=e.getEbookPrice() %></div>
-								</a>
+					%>
+								<div class="ebookImg"><img src="<%=request.getContextPath() %>/image/<%=e.getEbookImg() %>" width="180" height="180" class="hover-shadow"></div>
+								<div><%=e.getEbookTitle() %></div>
+								<div>₩ <%=e.getEbookPrice() %></div>
+							</a>
 					</td>
 				<%
 				}
@@ -235,28 +243,28 @@ a:hover {
 		ArrayList<Ebook> newerEbookList = ebookDao.selectNewerEbookList();
 		%>
 		<!-- 최신상품 목록 -->
-		<table class="table table-borderless text-center">
+		<table id="ebookTable" class="table table-borderless text-center">
 				<tr><td colspan="5">NEW5</td></tr>
 				<%
 				for(Ebook e : popularEbookList) {
 				%>
 					<td>
-						<%
+					<%
 						// 회원or관리자 selectEbookOne.jsp 분기
 						if(loginMember.getMemberLevel() > 0) {
-							%>
-								<a href="<%=request.getContextPath() %>/admin/selectEbookOne.jsp?ebookNo=<%=e.getEbookNo() %>">
-							<%
+					%>
+							<a href="<%=request.getContextPath() %>/admin/selectEbookOne.jsp?ebookNo=<%=e.getEbookNo() %>">
+					<%
 						} else if(loginMember.getMemberLevel() == 0) {
-							%>
-								<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?ebookNo=<%=e.getEbookNo() %>">
-							<%
+					%>
+							<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?ebookNo=<%=e.getEbookNo() %>">
+					<%
 						}
-							%>
-									<div><img src="<%=request.getContextPath() %>/image/<%=e.getEbookImg() %>" width="180" height="180"></div>
-									<div><%=e.getEbookTitle() %></div>
-									<div>₩ <%=e.getEbookPrice() %></div>
-								</a>
+					%>
+								<div class="ebookImg"><img src="<%=request.getContextPath() %>/image/<%=e.getEbookImg() %>" width="180" height="180" class="hover-shadow"></div>
+								<div><%=e.getEbookTitle() %></div>
+								<div>₩ <%=e.getEbookPrice() %></div>
+							</a>
 					</td>
 				<%
 				}
@@ -265,30 +273,30 @@ a:hover {
 		</table>
 		<hr>
 		<!-- 상품 목록 -->
-		<table class="table table-borderless text-center">
+		<table id="ebookTable" class="table table-borderless text-center">
 			<tr>
 				<%
 					int tr = 0;
 					for(Ebook e : ebookList) {
 				%>
-							<td>
-				<%
-								// 회원or관리자 selectEbookOne.jsp 분기
-								if(loginMember.getMemberLevel() > 0) {
-									%>
-										<a href="<%=request.getContextPath() %>/admin/selectEbookOne.jsp?ebookNo=<%=e.getEbookNo() %>">
-									<%
-								} else if(loginMember.getMemberLevel() == 0) {
-									%>
-										<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?ebookNo=<%=e.getEbookNo() %>">
-									<%
-								}
-				%>
-											<div><img src="<%=request.getContextPath() %>/image/<%=e.getEbookImg() %>" width="180" height="180"></div>
-											<div><%=e.getEbookTitle() %></div>
-											<div>₩ <%=e.getEbookPrice() %></div>
-										</a>
-							</td>
+						<td>
+						<%
+							// 회원or관리자 selectEbookOne.jsp 분기
+							if(loginMember.getMemberLevel() > 0) {
+								%>
+									<a href="<%=request.getContextPath() %>/admin/selectEbookOne.jsp?ebookNo=<%=e.getEbookNo() %>">
+								<%
+							} else if(loginMember.getMemberLevel() == 0) {
+								%>
+									<a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?ebookNo=<%=e.getEbookNo() %>">
+								<%
+							}
+						%>
+										<div class="ebookImg"><img src="<%=request.getContextPath() %>/image/<%=e.getEbookImg() %>" width="180" height="180" class="hover-shadow"></div>
+										<div><%=e.getEbookTitle() %></div>
+										<div>₩ <%=e.getEbookPrice() %></div>
+									</a>
+						</td>
 				<%
 						tr+=1; // for문이 한 바퀴 돌 때마다 tr은 1씩 증가
 						if(tr%5 == 0) {

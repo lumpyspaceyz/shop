@@ -27,7 +27,7 @@
 	// dao
 	MemberDao memberDao = new MemberDao();
 	
-	memberDao.deleteMemberByAdmin(memberNo);
+	memberDao.deleteMember(memberNo);
 	System.out.println("회원 강제탈퇴 성공");
 	response.sendRedirect(request.getContextPath() + "/admin/selectMemberList.jsp");
 %>

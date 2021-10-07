@@ -50,15 +50,17 @@ public class OrderDao {
 	}
 	
 	// [회원] 나의 주문 조회
-	public ArrayList<OrderEbookMember> selectOrderListByMember(int memberNo) throws ClassNotFoundException, SQLException {
+	public ArrayList<OrderEbookMember> selectOrderListByMember(int memberNo, int beginRow, int ROW_PER_PAGE) throws ClassNotFoundException, SQLException {
 		ArrayList<OrderEbookMember> list = new ArrayList<>();
 		
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		
-		String sql = "SELECT o.order_no orderNo, e.ebook_no ebookNo, e.ebook_title ebookTitle, m.member_no memberNo, m.member_id memberId, o.order_price orderPrice, o.create_date createDate FROM orders o INNER JOIN ebook e INNER JOIN member m ON o.ebook_no = e.ebook_no AND o.member_no = m.member_no WHERE m.member_no=? ORDER BY o.create_date DESC";
+		String sql = "SELECT o.order_no orderNo, e.ebook_no ebookNo, e.ebook_title ebookTitle, e.ebook_img ebookImg, m.member_no memberNo, m.member_id memberId, o.order_price orderPrice, o.create_date createDate FROM orders o INNER JOIN ebook e INNER JOIN member m ON o.ebook_no = e.ebook_no AND o.member_no = m.member_no WHERE m.member_no=? ORDER BY o.create_date DESC LIMIT ?, ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, memberNo);
+		stmt.setInt(2, beginRow);
+		stmt.setInt(3, ROW_PER_PAGE);
 		ResultSet rs = stmt.executeQuery();
 		while(rs.next()) {
 			// 조인해서 추출한 값 각각 Order o, Ebook e, Member m에 저장하고
@@ -74,6 +76,7 @@ public class OrderDao {
 			Ebook e = new Ebook();
 			e.setEbookNo(rs.getInt("ebookNo"));
 			e.setEbookTitle(rs.getString("ebookTitle"));
+			e.setEbookImg(rs.getString("ebookImg"));
 			oem.setEbook(e);
 			
 			Member m = new Member();
@@ -89,6 +92,58 @@ public class OrderDao {
 		conn.close();
 		
 		return list;
+	}
+	
+	// [회원] 주문 목록 출력 - paging totalCount
+	public int selectTotalCount(int memberNo) throws ClassNotFoundException, SQLException {
+		int totalCount = 0;
+
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT COUNT(*) FROM orders WHERE member_no=?";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setInt(1, memberNo);
+	    ResultSet rs = stmt.executeQuery();
+	    if(rs.next()) {
+			totalCount = rs.getInt("COUNT(*)");
+		}
+	    // debug
+  		System.out.println(stmt + " <-- OrderDao.selectTotalCount stmt");
+  		System.out.println(rs + " <-- OrderDao.selectTotalCount rs");
+
+	    rs.close();
+		stmt.close();
+		conn.close();
+		
+		return totalCount;
+	}
+	
+	// [회원] 나의 주문 상세조회
+	public Order selectOrderOneByMember(int memberNo, int orderNo) throws ClassNotFoundException, SQLException {
+		Order order = null;
+		
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "SELECT order_no orderNo, ebook_no ebookNo, order_price orderPrice, update_date updateDate FROM orders WHERE member_no=? AND order_no=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, memberNo);
+		stmt.setInt(2, orderNo);
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			order = new Order();
+			order.setOrderNo(orderNo);
+			order.setEbookNo(rs.getInt("ebookNo"));
+			order.setOrderPrice(rs.getInt("orderPrice"));
+			order.setUpdateDate(rs.getString("updateDate"));
+		}
+		
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		return order;
 	}
 	
 	// [회원] 주문하기

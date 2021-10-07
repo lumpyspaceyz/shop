@@ -10,7 +10,7 @@
 	}
 %>
 <div>
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
+	<nav id="navbar" class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center fixed-top">
 		<ul class="navbar-nav">
 		<li class="nav-item">
 			<!-- 회원 관리 : 목록, 수정(등급, 비밀번호), 강제탈퇴 -->

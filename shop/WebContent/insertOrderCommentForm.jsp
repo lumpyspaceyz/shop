@@ -34,8 +34,10 @@
 	EbookDao ebookDao = new EbookDao();
 	Ebook ebook = ebookDao.selectEbookOne(ebookNo);
 	
+	/*
 	OrderDao orderDao = new OrderDao();
 	ArrayList<OrderEbookMember> list = orderDao.selectOrderListByMember(loginMember.getMemberNo());
+	*/
 %>
 <!DOCTYPE html>
 <html>

@@ -31,7 +31,7 @@
 	boolean result = qnaDao.qnaSecretCheck(qnaNo, qnaSecret, loginMember.getMemberNo());
 	System.out.println("result --> " + result);
 	
-	if(result == true) {	
+	if(result == true || loginMember.getMemberLevel() > 0) { // 로그인한 회원: qnaSecret 확인 후 조회 가능, 관리자: 조회 가능
 		response.sendRedirect(request.getContextPath() + "/selectQnaOne.jsp?qnaNo=" + qnaNo);
 	} else {
 		response.sendRedirect(request.getContextPath() + "/selectQnaList.jsp?currentPage=1");

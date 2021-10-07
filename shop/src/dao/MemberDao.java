@@ -308,7 +308,7 @@ public class MemberDao {
 //		return result;
 //	}
 
-	// [관리자] 회원정보 전체 수정
+	// [관리자+회원] 회원정보 전체 수정
 	public void updateMemberAllByAdmin(Member member) throws ClassNotFoundException, SQLException {
 		// debug
 		System.out.println(member.getMemberNo() +" <-- MemberDao.updateMemberAllByAdmin param memberNo");
@@ -385,10 +385,10 @@ public class MemberDao {
  		conn.close();
 	}
 	
-	// [관리자] 회원 강제탈퇴
-	public void deleteMemberByAdmin(int memberNo) throws ClassNotFoundException, SQLException {
+	// [관리자+회원] 회원 강제탈퇴
+	public void deleteMember(int memberNo) throws ClassNotFoundException, SQLException {
 		// debug
-		System.out.println(memberNo +" <-- MemberDao.deleteMemberByAdmin param memberNo");
+		System.out.println(memberNo +" <-- MemberDao.deleteMember param memberNo");
 			
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
@@ -398,8 +398,8 @@ public class MemberDao {
 	    stmt.setInt(1, memberNo);
 	    ResultSet rs = stmt.executeQuery();
 	    // debug
-  		System.out.println(stmt + " <-- MemberDao.deleteMemberByAdmin stmt");
-  		System.out.println(rs + " <-- MemberDao.deleteMemberByAdmin rs");
+  		System.out.println(stmt + " <-- MemberDao.deleteMember stmt");
+  		System.out.println(rs + " <-- MemberDao.deleteMember rs");
 	    
  		rs.close();
  		stmt.close();

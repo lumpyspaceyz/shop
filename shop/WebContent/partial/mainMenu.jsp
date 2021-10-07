@@ -5,7 +5,7 @@
 	Member loginMember = (Member)session.getAttribute("loginMember");
 %>
 <div>
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center fixed-top">
 		<ul class="navbar-nav">
 		<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/logout.jsp">로그아웃</a></li>
 		<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/deleteMemberForm.jsp">회원탈퇴</a></li>

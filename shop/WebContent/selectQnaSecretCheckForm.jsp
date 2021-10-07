@@ -89,7 +89,7 @@
 				</tr>
 			</tbody>
 			<%
-				if(loginMember.getMemberNo() == qna.getMemberNo()) {
+				if(loginMember.getMemberNo() == qna.getMemberNo() || loginMember.getMemberLevel() > 0) {
 			%>
 			<tfoot>
 				<tr>
@@ -107,7 +107,7 @@
 	
 	<div class="text-center">
 		<%
-			if(loginMember.getMemberNo() == qna.getMemberNo()) {
+			if(loginMember.getMemberNo() == qna.getMemberNo() || loginMember.getMemberLevel() > 0) {
 		%>
 				<button type="submit" class="btn btn-outline-dark">입력</button>
 		<%
