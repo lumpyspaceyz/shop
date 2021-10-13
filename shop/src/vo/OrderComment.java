@@ -7,7 +7,7 @@ public class OrderComment {
 	private String orderCommentContent;
 	private String updateDate;
 	private String createDate;
-	
+
 	public int getOrderNo() {
 		return orderNo;
 	}
@@ -43,5 +43,12 @@ public class OrderComment {
 	}
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderComment [orderNo=" + orderNo + ", ebookNo=" + ebookNo + ", orderScore=" + orderScore
+				+ ", orderCommentContent=" + orderCommentContent + ", updateDate=" + updateDate + ", createDate="
+				+ createDate + "]";
 	}
 }

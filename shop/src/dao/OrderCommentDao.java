@@ -10,10 +10,7 @@ public class OrderCommentDao {
 	// [회원] 후기 작성
 	public void insertOrderComment(OrderComment orderComment) throws ClassNotFoundException, SQLException {
 		// debug
-		System.out.println(orderComment.getOrderNo() +" <-- OrderCommentDao.insertOrderComment param orderNo");
-		System.out.println(orderComment.getEbookNo() +" <-- OrderCommentDao.insertOrderComment param ebookNo");
-		System.out.println(orderComment.getOrderScore() +" <-- OrderCommentDao.insertOrderComment param orderScore");
-		System.out.println(orderComment.getOrderCommentContent() +" <-- OrderCommentDao.insertOrderComment param orderCommentContent");
+		System.out.println(orderComment +" <-- OrderCommentDao.insertOrderComment param");
 		
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
@@ -131,6 +128,8 @@ public class OrderCommentDao {
 		ArrayList<OrderComment> orderCommentList = new ArrayList<>();
 		
 		// debug
+		System.out.println(beginRow +" <-- OrderCommentDao.selectOrderCommentListByEbookNo param beginRow");
+		System.out.println(ROW_PER_PAGE +" <-- OrderCommentDao.selectOrderCommentListByEbookNo param ROW_PER_PAGE");
 		System.out.println(ebookNo +" <-- OrderCommentDao.selectOrderCommentListByEbookNo param ebookNo");
 		
 		DBUtil dbutil = new DBUtil();
@@ -162,6 +161,68 @@ public class OrderCommentDao {
 		
 		return orderCommentList;
 		
+	}
+	
+	// [관리자] 전체 후기목록
+	public ArrayList<OrderComment> selectOrderCommentListByAdmin(int beginRow, int ROW_PER_PAGE) throws ClassNotFoundException, SQLException {
+		ArrayList<OrderComment> orderCommentList = new ArrayList<>();
+		
+		// debug
+		System.out.println(beginRow +" <-- OrderCommentDao.selectOrderCommentListByAdmin param beginRow");
+		System.out.println(ROW_PER_PAGE +" <-- OrderCommentDao.selectOrderCommentListByAdmin param ROW_PER_PAGE");
+		
+		DBUtil dbutil = new DBUtil();
+		Connection conn = dbutil.getConnection();
+		
+		String sql ="SELECT order_no orderNo, ebook_no ebookNo, order_score orderScore, order_comment_content orderCommentContent, update_date updateDate FROM order_comment  ORDER BY update_date DESC LIMIT ?,?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, beginRow);
+	    stmt.setInt(2, ROW_PER_PAGE);
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			OrderComment orderComment = null;
+			orderComment = new OrderComment();
+			orderComment.setOrderNo(rs.getInt("orderNo"));
+			orderComment.setEbookNo(rs.getInt("ebookNo"));
+			orderComment.setOrderScore(rs.getInt("orderScore"));
+			orderComment.setOrderCommentContent(rs.getString("orderCommentContent"));	
+			orderComment.setUpdateDate(rs.getString("updateDate"));	
+			orderCommentList.add(orderComment);
+		}
+		// debug
+		System.out.println(stmt + "<-- OrderCommentDao.selectOrderCommentListByAdmin stmt");
+		System.out.println(rs + "<-- OrderCommentDao.selectOrderCommentListByAdmin rs");
+
+		rs.close();
+ 		stmt.close();
+ 		conn.close();
+		
+		return orderCommentList;
+		
+	}
+	
+	// [관리자] 전체 후기목록 - paging totalCount
+	public int selectOrderCommentTotalCountByAdmin() throws ClassNotFoundException, SQLException {
+		int totalCount = 0;
+		
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT COUNT(*) FROM order_comment";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    ResultSet rs = stmt.executeQuery();
+	    if(rs.next()) {
+			totalCount = rs.getInt("COUNT(*)");
+		}
+	    // debug
+  		System.out.println(stmt + " <-- OrderCommentDao.selectOrderCommentTotalCountByAdmin stmt");
+  		System.out.println(rs + " <-- OrderCommentDao.selectOrderCommentTotalCountByAdmin rs");
+
+	    rs.close();
+		stmt.close();
+		conn.close();
+		
+		return totalCount;
 	}
 	
 	/*

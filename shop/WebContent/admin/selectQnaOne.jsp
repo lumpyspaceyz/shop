@@ -7,15 +7,12 @@
 	//encoding
 	request.setCharacterEncoding("utf-8");
 	
-	//방어코드 : 접속회원 세션 관리
+	//방어코드 : 관리자 세션 관리
 	Member loginMember = (Member)session.getAttribute("loginMember");
-	if(loginMember == null) { // 로그인한 회원 + 관리자 : Qna 조회 가능
+	if(loginMember == null || loginMember.getMemberLevel() < 1) { // 순서 중요. 둘 중 앞부터 연산. 디버깅 코드를 남기려면 else if문으로 따로!
 		response.sendRedirect(request.getContextPath() + "/index.jsp");
 		return;
 	}
-	
-	//debug
-	System.out.println("loginMemberNo --> " + loginMember.getMemberNo());
 	
 	int qnaNo = Integer.parseInt(request.getParameter("qnaNo"));
 	// debug
@@ -23,7 +20,7 @@
 	
 	// qnaNo 유효성 검사
 	if(request.getParameter("qnaNo") == null || request.getParameter("qnaNo").equals("")) {
-		response.sendRedirect(request.getContextPath() + "/selectQnaList.jsp?currentPage=1");
+		response.sendRedirect(request.getContextPath() + "/admin/selectQnaList.jsp?currentPage=1");
 		return;
 	}
 	
@@ -34,15 +31,6 @@
 	Qna qna = qnaDao.selectQnaOne(qnaNo);
 	System.out.println("qnaMemberNo --> " + qna.getMemberNo());
 	System.out.println("qnaSecret --> " + qna.getQnaSecret());
-	
-	/* updateQnaComment */
-	int qnaCommentNo = Integer.parseInt(request.getParameter("qnaCommentNo"));
-	
-	// 방어코드
-	if(request.getParameter("qnaCommentNo") == null) {
-		response.sendRedirect(request.getContextPath() + "/selectQnaList.jsp?currentPage=1");
-		return;
-	}	
 	
 %>
 <!DOCTYPE html>
@@ -55,15 +43,15 @@
 </head>
 <body>
 <div class="container">
-	<!-- start : mainMenu include -->
+	<!-- start : 관리자 메뉴 include -->
 	<div>
-		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
+		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
 	</div>
-	<!-- end : mainMenu include -->
+	<!-- end : 관리자 메뉴 include -->
 	
 	<div class="container p-3 my-3 border">
 		<div class="jumbotron">
-		  <h1>회원 페이지 - qna 상세보기</h1>
+		  <h1>관리자 페이지 - qna게시판 관리</h1>
 		</div>
 	
 		<table class="table table-borderless text-center">
@@ -107,21 +95,34 @@
 	</div>
 	
 	<div class="text-center">
-	<%
-		if(loginMember.getMemberNo() == qna.getMemberNo()) {
-	%>
-			<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/updateQnaForm.jsp?qnaNo=<%=qna.getQnaNo() %>">수정</a>
-			<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/deleteQnaForm.jsp?qnaNo=<%=qna.getQnaNo() %>">삭제</a>
-	<%
-		}
-	%>
-		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/selectQnaList.jsp?currentPage=1">목록</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/deleteQnaForm.jsp?qnaNo=<%=qna.getQnaNo() %>">삭제</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/selectQnaList.jsp?currentPage=1">목록</a>
 	</div>
 	
 	<div class="container pt-3"></div>
 		
 	
 	<div class="container p-3 my-3 border">
+	<%
+		if(loginMember.getMemberLevel() > 0 || loginMember.getMemberNo() == qna.getMemberNo()) {
+	%>
+		<!-- 답글 입력 partial -->
+		<form action="<%=request.getContextPath() %>/insertQnaCommentAction.jsp" method="post">
+			<input type="hidden" name="qnaNo" value="<%=qnaNo%>">
+			<div class="form-group">
+				<br>
+				<label for="comment">Comment : </label>
+				<textarea name="qnaCommentContent" class="form-control" rows="5"></textarea>
+			</div>
+			<div class="text-right">
+				<button class="btn btn-sm btn-outline-dark" type="submit">답글입력</button>
+			</div>
+		</form>
+	<%
+		}
+	%>
+
+	<div class="container pt-3"></div>
 	
 	<!--  답글 목록 -->
 	<label>QnaComment list : </label>
@@ -153,72 +154,59 @@
 	ArrayList<QnaComment> qnaCommentList = qnaCommentDao.selectQnaCommentListByPage(qnaNo, commentBeginRow, COMMENT_ROW_PER_PAGE); // 댓글 목록 불러오기
 	
 %>
-	<!-- Update qnaComment -->
-	<form method="post" action="<%=request.getContextPath() %>/updateQnaCommentAction.jsp">
 		<table class="table">
 			<thead>
-					<tr class="font-weight-bold">
-						<td>번호</td>
-						<td>memberNo</td>
-						<td>commentContent</td>
-						<td>commentDate</td>
-						<td>update</td>
-					</tr>
-				</thead>
-				<tbody>
-			<%
+				<tr class="font-weight-bold">
+					<td>번호</td>
+					<td>memberNo</td>
+					<td>commentContent</td>
+					<td>commentDate</td>
+					<td>update</td>
+					<td>delete</td>
+				</tr>
+			</thead>
+			<tbody>
+<%
 				int no = 1 + commentBeginRow;
 				for(QnaComment qnaComment : qnaCommentList) {
-					if(qnaComment.getQnaCommentNo() == qnaCommentNo && qnaComment.getMemberNo() == loginMember.getMemberNo()) {
-			%>
-						<tr>
-							<td><%=no%>
-								<input type="hidden" name="qnaNo" value="<%=qnaComment.getQnaNo() %>">
-								<input type="hidden" name="qnaCommentNo" value="<%=qnaComment.getQnaCommentNo() %>">
-							</td>
-							<td>
-								<%
-									if(qnaComment.getMemberNo() == 1) {
-								%>	
-										<span>관리자</span>	
-								<%
-									} else if(qnaComment.getMemberNo() == qna.getMemberNo()) {
-								%>
-										<span>작성자</span>
-								<%
-									}
-								%>
-							</td>
-							<td><textarea name="qnaCommentContent" class="form-control" rows="2"><%=qnaComment.getQnaCommentContent() %></textarea></td>
-							<td><%=qnaComment.getUpdateDate()%></td>
-							<td><button type="submit" class="btn btn-outline-light text-dark">수정</button></td>
-						</tr>
-		<%		
-					} else {
-		%>
-						<tr>
-							<td><%=no%></td>
-							<td>
-								<%
-									if(qnaComment.getMemberNo() == 1) {
-								%>	
-										<span>관리자</span>	
-								<%
-									}
-								%>
-							</td>
-							<td><%=qnaComment.getQnaCommentContent() %></td>
-							<td><%=qnaComment.getUpdateDate()%></td>
-							<td></td>
-						</tr>
-		<%
-					}
+%>
+					<tr>
+						<td><%=no%></td>
+						<td>
+							<%
+								if(qnaComment.getMemberNo() == 1) {
+							%>	
+									<span>관리자</span>	
+							<%
+								} else if(qnaComment.getMemberNo() == qna.getMemberNo()) {
+							%>
+									<span>작성자</span>
+							<%
+								}
+							%>
+						</td>
+						<td><%=qnaComment.getQnaCommentContent() %></td>
+						<td><%=qnaComment.getUpdateDate()%></td>
+					<%
+						if(loginMember.getMemberNo() == qnaComment.getMemberNo()) {
+					%>
+						<td><a href="<%=request.getContextPath() %>/admin/updateQnaCommentForm.jsp?qnaNo=<%=qna.getQnaNo() %>&qnaCommentNo=<%=qnaComment.getQnaCommentNo() %>" class="btn btn-outline-light text-dark">수정</a></td>
+						
+					<%
+						} else {
+					%>
+						<td></td>
+					<%
+						}
+					%>
+						<td><a href="<%=request.getContextPath() %>/admin/deleteQnaCommentAction.jsp?qnaNo=<%=qna.getQnaNo() %>&qnaCommentNo=<%=qnaComment.getQnaCommentNo() %>" class="btn btn-outline-light text-dark">삭제</a></td>
+					</tr>
+<%		
 					no++;
 				}
-		%>
+%>
 			</tbody>
 		</table>
-	</form>
 		
 			<!-- 답글 페이징 -->
 			<div class="text-center">
@@ -237,8 +225,8 @@
 				
 				if(commentCurrentPage > COMMENT_ROW_PER_PAGE) {	// 현재 페이지 번호(commentCurrentPage)가 페이징 수(commentRowPerPage)보다 크면 commentRowPerPage씩 넘어갈 수 있는 이전 버튼 활성화
 %>
-				<a href="<%=request.getContextPath() %>/selectQnaOne.jsp?qnaNo=<%=qnaNo %>&commentCurrentPage=1" class="btn btn-sm btn-outline-dark">≪</a>
-				<a href="<%=request.getContextPath() %>/selectQnaOne.jsp?qnaNo=<%=qnaNo %>&commentCurrentPage=<%=commentCurrentPage - COMMENT_ROW_PER_PAGE %>&commentFirst=<%=commentFirst - COMMENT_ROW_PER_PAGE %>" class="btn btn-sm btn-outline-dark">＜</a>
+				<a href="<%=request.getContextPath() %>/admin/selectQnaOne.jsp?qnaNo=<%=qnaNo %>&commentCurrentPage=1" class="btn btn-sm btn-outline-dark">≪</a>
+				<a href="<%=request.getContextPath() %>/admin/selectQnaOne.jsp?qnaNo=<%=qnaNo %>&commentCurrentPage=<%=commentCurrentPage - COMMENT_ROW_PER_PAGE %>&commentFirst=<%=commentFirst - COMMENT_ROW_PER_PAGE %>" class="btn btn-sm btn-outline-dark">＜</a>
 				<!-- 현재 페이지, 시작 페이징: 페이징 수 만큼 빼서 전달 -->
 <%		
 				}
@@ -248,12 +236,12 @@
 						break;
 					} else if(commentCurrentPage == i) {	// 현재 선택한 페이지 -> btn-dark
 %>	
-						<a href="<%=request.getContextPath() %>/selectQnaOne.jsp?qnaNo=<%=qnaNo %>&commentCurrentPage=<%=i%>&commentFirst=<%=commentFirst%>" class="btn btn-sm btn-dark"><%=i%></a>
+						<a href="<%=request.getContextPath() %>/admin/selectQnaOne.jsp?qnaNo=<%=qnaNo %>&commentCurrentPage=<%=i%>&commentFirst=<%=commentFirst%>" class="btn btn-sm btn-dark"><%=i%></a>
 					
 <%
 					} else {	// 현재 선택하지 않은 페이지 -> btn-outline-dark
 %>
-						<a href="<%=request.getContextPath() %>/selectQnaOne.jsp?qnaNo=<%=qnaNo %>&commentCurrentPage=<%=i%>&commentFirst=<%=commentFirst%>" class="btn btn-sm btn-outline-dark"><%=i%></a>
+						<a href="<%=request.getContextPath() %>/admin/selectQnaOne.jsp?qnaNo=<%=qnaNo %>&commentCurrentPage=<%=i%>&commentFirst=<%=commentFirst%>" class="btn btn-sm btn-outline-dark"><%=i%></a>
 <%
 						
 					}
@@ -262,10 +250,10 @@
 				// 현재 페이지가 마지막 페이지보다 작고 && 마지막 페이지가 페이징 수보다 클 때 다음,끝으로 버튼 활성화
 				if(commentCurrentPage < commentLastPage && COMMENT_ROW_PER_PAGE < commentLastPage) { 
 %>
-				<a href="<%=request.getContextPath() %>/selectQnaOne.jsp?qnaNo=<%=qnaNo %>&commentCurrentPage=<%=commentCurrentPage + COMMENT_ROW_PER_PAGE %>&commentFirst=<%=commentFirst + COMMENT_ROW_PER_PAGE %>" class="btn btn-sm btn-outline-dark">＞</a>
+				<a href="<%=request.getContextPath() %>/admin/selectQnaOne.jsp?qnaNo=<%=qnaNo %>&commentCurrentPage=<%=commentCurrentPage + COMMENT_ROW_PER_PAGE %>&commentFirst=<%=commentFirst + COMMENT_ROW_PER_PAGE %>" class="btn btn-sm btn-outline-dark">＞</a>
 				<!-- 현재 페이지, 시작 페이징: 페이징 수 만큼 더해서 전달 -->
 				
-				<a href="<%=request.getContextPath() %>/selectQnaOne.jsp?qnaNo=<%=qnaNo %>&commentCurrentPage=<%=commentLastPage%>" class="btn btn-sm btn-outline-dark">≫</a>
+				<a href="<%=request.getContextPath() %>/admin/selectQnaOne.jsp?qnaNo=<%=qnaNo %>&commentCurrentPage=<%=commentLastPage%>" class="btn btn-sm btn-outline-dark">≫</a>
 <%
 				}
 	%>

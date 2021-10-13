@@ -246,10 +246,10 @@ public class EbookDao {
 		
 	// [전자책 관리] ebook 검색 - paging totalCount
 	public int selectTotalCountBySearchMemberId(String searchEbookTitle) throws ClassNotFoundException, SQLException {
+		int totalCount = 0;
+		
 		// debug
 		System.out.println(searchEbookTitle +" <-- MemberDao.selectTotalCountBySearchMemberId param searchEbookTitle");
-		
-		int totalCount = 0;
 
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
@@ -274,10 +274,10 @@ public class EbookDao {
 	
 	// [전자책 관리] ebook 상세 조회
 	public Ebook selectEbookOne(int ebookNo) throws ClassNotFoundException, SQLException {
+		Ebook ebook = null;
+		
 		// debug
 		System.out.println(ebookNo +" <-- EbookDao.selectEbookOne param ebookNo");
-		
-		Ebook ebook = null;
 		
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
@@ -372,15 +372,7 @@ public class EbookDao {
 	// [전자책 관리] ebook 전체 수정
 	public void updateEbookAll(Ebook ebook) throws ClassNotFoundException, SQLException {
 		// debug
-		System.out.println(ebook.getEbookNo() +" <-- EbookDao.updateEbookAll param ebookNo");
-		System.out.println(ebook.getCategoryName() +" <-- EbookDao.updateEbookAll param CategoryName");
-		System.out.println(ebook.getEbookTitle() +" <-- EbookDao.updateEbookAll param ebookTitle");
-		System.out.println(ebook.getEbookAuthor() +" <-- EbookDao.updateEbookAll param ebookAuthor");
-		System.out.println(ebook.getEbookCompany() +" <-- EbookDao.updateEbookAll param ebookCompany");
-		System.out.println(ebook.getEbookPrice() +" <-- EbookDao.updateEbookAll param ebookPrice");
-		System.out.println(ebook.getEbookSummary() +" <-- EbookDao.updateEbookAll param ebookSummary");
-		System.out.println(ebook.getEbookState() +" <-- EbookDao.updateEbookAll param ebookState");
-		System.out.println(ebook.getUpdateDate() +" <-- EbookDao.updateEbookAll param updateDate");
+		System.out.println(ebook +" <-- EbookDao.updateEbookAll param");
 		
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();

@@ -15,9 +15,7 @@ public class NoticeDao {
 	// [공지 관리] - 공지 입력
 	public void insertNotice(Notice notice) throws ClassNotFoundException, SQLException {
 		// debug
-		System.out.println(notice.getNoticeTitle() +" <-- NoticeDao.insertNotice param noticeTitle");
-		System.out.println(notice.getNoticeContent() +" <-- NoticeDao.insertNotice param noticeContent");
-		System.out.println(notice.getMemberNo() +" <-- NoticeDao.insertNotice param memberNo");
+		System.out.println(notice +" <-- NoticeDao.insertNotice param");
 		
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
@@ -39,6 +37,10 @@ public class NoticeDao {
 	// [공지 관리] - 공지 목록 출력
 	public ArrayList<Notice> selectNoticeList(int beginRow, int ROW_PER_PAGE) throws ClassNotFoundException, SQLException{
 		ArrayList<Notice> noticeList = new ArrayList<>();
+		
+		// debug
+		System.out.println(beginRow + " <-- NoticDao.selectNoticeList param beginRow");
+		System.out.println(ROW_PER_PAGE + " <-- NoticDao.selectNoticeList param ROW_PER_PAGE");
 		
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
@@ -131,9 +133,7 @@ public class NoticeDao {
 	// [공지 관리] 공지 수정
 	public void updateNotice(Notice notice) throws ClassNotFoundException, SQLException {
 		// debug
-		System.out.println(notice.getNoticeTitle() +" <-- NoticeDao.updateNotice param noticeTitle");
-		System.out.println(notice.getNoticeContent() +" <-- NoticeDao.updateNotice param noticeContent");
-		System.out.println(notice.getNoticeNo() +" <-- NoticeDao.updateNotice param noticeNo");
+		System.out.println(notice +" <-- NoticeDao.updateNotice param");
 			
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();

@@ -35,6 +35,9 @@
 	// dao
 	OrderDao orderDao = new OrderDao();
 	ArrayList<OrderEbookMember> list = orderDao.selectOrderList(beginRow, ROW_PER_PAGE);
+	
+	int totalCount = 0;
+	totalCount = orderDao.selectTotalCount();
 %>
 <!DOCTYPE html>
 <html>
@@ -65,9 +68,7 @@
 						<th>orderPrice</th>
 						<th>createDate</th>
 						<th>memberId</th>
-						<th>회원등급수정</th>
-						<th>비밀번호수정</th>
-						<th>강제탈퇴</th>
+						<th>수정/삭제</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -75,23 +76,12 @@
 						for(OrderEbookMember oem : list) {
 					%>
 							<tr>
-								<td><a href="<%=request.getContextPath() %>/admin/selectOrderOne.jsp?orderNo=<%=oem.getOrder().getOrderNo() %>"><%=oem.getOrder().getOrderNo() %></a></td>
+								<td><%=oem.getOrder().getOrderNo() %></td>
 								<td><%=oem.getEbook().getEbookTitle() %></td>
 								<td><%=oem.getOrder().getOrderPrice() %></td>
 								<td><%=oem.getOrder().getCreateDate() %></td>
 								<td><%=oem.getMember().getMemberId() %></td>
-								<td>
-									<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원의 비밀번호를 수정 -->
-									<a href="<%=request.getContextPath() %>/admin/updateMemberLevelForm.jsp?memberNo=">등급수정</a>
-								</td>
-								<td>
-									<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원의 비밀번호를 수정 -->
-									<a href="<%=request.getContextPath() %>/admin/updateMemberPwForm.jsp?memberNo=">비밀번호수정</a>
-								</td>
-								<td>
-									<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 특정회원을 강제 탈퇴 -->
-									<a href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp?memberNo=">강제탈퇴</a>
-								</td>
+								<td><a href="<%=request.getContextPath() %>/admin/selectOrderOne.jsp?orderNo=<%=oem.getOrder().getOrderNo() %>&ebookNo=<%=oem.getEbook().getEbookNo() %>">상세보기</a></td>
 							</tr>
 					<%
 						}
@@ -99,6 +89,60 @@
 				</tbody>
 		</table>
 	</div>
+	
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
+	
+	<!-- start : 페이징 -->
+	<div class="text-center">
+<%
+			// 마지막 페이지 정보
+			int lastPage = totalCount / ROW_PER_PAGE;
+			if(totalCount % ROW_PER_PAGE != 0) {
+				lastPage++;	// lastPage+=1
+			}
+			
+			// 디버깅
+			System.out.println(totalCount + "<-- 전체 총 게시글 수");
+			System.out.println(lastPage + "<-- 마지막 페이지");
+			
+			if(currentPage > ROW_PER_PAGE) {	// 현재 페이지 번호(currentPage)가 페이징 수(rowPerPage)보다 크면 rowPerPage씩 넘어갈 수 있는 이전 버튼 활성화
+	%>
+			<a href="<%=request.getContextPath() %>/admin/selectOrderList.jsp?currentPage=1" class="btn btn-outline-dark">≪</a>
+			<a href="<%=request.getContextPath() %>/admin/selectOrderList.jsp?currentPage=<%=currentPage - ROW_PER_PAGE %>&first=<%=first - ROW_PER_PAGE %>" class="btn btn-outline-dark">＜</a>
+			<!-- 현재 페이지, 시작 페이징: 페이징 수 만큼 빼서 전달 -->
+	<%		
+			}
+	
+			for(int i=first; i<first+ROW_PER_PAGE; i++) {
+				if((lastPage+1) == i) {	// 마지막 페이지면 for문 빠져나가기
+					break;
+				} else if(currentPage == i) {	// 현재 선택한 페이지 -> btn-dark
+	%>	
+					<a class="btn btn-dark" href="<%=request.getContextPath() %>/admin/selectOrderList.jsp?currentPage=<%=i %>&first=<%=first%>"><%=i %></a>
+	<%
+				} else {	// 현재 선택하지 않은 페이지 -> btn-outline-dark
+	%>
+					<a href="<%=request.getContextPath() %>/admin/selectOrderList.jsp?currentPage=<%=i %>&first=<%=first%>" class="btn btn-outline-dark"><%=i %></a>
+	<%
+				}
+			}
+			
+			if(currentPage < lastPage && ROW_PER_PAGE < lastPage) {
+	%>
+			<a href="<%=request.getContextPath() %>/admin/selectOrderList.jsp?currentPage=<%=currentPage + ROW_PER_PAGE %>&first=<%=first + ROW_PER_PAGE %>" class="btn btn-outline-dark">＞</a>
+			<!-- 현재 페이지, 시작 페이징: 페이징 수 만큼 더해서 전달 -->
+			
+			<a href="<%=request.getContextPath() %>/admin/selectOrderList.jsp?currentPage=<%=lastPage %>" class="btn btn-outline-dark">≫</a>
+	<%
+			}
+	%>
+	</div>
+	<!-- end : 페이징 -->
+	
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
+	<div class="container pt-3"></div>
 </div>
 </body>
 </html>

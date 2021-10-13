@@ -92,7 +92,7 @@
 	<div class="text-center">
 		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/updateMemberAllForm.jsp?memberNo=<%=member.getMemberNo() %>">수정</a>
 		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/deleteMemberForm.jsp?memberNo=<%=member.getMemberNo() %>">삭제</a>
-		<a class="btn btn-outline-dark" href="./selectMemberList.jsp?currentPage=1">목록</a>
+		<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/selectMemberList.jsp?currentPage=1">목록</a>
 	</div>
 	
 	<div class="container pt-3"></div>

@@ -7,12 +7,11 @@
 	// encoding
 	request.setCharacterEncoding("utf-8");
 
-	// 방어코드 : 접속회원 세션 관리 (회원/비회원)
-	Member loginMember = (Member)session.getAttribute("loginMember"); // 일반+회원+관리자 qna게시판 조회 가능
-	
-	if(loginMember != null) {
-		// debug
-		System.out.println("memberLevel --> " + loginMember.getMemberLevel());
+	//방어코드 : 관리자 세션 관리
+	Member loginMember = (Member)session.getAttribute("loginMember");
+	if(loginMember == null || loginMember.getMemberLevel() < 1) { // 순서 중요. 둘 중 앞부터 연산. 디버깅 코드를 남기려면 else if문으로 따로!
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
 	}
 	
 	// paging
@@ -52,30 +51,15 @@
 </head>
 <body>
 <div class="container">
-	<!-- 비회원/회원 메뉴 -->
-	<%
-		if(session.getAttribute("loginMember") == null) {
-	%>
-			<!-- start : beforeLoginMenu include -->
-			<div>
-				<jsp:include page="/partial/beforeLoginMenu.jsp"></jsp:include>
-			</div>
-			<!-- end : beforeLoginMenu include -->
-	<%
-		} else if(session.getAttribute("loginMember") != null) {
-	%>
-			<!-- start : mainMenu include -->
-			<div>
-				<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
-			</div>
-			<!-- end : mainMenu include -->
-	<%	
-		}
-	%>
+	<!-- start : 관리자 메뉴 include -->
+	<div>
+		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
+	</div>
+	<!-- end : 관리자 메뉴 include -->
 	
 	<div class="container p-3 my-3 border">
 		<div class="jumbotron">
-		  <h1>회원/비회원 페이지 - qna게시판</h1>
+		  <h1>관리자 페이지 - qna게시판 관리</h1>
 		</div>
 		
 		<table class="table table-striped table-hover text-center">
@@ -88,6 +72,7 @@
 						<th>qnaSecret</th>
 						<th>createDate</th>
 						<th>qnaComment</th>
+						<th>수정/삭제</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -97,19 +82,7 @@
 					<tr style="padding: 20px 12px; line-height: 50px;">
 						<td><%=qna.getQnaNo() %></td>
 						<td><%=qna.getQnaCategory() %></td>
-						<td>
-						<%
-							if(qna.getQnaSecret().equals("Y")) {
-						%>
-								<a href="<%=request.getContextPath() %>/selectQnaSecretCheckForm.jsp?qnaNo=<%=qna.getQnaNo() %>"><%=qna.getQnaTitle() %></a>
-						<%
-							} else if(qna.getQnaSecret().equals("N")) {
-						%>
-								<a href="<%=request.getContextPath() %>/selectQnaOne.jsp?qnaNo=<%=qna.getQnaNo() %>"><%=qna.getQnaTitle() %></a>
-						<%
-							}
-						%>
-						</td>
+						<td><%=qna.getQnaTitle() %></td>
 						<td><%=qna.getMemberNo() %></td>
 						<td>
 							<%
@@ -137,6 +110,7 @@
 							<%=qnaComment %>
 							<%=qnaCommentCount %>
 						</td>
+						<td><a href="<%=request.getContextPath() %>/admin/selectQnaOne.jsp?qnaNo=<%=qna.getQnaNo() %>">상세보기</a></td>
 					</tr>
 				<%
 				}
@@ -160,8 +134,8 @@
 		
 		if(currentPage > ROW_PER_PAGE) {	// 현재 페이지 번호(currentPage)가 페이징 수(rowPerPage)보다 크면 rowPerPage씩 넘어갈 수 있는 이전 버튼 활성화
 %>
-		<a href="<%=request.getContextPath() %>/selectQnaList.jsp?currentPage=1" class="btn btn-outline-dark">≪</a>
-		<a href="<%=request.getContextPath() %>/selectQnaList.jsp?currentPage=<%=currentPage - ROW_PER_PAGE %>&first=<%=first - ROW_PER_PAGE %>" class="btn btn-outline-dark">＜</a>
+		<a href="<%=request.getContextPath() %>/admin/selectQnaList.jsp?currentPage=1" class="btn btn-outline-dark">≪</a>
+		<a href="<%=request.getContextPath() %>/admin/selectQnaList.jsp?currentPage=<%=currentPage - ROW_PER_PAGE %>&first=<%=first - ROW_PER_PAGE %>" class="btn btn-outline-dark">＜</a>
 		<!-- 현재 페이지, 시작 페이징: 페이징 수 만큼 빼서 전달 -->
 <%		
 		}
@@ -171,38 +145,27 @@
 				break;
 			} else if(currentPage == i) {	// 현재 선택한 페이지 -> btn-dark
 %>	
-				<a class="btn btn-dark" href="<%=request.getContextPath() %>/selectQnaList.jsp?currentPage=<%=i %>&first=<%=first%>"><%=i %></a>
+				<a class="btn btn-dark" href="<%=request.getContextPath() %>/admin/selectQnaList.jsp?currentPage=<%=i %>&first=<%=first%>"><%=i %></a>
 <%
 			} else {	// 현재 선택하지 않은 페이지 -> btn-outline-dark
 %>
-				<a href="<%=request.getContextPath() %>/selectQnaList.jsp?currentPage=<%=i %>&first=<%=first%>" class="btn btn-outline-dark"><%=i %></a>
+				<a href="<%=request.getContextPath() %>/admin/selectQnaList.jsp?currentPage=<%=i %>&first=<%=first%>" class="btn btn-outline-dark"><%=i %></a>
 <%
 			}
 		}
 		
 		if(currentPage < lastPage && ROW_PER_PAGE < lastPage) {
 %>
-		<a href="<%=request.getContextPath() %>/selectQnaList.jsp?currentPage=<%=currentPage + ROW_PER_PAGE %>&first=<%=first + ROW_PER_PAGE %>" class="btn btn-outline-dark">＞</a>
+		<a href="<%=request.getContextPath() %>/admin/selectQnaList.jsp?currentPage=<%=currentPage + ROW_PER_PAGE %>&first=<%=first + ROW_PER_PAGE %>" class="btn btn-outline-dark">＞</a>
 		<!-- 현재 페이지, 시작 페이징: 페이징 수 만큼 더해서 전달 -->
 		
-		<a href="<%=request.getContextPath() %>/selectQnaList.jsp?currentPage=<%=lastPage %>" class="btn btn-outline-dark">≫</a>
+		<a href="<%=request.getContextPath() %>/admin/selectQnaList.jsp?currentPage=<%=lastPage %>" class="btn btn-outline-dark">≫</a>
 <%
 		}
 %>
 	</div>
 	<!-- end : 페이징 -->
 	
-	<div class="container pt-3"></div>
-	<div class="container pt-3"></div>
-	<%
-		if(loginMember != null) { // 로그인한 회원 + 관리자 : Qna 입력 가능
-	%>
-			<div class="text-center">
-				<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/insertQnaForm.jsp">qna등록</a>
-			</div>
-	<%
-		}
-	%>
 	<div class="container pt-3"></div>
 	<div class="container pt-3"></div>
 	<div class="container pt-3"></div>

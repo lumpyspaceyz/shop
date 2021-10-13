@@ -47,83 +47,84 @@
 	</div>
 	<!-- end : submenu include -->
 	
-	<div class="jumbotron">
-	  <h1>주문 정보 상세조회</h1>
-	</div>
-	
-	<!-- ebook 정보 -->
 	<div class="container p-3 my-3 border">
-		<p>ebook 정보</p>
-		<table class="table table-borderless table-hover text-center">
-			<thead>
-				<tr class="border-bottom font-weight-bold">
-					<th>ebookNo</th>
-					<th>categoryName</th>
-					<th>ebookTitle</th>
-					<th>ebookState</th>
-					<th>updateDate</th>
-					<th>createDate</th>
+		<div class="jumbotron">
+		  <h1>주문 정보 상세조회</h1>
+		</div>
+		
+		<!-- ebook 정보 -->
+		<div class="container p-3 my-3 border">
+			<p>ebook 정보</p>
+			<table class="table table-borderless table-hover text-center">
+				<thead>
+					<tr class="border-bottom font-weight-bold">
+						<th>ebookNo</th>
+						<th>categoryName</th>
+						<th>ebookTitle</th>
+						<th>ebookState</th>
+						<th>updateDate</th>
+						<th>createDate</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><%=ebook.ebookNo %></td>
+						<td><%=ebook.getCategoryName() %></td>
+						<td><a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?ebookNo=<%=ebook.ebookNo %>"><%=ebook.getEbookTitle() %></a></td>
+						<td>
+							<%
+								if(ebook.getEbookState().equals("판매중")) {
+							%>	
+									<span>판매중</span>	
+							<%
+								} else if(ebook.getEbookState().equals("품절")) {
+							%>	
+									<span>품절</span>		
+							<%
+								} else if(ebook.getEbookState().equals("절판")) {
+							%>	
+									<span>절판</span>	
+							<%
+								} else if(ebook.getEbookState().equals("구편절판")) {
+							%>
+									<span>구편절판</span>	
+							<%
+								}
+							%>		
+						</td>
+						<td><%=ebook.getUpdateDate() %></td>
+						<td><%=ebook.getCreateDate() %></td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<table class="table table-borderless table-hover text-center">
+				<tr class="font-weight-bold">
+					<th style="vertical-align: middle;">ebookImg</th>
+					<td><img src="<%=request.getContextPath() %>/image/<%=ebook.getEbookImg() %>" width="300px"></td>
 				</tr>
-			</thead>
-			<tbody>
+			</table>
+		</div>
+			
+		<!-- order 정보 -->
+		<div class="container p-3 my-3 border">
+			<p>order 정보</p>
+			<table class="table table-borderless table-hover text-center">
+				<tr class="border-bottom">
+					<th>orderNo</th>
+					<td><%=order.getOrderNo() %></td>
+				</tr>
+				<tr class="border-bottom">
+					<th>orderPrice</th>
+					<td>￦ <%=order.getOrderPrice() %></td>
+				</tr>
 				<tr>
-					<td><%=ebook.ebookNo %></td>
-					<td><%=ebook.getCategoryName() %></td>
-					<td><a href="<%=request.getContextPath() %>/selectEbookOneByMember.jsp?ebookNo=<%=ebook.ebookNo %>"><%=ebook.getEbookTitle() %></a></td>
-					<td>
-						<%
-							if(ebook.getEbookState().equals("판매중")) {
-						%>	
-								<span>판매중</span>	
-						<%
-							} else if(ebook.getEbookState().equals("품절")) {
-						%>	
-								<span>품절</span>		
-						<%
-							} else if(ebook.getEbookState().equals("절판")) {
-						%>	
-								<span>절판</span>	
-						<%
-							} else if(ebook.getEbookState().equals("구편절판")) {
-						%>
-								<span>구편절판</span>	
-						<%
-							}
-						%>		
-					</td>
-					<td><%=ebook.getUpdateDate() %></td>
-					<td><%=ebook.getCreateDate() %></td>
+					<th>createDate</th>
+					<td><%=order.getUpdateDate() %></td>
 				</tr>
-			</tbody>
-		</table>
-		
-		<table class="table table-borderless table-hover text-center">
-			<tr class="font-weight-bold">
-				<th style="vertical-align: middle;">ebookImg</th>
-				<td><img src="<%=request.getContextPath() %>/image/<%=ebook.getEbookImg() %>" width="300px"></td>
-			</tr>
-		</table>
+			</table>
+		</div>
 	</div>
-		
-	<!-- order 정보 -->
-	<div class="container p-3 my-3 border">
-		<p>order 정보</p>
-		<table class="table table-borderless table-hover text-center">
-			<tr class="border-bottom">
-				<th>orderNo</th>
-				<td><%=order.getOrderNo() %></td>
-			</tr>
-			<tr class="border-bottom">
-				<th>orderPrice</th>
-				<td>￦ <%=order.getOrderPrice() %></td>
-			</tr>
-			<tr>
-				<th>createDate</th>
-				<td><%=order.getUpdateDate() %></td>
-			</tr>
-		</table>
-	</div>
-	
 	
 	<div class="container pt-3"></div>
 	<div class="container pt-3"></div>

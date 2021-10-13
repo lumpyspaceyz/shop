@@ -7,15 +7,19 @@
 	// encoding
 	request.setCharacterEncoding("utf-8");
 
-	// 방어코드 : 접속회원 세션 관리 (회원/비회원)
+	// 방어코드 : 관리자 세션 관리
 	Member loginMember = (Member)session.getAttribute("loginMember");
+	if(loginMember == null || loginMember.getMemberLevel() < 1) { // 순서 중요. 둘 중 앞부터 연산. 디버깅 코드를 남기려면 else if문으로 따로!
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
+	}
 	
 	// paging
 	int currentPage = 1;
 	if(request.getParameter("currentPage") != null) {
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
-	final int ROW_PER_PAGE = 5; // 한 번 설정하면 변하지 않는다 -> 상수
+	final int ROW_PER_PAGE = 10; // 한 번 설정하면 변하지 않는다 -> 상수
 	int beginRow = (currentPage-1) * ROW_PER_PAGE;
 	int nowPage = (currentPage / ROW_PER_PAGE) + 1; // 현재 시작 페이징(=first)을 계산하기 위한 변수
 	int first = (nowPage * ROW_PER_PAGE) - (ROW_PER_PAGE-1); // 현재 시작 페이징 번호
@@ -29,11 +33,11 @@
 	System.out.println("paging debug " + first + " <-- first");
 	
 	// dao
-	NoticeDao noticeDao = new NoticeDao();
-	ArrayList<Notice> noticeList = null;
-	noticeList = noticeDao.selectNoticeList(beginRow, ROW_PER_PAGE);
+	OrderCommentDao orderCommentDao = new OrderCommentDao();
+	ArrayList<OrderComment> orderCommentList = null;
+	orderCommentList = orderCommentDao.selectOrderCommentListByAdmin(beginRow, ROW_PER_PAGE);
 	int totalCount = 0;
-	totalCount = noticeDao.selectTotalCount();
+	totalCount = orderCommentDao.selectOrderCommentTotalCountByAdmin();
 %>
 <!DOCTYPE html>
 <html>
@@ -44,47 +48,42 @@
 </head>
 <body>
 <div class="container">
-	<!-- start : 메인 메뉴 include -->
+	<!-- start : 관리자 메뉴 include -->
 	<div>
-		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
+		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
 	</div>
-	<!-- end : 메인 메뉴 include -->
+	<!-- end : 관리자 메뉴 include -->
 	
 	<div class="container p-3 my-3 border">
 		<div class="jumbotron">
-		  <h1>회원/비회원 페이지 - 공지게시판</h1>
+		  <h1>관리자 페이지 - 상품평 관리</h1>
 		</div>
 		
 		<table class="table table-striped table-hover text-center">
 				<thead>
 					<tr class="font-weight-bold">
-						<th>noticeNo</th>
-						<th>noticeTitle</th>
-						<th>noticeContent</th>
-						<th>memberNo</th>
-						<th>createDate</th>
+						<th>orderNo</th>
+						<th>ebookNo</th>
+						<th>orderScore</th>
+						<th>orderCommentContent</th>
 						<th>updateDate</th>
+						<th>수정/삭제</th>
 					</tr>
 				</thead>
 				<tbody>
 				<%
-				for(Notice notice : noticeList) {
+				for(OrderComment orderComment : orderCommentList) {
 				%>
 					<tr>
-						<td><%=notice.getNoticeNo() %></td>
-						<td><a href="<%=request.getContextPath() %>/selectNoticeOne.jsp?noticeNo=<%=notice.getNoticeNo() %>"><%=notice.getNoticeTitle() %></a></td>
-						<td><%=notice.getNoticeContent() %></td>
-						<td><%=notice.getMemberNo() %>
-							<%
-								if(notice.getMemberNo() == 1) {
-							%>	
-									<br><span>관리자</span>	
-							<%
-								}
-							%>
+						<td><%=orderComment.getOrderNo() %></td>
+						<td><%=orderComment.getEbookNo() %></td>
+						<td><%=orderComment.getOrderScore() %></td>
+						<td><%=orderComment.getOrderCommentContent() %></td>
+						<td><%=orderComment.getUpdateDate() %></td>
+						<td>
+							<!-- (현재 로그인된 관리자의 비밀번호를 확인 후) 카테고리 정보 수정 -->
+							<a href="<%=request.getContextPath() %>/admin/selectOrderCommentOne.jsp?orderNo=<%=orderComment.getOrderNo() %>&ebookNo=<%=orderComment.getEbookNo() %>">상세보기</a>
 						</td>
-						<td><%=notice.getCreateDate() %></td>
-						<td><%=notice.getUpdateDate() %></td>
 					</tr>
 				<%
 				}
@@ -108,8 +107,8 @@
 		
 		if(currentPage > ROW_PER_PAGE) {	// 현재 페이지 번호(currentPage)가 페이징 수(rowPerPage)보다 크면 rowPerPage씩 넘어갈 수 있는 이전 버튼 활성화
 %>
-		<a href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=1" class="btn btn-outline-dark">≪</a>
-		<a href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=<%=currentPage - ROW_PER_PAGE %>&first=<%=first - ROW_PER_PAGE %>" class="btn btn-outline-dark">＜</a>
+		<a href="<%=request.getContextPath() %>/admin/selectOrderCommentList.jsp?currentPage=1" class="btn btn-outline-dark">≪</a>
+		<a href="<%=request.getContextPath() %>/admin/selectOrderCommentList.jsp?currentPage=<%=currentPage - ROW_PER_PAGE %>&first=<%=first - ROW_PER_PAGE %>" class="btn btn-outline-dark">＜</a>
 		<!-- 현재 페이지, 시작 페이징: 페이징 수 만큼 빼서 전달 -->
 <%		
 		}
@@ -119,21 +118,21 @@
 				break;
 			} else if(currentPage == i) {	// 현재 선택한 페이지 -> btn-dark
 %>	
-				<a class="btn btn-dark" href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=<%=i %>&first=<%=first%>"><%=i %></a>
+				<a class="btn btn-dark" href="<%=request.getContextPath() %>/admin/selectOrderCommentList.jsp?currentPage=<%=i %>&first=<%=first%>"><%=i %></a>
 <%
 			} else {	// 현재 선택하지 않은 페이지 -> btn-outline-dark
 %>
-				<a href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=<%=i %>&first=<%=first%>" class="btn btn-outline-dark"><%=i %></a>
+				<a href="<%=request.getContextPath() %>/admin/selectOrderCommentList.jsp?currentPage=<%=i %>&first=<%=first%>" class="btn btn-outline-dark"><%=i %></a>
 <%
 			}
 		}
 		
 		if(currentPage < lastPage && ROW_PER_PAGE < lastPage) {
 %>
-		<a href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=<%=currentPage + ROW_PER_PAGE %>&first=<%=first + ROW_PER_PAGE %>" class="btn btn-outline-dark">＞</a>
+		<a href="<%=request.getContextPath() %>/admin/selectOrderCommentList.jsp?currentPage=<%=currentPage + ROW_PER_PAGE %>&first=<%=first + ROW_PER_PAGE %>" class="btn btn-outline-dark">＞</a>
 		<!-- 현재 페이지, 시작 페이징: 페이징 수 만큼 더해서 전달 -->
 		
-		<a href="<%=request.getContextPath() %>/selectNoticeList.jsp?currentPage=<%=lastPage %>" class="btn btn-outline-dark">≫</a>
+		<a href="<%=request.getContextPath() %>/admin/selectOrderCommentList.jsp?currentPage=<%=lastPage %>" class="btn btn-outline-dark">≫</a>
 <%
 		}
 %>

@@ -7,8 +7,14 @@ import commons.DBUtil;
 import vo.*;
 
 public class OrderDao {
+	
+	// [관리자] 전체 주문 조회
 	public ArrayList<OrderEbookMember> selectOrderList(int beginRow, int ROW_PER_PAGE) throws ClassNotFoundException, SQLException {
 		ArrayList<OrderEbookMember> list = new ArrayList<>();
+		
+		// debug
+		System.out.println(beginRow + " <-- OrderDao.selectOrderList param beginRow");
+		System.out.println(ROW_PER_PAGE + " <-- OrderDao.selectOrderList param ROW_PER_PAGE");
 		
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
@@ -49,9 +55,38 @@ public class OrderDao {
 		return list;
 	}
 	
+	// [주문 관리] 전체 주문 조회 - paging totalCount
+	public int selectTotalCount() throws ClassNotFoundException, SQLException {
+		int totalCount = 0;
+
+		DBUtil dbUtil = new DBUtil();
+	    Connection conn = dbUtil.getConnection();
+	    
+	    String sql = "SELECT COUNT(*) FROM orders";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    ResultSet rs = stmt.executeQuery();
+	    if(rs.next()) {
+			totalCount = rs.getInt("COUNT(*)");
+		}
+	    // debug
+  		System.out.println(stmt + " <-- OrderDao.selectTotalCount stmt");
+  		System.out.println(rs + " <-- OrderDao.selectTotalCount rs");
+
+	    rs.close();
+		stmt.close();
+		conn.close();
+		
+		return totalCount;
+	}
+	
 	// [회원] 나의 주문 조회
 	public ArrayList<OrderEbookMember> selectOrderListByMember(int memberNo, int beginRow, int ROW_PER_PAGE) throws ClassNotFoundException, SQLException {
 		ArrayList<OrderEbookMember> list = new ArrayList<>();
+
+		// debug
+		System.out.println(memberNo + " <-- OrderDao.selectOrderListByMember param memberNo");
+		System.out.println(beginRow + " <-- OrderDao.selectOrderListByMember param beginRow");
+		System.out.println(ROW_PER_PAGE + " <-- OrderDao.selectOrderListByMember param ROW_PER_PAGE");
 		
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
@@ -98,6 +133,9 @@ public class OrderDao {
 	public int selectTotalCount(int memberNo) throws ClassNotFoundException, SQLException {
 		int totalCount = 0;
 
+		// debug
+		System.out.println(memberNo + " <-- OrderDao.selectTotalCount param memberNo");
+		
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
 	    
@@ -123,6 +161,10 @@ public class OrderDao {
 	public Order selectOrderOneByMember(int memberNo, int orderNo) throws ClassNotFoundException, SQLException {
 		Order order = null;
 		
+		// debug
+		System.out.println(memberNo + " <-- OrderDao.selectOrderOneByMember memberNo");
+		System.out.println(orderNo + " <-- OrderDao.selectOrderOneByMember orderNo");
+		
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		
@@ -135,6 +177,36 @@ public class OrderDao {
 			order = new Order();
 			order.setOrderNo(orderNo);
 			order.setEbookNo(rs.getInt("ebookNo"));
+			order.setOrderPrice(rs.getInt("orderPrice"));
+			order.setUpdateDate(rs.getString("updateDate"));
+		}
+		
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		return order;
+	}
+	
+	// [관리자] 주문 상세조회
+	public Order selectOrderOneByAdmin(int orderNo) throws ClassNotFoundException, SQLException {
+		Order order = null;
+		
+		// debug
+		System.out.println(orderNo + " <-- OrderDao.selectOrderOneByAdmin orderNo");
+		
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "SELECT order_no orderNo, ebook_no ebookNo, member_no memberNo, order_price orderPrice, update_date updateDate FROM orders WHERE order_no=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, orderNo);
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			order = new Order();
+			order.setOrderNo(orderNo);
+			order.setEbookNo(rs.getInt("ebookNo"));
+			order.setMemberNo(rs.getInt("memberNo"));
 			order.setOrderPrice(rs.getInt("orderPrice"));
 			order.setUpdateDate(rs.getString("updateDate"));
 		}

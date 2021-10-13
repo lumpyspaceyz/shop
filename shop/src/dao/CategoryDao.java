@@ -14,8 +14,7 @@ public class CategoryDao {
 	// [카테고리 관리] - 카테고리 추가
 	public void insertCategory(Category category) throws ClassNotFoundException, SQLException {
 		// debug
-		System.out.println(category.getCategoryName() +" <-- CategoryDao.insertCategory param categoryName");
-		System.out.println(category.getCategoryState() +" <-- CategoryDao.insertCategory param categoryState");
+		System.out.println(category + " <-- CategoryDao.insertCategory param");
 		
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
@@ -126,8 +125,7 @@ public class CategoryDao {
 	// [카테고리 관리] - 카테고리 정보 수정
 	public void updateCategory(Category category) throws ClassNotFoundException, SQLException {
 		// debug
-		System.out.println(category.getCategoryName() +" <-- CategoryDao.updateCategory param categoryName");
-		System.out.println(category.getCategoryState() +" <-- CategoryDao.updateCategory param categoryState");
+		System.out.println(category +" <-- CategoryDao.updateCategory param");
 			
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();

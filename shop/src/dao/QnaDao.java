@@ -15,11 +15,7 @@ public class QnaDao {
 	// [회원+관리자] qna 입력
 	public void insertQna(Qna qna) throws ClassNotFoundException, SQLException {
 		// debug
-		System.out.println(qna.getQnaCategory() +" <-- QnaDao.insertQna param qnaCategory");
-		System.out.println(qna.getQnaTitle() +" <-- QnaDao.insertQna param qnaTitle");
-		System.out.println(qna.getMemberNo() +" <-- QnaDao.insertQna param memberNo");
-		System.out.println(qna.getQnaContent() +" <-- QnaDao.insertQna param qnaContent");
-		System.out.println(qna.getQnaSecret() +" <-- QnaDao.insertQna param qnaSecret");
+		System.out.println(qna +" <-- QnaDao.insertQna param");
 		
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
@@ -143,12 +139,7 @@ public class QnaDao {
 	// [회원] qna 수정
 	public void updateQna(Qna qna) throws ClassNotFoundException, SQLException {
 		// debug
-		System.out.println(qna.getQnaNo() +" <-- QnaDao.updateQna param qnaNo");
-		System.out.println(qna.getMemberNo() +" <-- QnaDao.updateQna param memberNo");
-		System.out.println(qna.getQnaCategory() +" <-- QnaDao.updateQna param qnaCategory");
-		System.out.println(qna.getQnaTitle() +" <-- QnaDao.updateQna param qnaTitle");
-		System.out.println(qna.getQnaContent() +" <-- QnaDao.updateQna param qnaContent");
-		System.out.println(qna.getQnaSecret() +" <-- QnaDao.updateQna param qnaSecret");
+		System.out.println(qna +" <-- QnaDao.updateQna param");
 			
 		DBUtil dbUtil = new DBUtil();
 	    Connection conn = dbUtil.getConnection();
@@ -224,7 +215,6 @@ public class QnaDao {
 	// [회원] qna 비밀글 qnaSecret 검사
 	public boolean qnaSecretCheck(int qnaNo, String qnaSecret, int memberNo) throws ClassNotFoundException, SQLException {
 		boolean result = false;
-		int memberPw = 0;
 		
 		// debug
 		System.out.println(qnaNo +" <-- QnaDao.qnaSecretCheck param qnaNo");

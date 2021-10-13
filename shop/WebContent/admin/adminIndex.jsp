@@ -83,7 +83,19 @@ a:hover {
 			
 			<tr>
 				<td>
+					<a href="<%=request.getContextPath() %>/admin/selectOrderCommentList.jsp">상품평 관리</a>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
 					<a href="<%=request.getContextPath() %>/admin/selectNoticeList.jsp">공지게시판 관리</a>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<a href="<%=request.getContextPath() %>/admin/selectQnaList.jsp">qna게시판 관리</a>
 				</td>
 			</tr>
 		</table>

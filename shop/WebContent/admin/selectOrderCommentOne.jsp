@@ -7,20 +7,20 @@
 	//encoding
 	request.setCharacterEncoding("utf-8");
 
-	//방어코드 : 접속회원 세션 관리
+	// 방어코드 : 관리자 세션 관리
 	Member loginMember = (Member)session.getAttribute("loginMember");
-	if(loginMember == null || loginMember.getMemberLevel() < 0) { // 순서 중요. 둘 중 앞부터 연산. 디버깅 코드를 남기려면 else if문으로 따로!
+	if(loginMember == null || loginMember.getMemberLevel() < 1) { // 순서 중요. 둘 중 앞부터 연산. 디버깅 코드를 남기려면 else if문으로 따로!
 		response.sendRedirect(request.getContextPath() + "/index.jsp");
 		return;
 	}
 	
-	// 방어코드
+	// 유효성 검사
 	if(request.getParameter("orderNo") == null || request.getParameter("orderNo").equals("")) {
-		response.sendRedirect(request.getContextPath() + "/selectOrderListByMember.jsp?memberNo=" + loginMember.getMemberNo());
+		response.sendRedirect(request.getContextPath() + "/admin/selectOrderCommentList.jsp?currentPage=1");
 		return;
 	}
 	if(request.getParameter("ebookNo") == null || request.getParameter("ebookNo").equals("")) {
-		response.sendRedirect(request.getContextPath() + "/selectOrderListByMember.jsp?memberNo=" + loginMember.getMemberNo());
+		response.sendRedirect(request.getContextPath() + "/admin/selectOrderListByMember.jsp?currentPage=1");
 		return;
 	}
 
@@ -47,15 +47,16 @@
 </head>
 <body>
 <div class="container">
-	<!-- start : 회원 mainMenu include -->
+	<!-- start : 관리자 메뉴 include -->
 	<div>
-		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
+		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
 	</div>
-	<!-- end : 회원 mainMenu include -->
+	<!-- end : 관리자 메뉴 include -->
+	
 	<form method="post" action="<%=request.getContextPath() %>/insertOrderCommentAction.jsp?orderNo=<%=orderNo %>&ebookNo=<%=ebookNo %>">
 		<div class="container p-3 my-3 border">
 			<div class="jumbotron">
-			  <h1>회원 페이지 - 후기조회</h1>
+			  <h1>관리자 페이지 - 상품평 관리</h1>
 			</div>
 			
 			<!-- ebook 정보 불러오기 -->
@@ -126,7 +127,6 @@
 						<td style="padding-left: 100px;">
 							<div class="progress" style="width: 80%; height: 30px; font-size: 18px;">
 								<div class="progress-bar" style="width:<%=orderComment.getOrderScore()*10 %>%"><%=orderComment.getOrderScore() %></div>
-								
 							</div>
 						</td>
 						
@@ -148,7 +148,7 @@
 			</table>
 		</div>
 		<div class="text-center">
-			<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/selectOrderListByMember.jsp?memberNo=<%=loginMember.getMemberNo() %>">목록</a>
+			<a class="btn btn-outline-dark" href="<%=request.getContextPath() %>/admin/selectOrderCommentList.jsp?currentPage=1">목록</a>
 		</div>
 	</form>
 			

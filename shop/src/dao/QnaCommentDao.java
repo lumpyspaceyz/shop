@@ -78,6 +78,29 @@ public class QnaCommentDao {
 		return qnaCommentList;
 	}
 	
+	// [회원+관리자] 관리자 qna 답글 갯수 조회
+	public int selectQnaCommentCheck(int qnaNo) throws ClassNotFoundException, SQLException {
+		int count = 0;
+		
+		// debug
+		System.out.println(qnaNo +" <-- QnaCommentDao.selectQnaCommentCheck param qnaNo");
+		
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "SELECT COUNT(qc.qna_comment_no) FROM qna_comment qc INNER JOIN (SELECT member_no FROM member m WHERE member_level > 0) m ON qc.member_no = m.member_no WHERE qna_no=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, qnaNo);
+		ResultSet rs = stmt.executeQuery();
+		
+		if(rs.next()) {
+			count = rs.getInt("COUNT(qc.qna_comment_no)");
+		}
+		
+		return count;
+		
+	}
+	
 	// [회원+관리자] qna 답글 불러오기 - paging totalCount
 	public int selectCommentTotalCount(int qnaNo) throws ClassNotFoundException, SQLException {
 		int totalCount = 0;

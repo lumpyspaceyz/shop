@@ -6,16 +6,13 @@
 <%
 	//encoding
 	request.setCharacterEncoding("utf-8");
-	
-	//방어코드 : 접속회원 세션 관리
+
+	//방어코드 : 관리자 세션 관리
 	Member loginMember = (Member)session.getAttribute("loginMember");
-	if(loginMember == null) { // 로그인한 회원 + 관리자 : Qna 조회 가능
+	if(loginMember == null || loginMember.getMemberLevel() < 1) { // 순서 중요. 둘 중 앞부터 연산. 디버깅 코드를 남기려면 else if문으로 따로!
 		response.sendRedirect(request.getContextPath() + "/index.jsp");
 		return;
 	}
-	
-	//debug
-	System.out.println("loginMemberNo --> " + loginMember.getMemberNo());
 	
 	int qnaNo = Integer.parseInt(request.getParameter("qnaNo"));
 	// debug
@@ -23,7 +20,7 @@
 	
 	// qnaNo 유효성 검사
 	if(request.getParameter("qnaNo") == null || request.getParameter("qnaNo").equals("")) {
-		response.sendRedirect(request.getContextPath() + "/selectQnaList.jsp?currentPage=1");
+		response.sendRedirect(request.getContextPath() + "/admin/selectQnaList.jsp?currentPage=1");
 		return;
 	}
 	
@@ -40,7 +37,7 @@
 	
 	// 방어코드
 	if(request.getParameter("qnaCommentNo") == null) {
-		response.sendRedirect(request.getContextPath() + "/selectQnaList.jsp?currentPage=1");
+		response.sendRedirect(request.getContextPath() + "/admin/selectQnaList.jsp?currentPage=1");
 		return;
 	}	
 	
