@@ -18,8 +18,8 @@
 
 	// multipart/form-data로 넘겼기 때문에 request.getParameter("ebookNo"); 형태 사용 불가!
 	
-	MultipartRequest mr = new MultipartRequest(request, "C:\\git-shop\\shop\\WebContent\\image", 1024*1024*1024, "utf-8", new DefaultFileRenamePolicy()); // (request대체, 파일 위치(역슬래시 2개!), 1GB, encoding, 파일 이름 중복x) 
-
+	MultipartRequest mr = new MultipartRequest(request, "/var/lib/tomcat9/webapps/shop1202/image/", 1024*1024*1024, "utf-8", new DefaultFileRenamePolicy()); // (request대체, 파일 위치(역슬래시 2개!), 1GB, encoding, 파일 이름 중복x) 
+	
 	int ebookNo = Integer.parseInt(mr.getParameter("ebookNo")); // ebookNo->request로 전달
 	String ebookImg = mr.getFilesystemName("ebookImg");
 	
